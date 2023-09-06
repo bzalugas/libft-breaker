@@ -1,0 +1,17 @@
+#+title: README
+#+author: bazaluga (bzalugas)
+
+* Purpose
+tester-libft is my personal tester for my libft project of 42 school. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
+
+* Installation
+The default structure is:
+#+begin_example
+.
+|- libft/
+|- tester-libft/
+#+end_example
+Change the location of your ~libft.a~ in the Makefile (variable LIBFT) if needed. Don't forget to also change the location of ~libft.h~ in ~lftest.h~
+
+* Usage
+Just run ~make~ and the Makefile will build your libft & launch the tests.

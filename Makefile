@@ -6,11 +6,11 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/09/06 01:17:45 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/09/06 12:36:06 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-LIBFT	=	../libft.a
+LIBFT	=	../libft/libft.a
 
 NAME 	=	libftest
 
