@@ -1,0 +1,7 @@
+.DS_Store
+*~
+*.out
+*.a
+*.o
+munit/
+libftest
