@@ -1,5 +1,6 @@
-#+title: README
+#+title: tester-libft
 #+author: bazaluga (bzalugas)
+#+description: simple personal tester for libft
 
 * Purpose
 tester-libft is my personal tester for my libft project of 42 school. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
