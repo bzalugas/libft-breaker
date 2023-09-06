@@ -1,9 +1,8 @@
-#+title: tester-libft
+# #+title: tester-libft
 #+author: bazaluga (bzalugas)
-#+description: simple personal tester for libft
 
-* Purpose
-tester-libft is my personal tester for my libft project of 42 school. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
+* tester-libft
+tester-libft is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
 
 * Installation
 The default structure is:
@@ -16,3 +15,6 @@ Change the location of your ~libft.a~ in the Makefile (variable LIBFT) if needed
 
 * Usage
 Just run ~make~ and the Makefile will build your libft & launch the tests.
+
+* Informations
+The tester-libft uses [[https://cutest.sourceforge.net/][CuTest]] for unit testing every function of the libft. It is really simple to use and it takes only 2 files to work. If you want to create your own unit tests or modify mine, you can do so easily.
