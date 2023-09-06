@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 15:03:31 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:54:52 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,8 +286,14 @@ int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), u
 	int	pid;
 	int	status;
 	int	fd[2];
+	int	fd2[2];
 
-	if (pipe(fd) == -1)
+	if (pipe(fd) < 0)
+	{
+		perror("Error during pipe.");
+		exit(1);
+	}
+	if (pipe(fd2) < 0)
 	{
 		perror("Error during pipe.");
 		exit(1);
@@ -300,21 +306,57 @@ int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), u
 	if (pid == 0)
 	{
 		close(fd[0]);
+		close(fd2[0]);
 		*res = (unsigned long)fun(s, c, n);
 		write(fd[1], res, sizeof(*res));
 		close(fd[1]);
+		write(fd2[1], (char*)*res, strlen((char*)*res));
+		close(fd2[1]);
 		exit(0);
 	}
 	close(fd[1]);
+	close(fd2[1]);
 	wait(&status);
 	read(fd[0], res, sizeof(*res));
 	close(fd[0]);
+	read(fd2[0], s, strlen(s));
+	close(fd2[0]);
 	return (status);
 }
 
 void	TestNormalMemset(CuTest *tc)
 {
 	size_t	size = 23;
+	char	b1[BUFFSIZE];
+	char	b2[BUFFSIZE];
+	unsigned long	res1;
+	unsigned long	res2;
+	int		st1;
+	int		st2;
+
+	memset(b1, 'b', BUFFSIZE);
+	memset(b2, 'b', BUFFSIZE);
+	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
+	st1 = secureMemset(b1, 'A', size, &memset, &res1);
+	st2 = secureMemset(b2, 'A', size, &ft_memset, &res2);
+	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
+	if (st1 != st2)
+	{
+		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
+			printf("ft_memset segfault when it souldn't.\n");
+		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
+			printf("memset segfault but ft_memset don't.\n");
+	}
+	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+	{
+		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
+		CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
+	}
+}
+
+void	TestSizeTooBigMemset(CuTest *tc)
+{
+	size_t	size = BUFFSIZE + 10;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
 	unsigned long	res1;
@@ -342,10 +384,42 @@ void	TestNormalMemset(CuTest *tc)
 	}
 }
 
+void	TestCNotCharMemset(CuTest *tc)
+{
+	size_t	size = 23;
+	char	b1[BUFFSIZE];
+	char	b2[BUFFSIZE];
+	unsigned long	res1;
+	unsigned long	res2;
+	int		st1;
+	int		st2;
+
+	memset(b1, 'b', BUFFSIZE);
+	memset(b2, 'b', BUFFSIZE);
+	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 123123, size);
+	st1 = secureMemset(b1, 123123, size, memset, &res1);
+	st2 = secureMemset(b2, 123123, size, ft_memset, &res2);
+	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
+	if (st1 != st2)
+	{
+		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
+			printf("ft_memset segfault when it souldn't.\n");
+		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
+			printf("memset segfault but ft_memset don't.\n");
+	}
+	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+	{
+		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
+		CuAssert(tc, "Results differents", !memcmp((void*)res1, (void*)res2, BUFFSIZE));
+	}
+}
+
 CuSuite	*ft_memset_get_suite()
 {
 	CuSuite	*suite = CuSuiteNew();
 	SUITE_ADD_TEST(suite, TestNormalMemset);
+	SUITE_ADD_TEST(suite, TestSizeTooBigMemset);
+	SUITE_ADD_TEST(suite, TestCNotCharMemset);
 	return (suite);
 }
 
