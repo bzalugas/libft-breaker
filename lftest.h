@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 12:41:36 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/06 14:07:38 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/wait.h>
-
+# define BUFFSIZE 30
 
 #endif

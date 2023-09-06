@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 14:03:37 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:03:31 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,9 +220,8 @@ int	secure_strlen(char *s, size_t (*func)(const char *), size_t *res)
 	}
 	if (pid == 0)
 	{
-		*res = 5;
 		*res = func(s);
-		return (0);
+		exit(0);
 	}
 	else
 	{
@@ -282,11 +281,17 @@ void	RunFtStrlen(void)
 /*        FT_MEMSET         */
 /****************************/
 
-int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), void **res)
+int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), unsigned long int *res)
 {
 	int	pid;
 	int	status;
+	int	fd[2];
 
+	if (pipe(fd) == -1)
+	{
+		perror("Error during pipe.");
+		exit(1);
+	}
 	if ((pid = fork()) == -1)
 	{
 		perror("Error during fork");
@@ -294,28 +299,34 @@ int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), v
 	}
 	if (pid == 0)
 	{
-		*res = fun(s, c, n);
+		close(fd[0]);
+		*res = (unsigned long)fun(s, c, n);
+		write(fd[1], res, sizeof(*res));
+		close(fd[1]);
 		exit(0);
 	}
+	close(fd[1]);
 	wait(&status);
+	read(fd[0], res, sizeof(*res));
+	close(fd[0]);
 	return (status);
 }
 
 void	TestNormalMemset(CuTest *tc)
 {
 	size_t	size = 23;
-	char	b1[30];
-	char	b2[30];
-	char	*res1;
-	char	*res2;
+	char	b1[BUFFSIZE];
+	char	b2[BUFFSIZE];
+	unsigned long	res1;
+	unsigned long	res2;
 	int		st1;
 	int		st2;
 
-	memset(b1, 'b', 30);
-	memset(b2, 'b', 30);
+	memset(b1, 'b', BUFFSIZE);
+	memset(b2, 'b', BUFFSIZE);
 	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
-	st1 = secureMemset(b1, 'A', size, memset, (void *)&res1);
-	st2 = secureMemset(b2, 'A', size, ft_memset, (void *)&res2);
+	st1 = secureMemset(b1, 'A', size, memset, &res1);
+	st2 = secureMemset(b2, 'A', size, ft_memset, &res2);
 	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
 	if (st1 != st2)
 	{
@@ -325,7 +336,10 @@ void	TestNormalMemset(CuTest *tc)
 			printf("memset segfault but ft_memset don't.\n");
 	}
 	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
-		CuAssertStrEquals(tc, res1, res2);
+	{
+		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
+		CuAssert(tc, "Results differents", !memcmp((void*)res1, (void*)res2, BUFFSIZE));
+	}
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -362,6 +376,7 @@ void	RunFtMemset(void)
 
 int	main(void)
 {
+	printf("\n\n");
 	RunFtIsalpha();
 	RunFtIsdigit();
 	RunFtIsalnum();
