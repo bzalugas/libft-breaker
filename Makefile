@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/09/06 12:36:06 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/09/06 12:54:03 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,13 +22,13 @@ CC	 	=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror
 
-INCLUDES	=	-L.. -lft
+INCLUDES	=	-L../libft -lft
 
 all:		$(NAME)
 			./$(NAME)
 
 $(LIBFT):
-			make -C ..
+			make -C ../libft
 
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) $(INCLUDES)

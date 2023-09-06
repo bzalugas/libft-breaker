@@ -1,4 +1,3 @@
-# #+title: tester-libft
 #+author: bazaluga (bzalugas)
 
 * tester-libft
