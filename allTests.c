@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 01:22:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/06 14:03:37 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,72 @@ void	RunFtStrlen(void)
 /*        FT_MEMSET         */
 /****************************/
 
+int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), void **res)
+{
+	int	pid;
+	int	status;
+
+	if ((pid = fork()) == -1)
+	{
+		perror("Error during fork");
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		*res = fun(s, c, n);
+		exit(0);
+	}
+	wait(&status);
+	return (status);
+}
+
+void	TestNormalMemset(CuTest *tc)
+{
+	size_t	size = 23;
+	char	b1[30];
+	char	b2[30];
+	char	*res1;
+	char	*res2;
+	int		st1;
+	int		st2;
+
+	memset(b1, 'b', 30);
+	memset(b2, 'b', 30);
+	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
+	st1 = secureMemset(b1, 'A', size, memset, (void *)&res1);
+	st2 = secureMemset(b2, 'A', size, ft_memset, (void *)&res2);
+	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
+	if (st1 != st2)
+	{
+		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
+			printf("ft_memset segfault when it souldn't.\n");
+		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
+			printf("memset segfault but ft_memset don't.\n");
+	}
+	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+		CuAssertStrEquals(tc, res1, res2);
+}
+
+CuSuite	*ft_memset_get_suite()
+{
+	CuSuite	*suite = CuSuiteNew();
+	SUITE_ADD_TEST(suite, TestNormalMemset);
+	return (suite);
+}
+
+void	RunFtMemset(void)
+{
+	CuString	*output = CuStringNew();
+	CuSuite		*suite = CuSuiteNew();
+
+	CuSuiteAddSuite(suite, ft_memset_get_suite());
+
+	CuSuiteRun(suite);
+	CuSuiteSummary(suite, output);
+	CuSuiteDetails(suite, output);
+	printf("ft_memset: %s\n", output->buffer);
+}
+
 /****************************/
 /*        FT_BZERO          */
 /****************************/
@@ -302,5 +368,6 @@ int	main(void)
 	RunFtIsascii();
 	RunFtIsprint();
 	RunFtStrlen();
+	RunFtMemset();
 	return (0);
 }
