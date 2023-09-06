@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 16:54:52 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:13:58 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,7 @@ int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), u
 	close(fd[1]);
 	close(fd2[1]);
 	wait(&status);
+	printf("status = %d\n", status);
 	read(fd[0], res, sizeof(*res));
 	close(fd[0]);
 	read(fd2[0], s, strlen(s));
@@ -339,15 +340,10 @@ void	TestNormalMemset(CuTest *tc)
 	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
 	st1 = secureMemset(b1, 'A', size, &memset, &res1);
 	st2 = secureMemset(b2, 'A', size, &ft_memset, &res2);
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
+	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
 	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (st1 != st2)
-	{
-		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
-			printf("ft_memset segfault when it souldn't.\n");
-		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
-			printf("memset segfault but ft_memset don't.\n");
-	}
-	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
 	{
 		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
 		CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
@@ -369,18 +365,13 @@ void	TestSizeTooBigMemset(CuTest *tc)
 	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
 	st1 = secureMemset(b1, 'A', size, memset, &res1);
 	st2 = secureMemset(b2, 'A', size, ft_memset, &res2);
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
+	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
 	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (st1 != st2)
-	{
-		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
-			printf("ft_memset segfault when it souldn't.\n");
-		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
-			printf("memset segfault but ft_memset don't.\n");
-	}
-	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
 	{
 		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
-		CuAssert(tc, "Results differents", !memcmp((void*)res1, (void*)res2, BUFFSIZE));
+		CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
 	}
 }
 
@@ -399,18 +390,13 @@ void	TestCNotCharMemset(CuTest *tc)
 	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 123123, size);
 	st1 = secureMemset(b1, 123123, size, memset, &res1);
 	st2 = secureMemset(b2, 123123, size, ft_memset, &res2);
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
+	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
 	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (st1 != st2)
-	{
-		if (WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2))
-			printf("ft_memset segfault when it souldn't.\n");
-		if (WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1))
-			printf("memset segfault but ft_memset don't.\n");
-	}
-	else if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
+	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
 	{
 		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
-		CuAssert(tc, "Results differents", !memcmp((void*)res1, (void*)res2, BUFFSIZE));
+		CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
 	}
 }
 
