@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/07 16:53:10 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/07 21:31:34 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,16 +422,62 @@ void	run_test_ft_memset(void)
 /*        FT_BZERO          */
 /****************************/
 
-/* void	test_ft_bzero_basic(CuTest *tc) */
-/* { */
+void	test_ft_bzero_basic(CuTest *tc)
+{
+	size_t	n = 20;
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
 
-/* } */
+	memset(s1, 'A', BUFFSIZE);
+	memset(s2, 'A', BUFFSIZE);
+	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
+	bzero(s1, n);
+	SANDBOX(ft_bzero(s2, n););
+	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	ft_bzero(s2, n);
+	CuAssert(tc, "Results different", !memcmp(s1, s2, BUFFSIZE));
+}
 
+void	test_ft_bzero_size_zero(CuTest *tc)
+{
+	size_t	n = 0;
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+
+	memset(s1, 'A', BUFFSIZE);
+	memset(s2, 'A', BUFFSIZE);
+	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
+	SANDBOX(ft_bzero(s2, n););
+	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	bzero(s1, n);
+	ft_bzero(s2, n);
+	CuAssert(tc, "ft_bzero change something with size 0", !memcmp(s1, s2, BUFFSIZE));
+}
+
+
+void	test_ft_bzero_null(CuTest *tc)
+{
+	size_t	n = BUFFSIZE;
+	char	*s1 = NULL;
+	int		ret1;
+	int		ret2;
+
+	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
+	SANDBOX(bzero(s1, n););
+	ret1 = g_exit_code;
+	SANDBOX(ft_bzero(s1, n););
+	ret2 = g_exit_code;
+	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(!WIFSIGNALED(ret1) && WIFSIGNALED(ret2) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_bzero doesn't segfault when it should", !(WIFSIGNALED(ret1) && WCOREDUMP(ret1) && !WIFSIGNALED(ret2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", ret1, ret2);
+}
 
 CuSuite	*ft_bzero_get_suite()
 {
 	CuSuite	*suite = CuSuiteNew();
-
+	SUITE_ADD_TEST(suite, test_ft_bzero_basic);
+	SUITE_ADD_TEST(suite, test_ft_bzero_size_zero);
+	SUITE_ADD_TEST(suite, test_ft_bzero_null);
 	return (suite);
 }
 
@@ -468,7 +514,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_isprint_get_suite());
 	CuSuiteAddSuite(suite, ft_strlen_get_suite());
 	CuSuiteAddSuite(suite, ft_memset_get_suite());
-	/* CuSuiteAddSuite(suite, ft_bzero_get_suite()); */
+	CuSuiteAddSuite(suite, ft_bzero_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
