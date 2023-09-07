@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/09/06 12:54:03 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/09/07 16:35:17 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -39,6 +39,9 @@ $(NAME):	$(LIBFT) $(OBJ)
 clean:
 			rm -f $(NAME) $(OBJ)
 
-re:			clean all
+force:
+			make re -C ../libft
 
-.PHONY:		all clean $(LIBFT)
+re:			clean force all
+
+.PHONY:		all clean $(LIBFT) force
