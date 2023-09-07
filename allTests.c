@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/06 17:50:25 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:09:18 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,109 +281,43 @@ void	run_test_ft_strlen(void)
 /*        FT_MEMSET         */
 /****************************/
 
-int		secureMemset(void *s, int c, size_t n, void *(*fun)(void *, int, size_t), unsigned long int *res)
-{
-	int	pid;
-	int	status;
-	int	fd[2];
-	int	fd2[2];
-
-	if (pipe(fd) < 0)
-	{
-		perror("Error during pipe.");
-		exit(1);
-	}
-	if (pipe(fd2) < 0)
-	{
-		perror("Error during pipe.");
-		exit(1);
-	}
-	if ((pid = fork()) == -1)
-	{
-		perror("Error during fork");
-		exit(1);
-	}
-	if (pid == 0)
-	{
-		close(fd[0]);
-		close(fd2[0]);
-		*res = (unsigned long)fun(s, c, n);
-		write(fd[1], res, sizeof(*res));
-		close(fd[1]);
-		write(fd2[1], (char*)*res, n);
-		close(fd2[1]);
-		exit(0);
-	}
-	close(fd[1]);
-	close(fd2[1]);
-	wait(&status);
-	read(fd[0], res, sizeof(*res));
-	close(fd[0]);
-	read(fd2[0], s, n);
-	close(fd2[0]);
-	return (status);
-}
-
 void	test_ft_memset_basic(CuTest *tc)
 {
-	size_t	size = 23;
-	char	b1[BUFFSIZE];
-	char	b2[BUFFSIZE];
-	unsigned long	res1;
-	unsigned long	res2;
-	int		st1;
-	int		st2;
+	size_t		size = 23;
+	char		b1[BUFFSIZE];
+	char		b2[BUFFSIZE];
+	void		*res = (void*)0x23;
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
-	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, 'A', size);
-	st1 = secureMemset(b1, 'A', size, &memset, &res1);
-	st2 = secureMemset(b2, 'A', size, &ft_memset, &res2);
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
-	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
-	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
-	{
-		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
-		CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
-	}
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
+	memset(b1, 'z', size);
+	SANDBOX(ft_memset(b2, 'z', size););
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res = ft_memset(b2, 'z', size);
+	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
+	CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
+
 }
 
 void	test_ft_memset_cut_string(CuTest *tc)
 {
-	size_t	size = 23;
-	char	b1[BUFFSIZE];
-	char	b2[BUFFSIZE];
-	unsigned long	res1;
-	unsigned long	res2;
-	int		st1;
-	int		st2;
+	size_t		size = 23;
+	char		b1[BUFFSIZE];
+	char		b2[BUFFSIZE];
+	void		*res = (void*)0x23;
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
 	b1[5] = '\0';
 	b2[5] = '\0';
-	printf("ft_memset2: s = %s, c = %d, n = %lu\n", b2, 'A', size);
-	st1 = secureMemset(b1, 'A', size, memset, &res1);
-	st2 = secureMemset(b2, 'A', size, ft_memset, &res2);
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
-	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
-	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
-	{
-		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
-		/* CuAssertStrEquals_Msg(tc, "Results differents", b1, b2); */
-		size_t i = 0;
-		while (++i < size)
-			write(1, &b1[i - 1], 1);
-		write(1, "\n", 1);
-		i = 0;
-		while (++i < size)
-			write(1, &b2[i - 1], 1);
-		write(1, "\n", 1);
-		CuAssert(tc, "ft_memset doesn't work if string is cut", !memcmp(b1, b2, size));
-
-	}
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
+	memset(b1, 'A', size);
+	SANDBOX(res = ft_memset(b2, 'A', size););
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res = ft_memset(b2, 'A', size);
+	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
+	CuAssert(tc, "ft_memset doesn't work if string is cut", !memcmp(b1, b2, BUFFSIZE));
 }
 
 void	test_ft_memset_not_char(CuTest *tc)
@@ -391,24 +325,72 @@ void	test_ft_memset_not_char(CuTest *tc)
 	size_t	size = 23;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
-	unsigned long	res1;
-	unsigned long	res2;
-	int		st1;
-	int		st2;
+	void	*res = (void*)0x23;
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
-	printf("ft_memset1: s = %s, c = %d, n = %lu\n", b2, '\200', size);
-	st1 = secureMemset(b1, '\200', size, memset, &res1);
-	st2 = secureMemset(b2, '\200', size, ft_memset, &res2);
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, '\200', size);
+	memset(b1, '\200', size);
+	SANDBOX(res = ft_memset(b2, '\200', size););
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res = ft_memset(b2, '\200', size);
+	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
+	CuAssertStrEquals_Msg(tc, "ft_memset doesn't cast to unsigned char", b1, b2);
+}
+
+void	test_ft_memset_same_return(CuTest *tc)
+{
+	size_t	size = 23;
+	char	b1[BUFFSIZE];
+	char	tmp[BUFFSIZE];
+	void	*res1 = (void*)0x23;
+	void	*res2 = (void*)0x23;
+
+	memset(b1, 'b', BUFFSIZE);
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
+	res1 = memset(b1, 'z', size);
+	strncpy(tmp, b1, BUFFSIZE);
+	memset(b1, 'b', BUFFSIZE);
+	SANDBOX(res2 = ft_memset(b1, 'z', size););
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res2 = ft_memset(b1, 'z', size);
+	CuAssertPtrEquals_Msg(tc, "Bad return adress", res1, res2);
+	CuAssertStrEquals_Msg(tc, "Different str modifs", tmp, b1);
+}
+
+void	test_ft_memset_size_zero(CuTest *tc)
+{
+	size_t	size = 0;
+	char	b1[BUFFSIZE];
+	char	b2[BUFFSIZE];
+	void	*res = (void*)0x23;
+
+	memset(b1, 'b', BUFFSIZE);
+	memset(b2, 'b', BUFFSIZE);
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
+	memset(b1, 'z', size);
+	SANDBOX(res = ft_memset(b2, 'z', size););
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res = ft_memset(b2, 'z', size);
+	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
+	CuAssertStrEquals_Msg(tc, "ft_memset modify something when size = 0", b1, b2);
+}
+
+void	test_ft_memset_null(CuTest *tc)
+{
+	size_t	size = 23;
+	int		st1;
+	int		st2;
+	char	*b = NULL;
+
+	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b, 'z', size);
+	SANDBOX(memset(b, 'z', size););
+	st1 = g_exit_code;
+	SANDBOX(ft_memset(b, 'z', size););
+	st2 = g_exit_code;
 	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
 	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
 	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
-	if (!WIFSIGNALED(st1) && !WIFSIGNALED(st2))
-	{
-		CuAssert(tc, "Bad return of ft_memset", (unsigned long)b2 == res2);
-		CuAssertStrEquals_Msg(tc, "ft_memset doesn't cast to unsigned char", b1, b2);
-	}
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -417,6 +399,9 @@ CuSuite	*ft_memset_get_suite()
 	SUITE_ADD_TEST(suite, test_ft_memset_basic);
 	SUITE_ADD_TEST(suite, test_ft_memset_cut_string);
 	SUITE_ADD_TEST(suite, test_ft_memset_not_char);
+	SUITE_ADD_TEST(suite, test_ft_memset_same_return);
+	SUITE_ADD_TEST(suite, test_ft_memset_size_zero);
+	SUITE_ADD_TEST(suite, test_ft_memset_null);
 	return (suite);
 }
 
@@ -436,6 +421,32 @@ void	run_test_ft_memset(void)
 /****************************/
 /*        FT_BZERO          */
 /****************************/
+
+/* void	test_ft_bzero_basic(CuTest *tc) */
+/* { */
+
+/* } */
+
+
+CuSuite	*ft_bzero_get_suite()
+{
+	CuSuite	*suite = CuSuiteNew();
+
+	return (suite);
+}
+
+void	run_test_ft_bzero(void)
+{
+	CuString	*output = CuStringNew();
+	CuSuite		*suite = CuSuiteNew();
+
+	CuSuiteAddSuite(suite, ft_bzero_get_suite());
+
+	CuSuiteRun(suite);
+	CuSuiteSummary(suite, output);
+	CuSuiteDetails(suite, output);
+	printf("ft_bzero: %s\n", output->buffer);
+}
 
 /****************************/
 /*        FT_MEMCPY         */
