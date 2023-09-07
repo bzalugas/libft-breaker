@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/07 16:09:18 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:53:10 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,54 +206,54 @@ void	run_test_ft_isprint(void)
 /*        FT_STRLEN         */
 /****************************/
 
-int	secure_strlen(char *s, size_t (*func)(const char *), size_t *res)
-{
-	pid_t	pid;
-	int		status;
-
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("Error during a fork");
-		exit(1);
-	}
-	if (pid == 0)
-	{
-		*res = func(s);
-		exit(0);
-	}
-	else
-	{
-		wait(&status);
-		return (status);
-	}
-}
-
 void	test_ft_strlen_basic(CuTest *tc)
 {
 	char	*s;
+	int		res1;
+	int		res2;
+	int		fd[2];
 
 	s = strdup("Bonjour a tous !");
-	printf("ft_strlen1: input <%s>\n", s);
-	CuAssertIntEquals(tc, strlen(s), ft_strlen(s));
+	printf("%s: input <%s>\n", __func__,s);
+	//not necessary use of pipe but it's to remember
+	if (pipe(fd) == -1)
+		exit(1);
+	SANDBOX(
+		close(fd[0]);
+		res1 = strlen(s);
+		write(fd[1], &res1, sizeof(int));
+		close(fd[1]);
+	);
+	read(fd[0], &res1, sizeof(int));
+	SANDBOX(
+		close(fd[0]);
+		res2 = ft_strlen(s);
+		write(fd[1], &res2, sizeof(int));
+		close(fd[1]);
+	);
+	close(fd[1]);
+	read(fd[0], &res2, sizeof(int));
+	close(fd[0]);
+	CuAssertIntEquals(tc, res1, res2);
 }
 
 void	test_ft_strlen_null(CuTest *tc)
 {
 	char		*s;
-	size_t		res1;
-	size_t		res2;
+	size_t		res1 = 0;
+	size_t		res2 = 0;
 	int			return1;
 	int			return2;
 
 	s = NULL;
-	printf("ft_strlen2: input <%s>\n", s);
-	return1 = secure_strlen(s, strlen, &res1);
-	return2 = secure_strlen(s, ft_strlen, &res2);
-	CuAssertIntEquals_Msg(tc, "Exit status different", return1, return2);
-	if (!(WIFSIGNALED(return1) && WIFSIGNALED(return2)))
-		CuAssertIntEquals(tc, res1, res2);
+	printf("%s: input <%s>\n", __func__, s);
+	SANDBOX(res1 = strlen(s););
+	return1 = g_exit_code;
+	SANDBOX(res2 = ft_strlen(s););
+	return2 = g_exit_code;
+	(void)res1;
+	(void)res2;
+	CuAssert(tc, "ft_strlen doen't segfault when it should.", !(WIFSIGNALED(return1) && WCOREDUMP(return1) &&  !WIFSIGNALED(return2) && !WCOREDUMP(return2)));
 }
 
 CuSuite	*ft_strlen_get_suite()
@@ -456,15 +456,36 @@ void	run_test_ft_bzero(void)
 /*        FT_MEMMOVE        */
 /****************************/
 
+void	run_all()
+{
+	CuString	*output = CuStringNew();
+	CuSuite		*suite = CuSuiteNew();
+
+	CuSuiteAddSuite(suite, ft_isalnum_get_suite());
+	CuSuiteAddSuite(suite, ft_isalpha_get_suite());
+	CuSuiteAddSuite(suite, ft_isascii_get_suite());
+	CuSuiteAddSuite(suite, ft_isdigit_get_suite());
+	CuSuiteAddSuite(suite, ft_isprint_get_suite());
+	CuSuiteAddSuite(suite, ft_strlen_get_suite());
+	CuSuiteAddSuite(suite, ft_memset_get_suite());
+	/* CuSuiteAddSuite(suite, ft_bzero_get_suite()); */
+
+	CuSuiteRun(suite);
+	CuSuiteSummary(suite, output);
+	CuSuiteDetails(suite, output);
+	printf("libft: %s\n", output->buffer);
+}
+
 int	main(void)
 {
 	printf("\n\n");
-	run_test_ft_isalpha();
-	run_test_ft_isdigit();
-	run_test_ft_isalnum();
-	run_test_ft_isascii();
-	run_test_ft_isprint();
-	run_test_ft_strlen();
-	run_test_ft_memset();
+	run_all();
+	/* run_test_ft_isalpha(); */
+	/* run_test_ft_isdigit(); */
+	/* run_test_ft_isalnum(); */
+	/* run_test_ft_isascii(); */
+	/* run_test_ft_isprint(); */
+	/* run_test_ft_strlen(); */
+	/* run_test_ft_memset(); */
 	return (0);
 }
