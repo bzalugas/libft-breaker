@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/07 21:31:34 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/09/08 17:47:11 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,6 +498,34 @@ void	run_test_ft_bzero(void)
 /*        FT_MEMCPY         */
 /****************************/
 
+void	test_ft_memcpy_basic(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	n;
+	void	*res1;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = strlen("Basic test memcpy.");
+	strcpy(src, "Basic test memcpy.");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memcpy(dst1, src, n);
+	SANDBOX(ft_memcpy(dst2, src, n););
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res1 = ft_memcpy(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
+	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+CuSuite	*ft_memcpy_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_memcpy_basic);
+	return (s);
+}
+
 /****************************/
 /*        FT_MEMMOVE        */
 /****************************/
@@ -515,6 +543,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strlen_get_suite());
 	CuSuiteAddSuite(suite, ft_memset_get_suite());
 	CuSuiteAddSuite(suite, ft_bzero_get_suite());
+	CuSuiteAddSuite(suite, ft_memcpy_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
