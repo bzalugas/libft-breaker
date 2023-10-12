@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/09/08 10:27:36 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/10/12 16:01:13 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -31,7 +31,7 @@ $(LIBFT):
 			make -C ../libft
 
 .c.o:
-			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) $(INCLUDES)
+			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 $(NAME):	$(LIBFT) $(OBJ)
 			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(INCLUDES)
