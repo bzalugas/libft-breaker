@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/09/08 17:47:11 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:35:43 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -519,10 +519,146 @@ void	test_ft_memcpy_basic(CuTest *tc)
 	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
 }
 
+void	test_ft_memcpy_small_size(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	n;
+	void	*res1;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = strlen("small size test") - 5;
+	strcpy(src, "small size test");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memcpy(dst1, src, n);
+	SANDBOX(ft_memcpy(dst2, src, n););
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res1 = ft_memcpy(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
+	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memcpy_size_zero(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	n;
+	void	*res1;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = 0;
+	strcpy(src, "size 0 test");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memcpy(dst1, src, n);
+	SANDBOX(ft_memcpy(dst2, src, n););
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res1 = ft_memcpy(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
+	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memcpy_null_destination(CuTest *tc)
+{
+	char	*dst1 = NULL;
+	char	*dst2 = NULL;
+	char	src[BUFFSIZE];
+	size_t	n;
+	void	*res1;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("null dest test");
+	strcpy(src, "null dest test");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memcpy(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memcpy(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = memcpy(dst1, src, n);
+		res2 = ft_memcpy(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res1, res2);
+		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+	}
+}
+
+void	test_ft_memcpy_null_source(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	*src = NULL;
+	size_t	n;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("null src test");
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memcpy(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memcpy(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		memcpy(dst1, src, n);
+		res2 = ft_memcpy(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
+		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+	}
+}
+
+void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
+{
+	char	*dst1 = NULL;
+	char	*dst2 = NULL;
+	char	*src = NULL;
+	size_t	n;
+	void	*res1;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("null dst & src test");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memcpy(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memcpy(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = memcpy(dst1, src, n);
+		res2 = ft_memcpy(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Different return values", res1, res2);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
+	}
+}
+
 CuSuite	*ft_memcpy_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
 	SUITE_ADD_TEST(s, test_ft_memcpy_basic);
+	SUITE_ADD_TEST(s, test_ft_memcpy_small_size);
+	SUITE_ADD_TEST(s, test_ft_memcpy_size_zero);
+	SUITE_ADD_TEST(s, test_ft_memcpy_null_destination);
+	SUITE_ADD_TEST(s, test_ft_memcpy_null_source);
+	SUITE_ADD_TEST(s, test_ft_memcpy_null_dest_and_src);
 	return (s);
 }
 
