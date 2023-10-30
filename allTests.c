@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/10/30 09:40:18 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:40:57 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -709,6 +709,7 @@ void	test_ft_memmove_basic(CuTest *tc)
 	bzero(dst2, BUFFSIZE);
 	n = strlen("Testing ft_memmove");
 	strcpy(src, "Testing ft_memmove");
+
 	printf("\n########## FT_MEMMOVE ##########\n");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memmove(dst1, src, n);
@@ -768,7 +769,169 @@ void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
-	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFBSIZE));
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(mem1, mem2, BUFFBSIZE));
+}
+
+void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
+{
+	char	mem1[BUFFBSIZE];
+	char	mem2[BUFFBSIZE];
+	char	*dst1 = &mem1[5];
+	char	*dst2 = &mem2[5];
+	char	*src1 = &mem1[0];
+	char	*src2 = &mem2[0];
+	char	*res;
+	int		exit1;
+	int		exit2;
+	size_t	n;
+
+	bzero(mem1, BUFFBSIZE);
+	bzero(mem2, BUFFBSIZE);
+	strcpy(src1, "Testing ft_memmove");
+	strcpy(src2, "Testing ft_memmove");
+	n = strlen("Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src1, n);
+	SANDBOX(memmove(dst1, src1, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memmove(dst2, src2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	memmove(dst1, src1, n);
+	res = ft_memmove(dst2, src2, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(mem1, mem2, BUFFBSIZE));
+}
+
+void	test_ft_memmove_small_size(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	void	*res;
+	char	src[BUFFSIZE];
+	size_t	n;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = 5;
+	strcpy(src, "Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memmove(dst1, src, n);
+	SANDBOX(ft_memmove(dst2, src, n););
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_memmove(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memmove_size_zero(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	void	*res;
+	char	src[BUFFSIZE];
+	size_t	n;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = 0;
+	strcpy(src, "Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memmove(dst1, src, n);
+	SANDBOX(ft_memmove(dst2, src, n););
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_memmove(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memmove_null_dst(CuTest *tc)
+{
+	char	*dst1 = NULL;
+	char	*dst2 = NULL;
+	char	src[BUFFSIZE];
+	size_t	n;
+	void	*res1;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("Testing ft_memmove");
+	strcpy(src, "Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memmove(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memmove(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = memmove(dst1, src, n);
+		res2 = ft_memmove(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res1, res2);
+		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+	}
+}
+
+void	test_ft_memmove_null_src(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	*src = NULL;
+	size_t	n;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("Testing ft_memmove");
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memmove(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memmove(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		memmove(dst1, src, n);
+		res2 = ft_memmove(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
+		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+	}
+}
+
+void	test_ft_memmove_null_dest_and_src(CuTest *tc)
+{
+	char	*dst1 = NULL;
+	char	*dst2 = NULL;
+	char	*src = NULL;
+	size_t	n;
+	void	*res1;
+	void	*res2;
+	int		exit1;
+	int		exit2;
+
+	n = strlen("Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	SANDBOX(memmove(dst1, src, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memmove(dst2, src, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = memmove(dst1, src, n);
+		res2 = ft_memmove(dst2, src, n);
+		CuAssertPtrEquals_Msg(tc, "Different return values", res1, res2);
+		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
+	}
 }
 
 CuSuite *ft_memmove_get_suite()
@@ -777,6 +940,12 @@ CuSuite *ft_memmove_get_suite()
 	SUITE_ADD_TEST(s, test_ft_memmove_basic);
 	SUITE_ADD_TEST(s, test_ft_memmove_same_src_dst);
 	SUITE_ADD_TEST(s, test_ft_memmove_overlap_dst_before_src);
+	SUITE_ADD_TEST(s, test_ft_memmove_overlap_src_before_dst);
+	SUITE_ADD_TEST(s, test_ft_memmove_small_size);
+	SUITE_ADD_TEST(s, test_ft_memmove_size_zero);
+	SUITE_ADD_TEST(s, test_ft_memmove_null_dst);
+	SUITE_ADD_TEST(s, test_ft_memmove_null_src);
+	SUITE_ADD_TEST(s, test_ft_memmove_null_dest_and_src);
 	return (s);
 }
 
