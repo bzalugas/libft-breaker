@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/10/29 20:35:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/10/30 09:40:18 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	test_ft_isalpha_basic(CuTest *tc)
 {
 	char	c;
 
+	printf("\n########## FT_ISALPHA ##########\n");
 	printf("ft_isalpha: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
@@ -58,6 +59,7 @@ void	test_ft_isdigit_basic(CuTest *tc)
 {
 	char	c;
 
+	printf("\n########## FT_ISDIGIT ##########\n");
 	printf("ft_isdigit: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
@@ -96,6 +98,7 @@ void	test_ft_isalnum_basic(CuTest *tc)
 {
 	char	c;
 
+	printf("\n########## FT_ISALNUM ##########\n");
 	printf("ft_isalnum: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
@@ -134,6 +137,7 @@ void	test_ft_isascii_basic(CuTest *tc)
 {
 	char	c;
 
+	printf("\n########## FT_ISASCII ##########\n");
 	printf("ft_isascii: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
@@ -168,10 +172,11 @@ void	run_test_ft_isascii(void)
 /*        FT_ISPRINT        */
 /****************************/
 
-void	TestNormalFtIsprint(CuTest *tc)
+void	test_ft_isprint_basic(CuTest *tc)
 {
 	char	c;
 
+	printf("\n########## FT_ISPRINT ##########\n");
 	printf("ft_isprint: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
@@ -185,7 +190,7 @@ void	TestNormalFtIsprint(CuTest *tc)
 CuSuite	*ft_isprint_get_suite()
 {
 	CuSuite	*suite = CuSuiteNew();
-	SUITE_ADD_TEST(suite, TestNormalFtIsprint);
+	SUITE_ADD_TEST(suite, test_ft_isprint_basic);
 	return (suite);
 }
 
@@ -214,6 +219,7 @@ void	test_ft_strlen_basic(CuTest *tc)
 	int		fd[2];
 
 	s = strdup("Bonjour a tous !");
+	printf("\n########### FT_STRLEN ##########\n");
 	printf("%s: input <%s>\n", __func__,s);
 	//not necessary use of pipe but it's to remember
 	if (pipe(fd) == -1)
@@ -290,6 +296,7 @@ void	test_ft_memset_basic(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
+	printf("\n########### FT_MEMSET ##########\n");
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
 	memset(b1, 'z', size);
 	SANDBOX(ft_memset(b2, 'z', size););
@@ -430,6 +437,7 @@ void	test_ft_bzero_basic(CuTest *tc)
 
 	memset(s1, 'A', BUFFSIZE);
 	memset(s2, 'A', BUFFSIZE);
+	printf("\n########### FT_BZERO ###########\n");
 	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
 	bzero(s1, n);
 	SANDBOX(ft_bzero(s2, n););
@@ -510,6 +518,7 @@ void	test_ft_memcpy_basic(CuTest *tc)
 	bzero(dst2, BUFFSIZE);
 	n = strlen("Basic test memcpy.");
 	strcpy(src, "Basic test memcpy.");
+	printf("\n########## FT_MEMCPY ###########\n");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memcpy(dst1, src, n);
 	SANDBOX(ft_memcpy(dst2, src, n););
@@ -558,6 +567,27 @@ void	test_ft_memcpy_size_zero(CuTest *tc)
 	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res1 = ft_memcpy(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
+	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memcpy_same_src_dst(CuTest *tc)
+{
+	char	src[BUFFSIZE];
+	char	*dst1 = src;
+	char	*dst2 = src;
+	size_t	n;
+	void	*res1;
+	void	*res2;
+
+	n = strlen("Basic test memcpy.");
+	strcpy(src, "Basic test memcpy.");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	res1 = memcpy(dst1, src, n);
+	SANDBOX(ft_memcpy(dst2, src, n););
+	CuAssert(tc, "ft_memcpy segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	res2 = ft_memcpy(dst2, src, n);
+	CuAssert(tc, "Different return values", res1 == dst1 && res2 == dst2);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res2);
 	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
 }
 
@@ -656,6 +686,7 @@ CuSuite	*ft_memcpy_get_suite()
 	SUITE_ADD_TEST(s, test_ft_memcpy_basic);
 	SUITE_ADD_TEST(s, test_ft_memcpy_small_size);
 	SUITE_ADD_TEST(s, test_ft_memcpy_size_zero);
+	SUITE_ADD_TEST(s, test_ft_memcpy_same_src_dst);
 	SUITE_ADD_TEST(s, test_ft_memcpy_null_destination);
 	SUITE_ADD_TEST(s, test_ft_memcpy_null_source);
 	SUITE_ADD_TEST(s, test_ft_memcpy_null_dest_and_src);
@@ -664,6 +695,93 @@ CuSuite	*ft_memcpy_get_suite()
 
 /****************************/
 /*        FT_MEMMOVE        */
+/****************************/
+
+void	test_ft_memmove_basic(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	void	*res;
+	char	src[BUFFSIZE];
+	size_t	n;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	n = strlen("Testing ft_memmove");
+	strcpy(src, "Testing ft_memmove");
+	printf("\n########## FT_MEMMOVE ##########\n");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	memmove(dst1, src, n);
+	SANDBOX(ft_memmove(dst2, src, n););
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_memmove(dst2, src, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memmove_same_src_dst(CuTest *tc)
+{
+	char	src[BUFFSIZE];
+	char	*dst1 = src;
+	char	*dst2 = src;
+	void	*res1;
+	void	*res2;
+	size_t	n;
+
+	n = strlen("Testing ft_memmove");
+	strcpy(src, "Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src, n);
+	res1 = memmove(dst1, src, n);
+	SANDBOX(ft_memmove(dst2, src, n););
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memmove(dst2, src, n);
+	CuAssert(tc, "Different return values", res1 == dst1 && res2 == dst2);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res2);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
+}
+
+void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
+{
+	char	mem1[BUFFBSIZE];
+	char	mem2[BUFFBSIZE];
+	char	*dst1 = &mem1[0];
+	char	*dst2 = &mem2[0];
+	char	*src1 = &mem1[5];
+	char	*src2 = &mem2[5];
+	char	*res;
+	int		exit1;
+	int		exit2;
+	size_t	n;
+
+	bzero(mem1, BUFFBSIZE);
+	bzero(mem2, BUFFBSIZE);
+	strcpy(src1, "Testing ft_memmove");
+	strcpy(src2, "Testing ft_memmove");
+	n = strlen("Testing ft_memmove");
+	printf("%s: src = %s, n = %lu\n", __func__,src1, n);
+	SANDBOX(memmove(dst1, src1, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memmove(dst2, src2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	memmove(dst1, src1, n);
+	res = ft_memmove(dst2, src2, n);
+	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
+	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFBSIZE));
+}
+
+CuSuite *ft_memmove_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_memmove_basic);
+	SUITE_ADD_TEST(s, test_ft_memmove_same_src_dst);
+	SUITE_ADD_TEST(s, test_ft_memmove_overlap_dst_before_src);
+	return (s);
+}
+
+/****************************/
+/*        RUN TESTS         */
 /****************************/
 
 void	run_all()
@@ -680,11 +798,12 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memset_get_suite());
 	CuSuiteAddSuite(suite, ft_bzero_get_suite());
 	CuSuiteAddSuite(suite, ft_memcpy_get_suite());
+	CuSuiteAddSuite(suite, ft_memmove_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
 	CuSuiteDetails(suite, output);
-	printf("libft: %s\n", output->buffer);
+	printf("\n\nlibft: %s\n", output->buffer);
 }
 
 int	main(void)

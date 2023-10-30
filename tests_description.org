@@ -1,0 +1,44 @@
+* Libft tests description
+** ft_isalnum
+** ft_isalpha
+** ft_isascii
+** ft_isdigit
+** ft_isprint
+** ft_strlen
+** ft_memset
+** ft_bzero
+** ft_memcpy
+*** Description
+=void *memcpy(void *restrict dst, const void *restrict src, size_t n);=
+
+The memcpy() function copies n bytes from memory area src to memory
+     area dst.  If dst and src overlap, behavior is undefined.
+     Applications in which dst and src might overlap should use
+     memmove(3) instead.
+
+The memcpy() function returns the original value of dst.
+*** Basic input
+Basic test
+- src = "Basic test memcpy."
+- dst[strlen(src)]
+- n = strlen(src)
+*** Smaller n
+Normal input but with n < strlen(input)
+- src = "Basic test memcpy."
+- dst[strlen(src)]
+- n = strlen(src) - 5
+*** n = 0
+*** destination & source the same
+*** NULL destination
+*** NULL source
+*** Both destination & source NULL
+** ft_memmove
+*** Basic input
+*** destination & source the same
+*** destination & source overlapping : destination lower than source
+*** destination & source overlapping : source lower than destination
+*** Samller n
+*** n = 0
+*** NULL destination
+*** NULL source
+*** Both destination & source NULL
