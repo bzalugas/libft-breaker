@@ -1,4 +1,5 @@
-* Libft tests description
+#+title: Libft tests description
+* Mandatory part
 ** ft_isalnum
 ** ft_isalpha
 ** ft_isascii
@@ -31,9 +32,9 @@ Basic use of the function.
 *** destination & source the same
 dst & src pointing on same address.
 *** Overlapping : destination lower than source
-dst address set to a lower address than src but with an overlapping length.
+dst address set to a lower address than src but with an overlapping size.
 *** Overlapping : source lower than destination
-src address set to a lower address than dst but with an overlapping length.
+src address set to a lower address than dst but with an overlapping size.
 *** Smaller n
 Normal input but with n < strlen(input).
 *** n = 0
@@ -47,3 +48,78 @@ Behavior on ubuntu: segfault.
 *** Both destination & source NULL
 dst & src set to NULL.
 Behavior on ubuntu: segfault.
+** TODO ft_strlcpy [0/10]
+*** CODE Basic input
+Basic use of the function.
+Behavior:
+Return value:
+*** CODE Smaller size
+Size smaller than src.
+Behavior:
+Return value:
+*** CODE Bigger size
+Size bigger than src.
+Behavior:
+Return value:
+*** CODE Size zero
+size = 0.
+Behavior:
+Return value:
+*** CODE dst too small
+Normal src & size but size of dst too small.
+Behavior:
+Return value:
+*** CODE dst overlapping src
+dst address set to a lower adress than src but with an overlapping size.
+Behavior:
+Return value:
+*** CODE src overlapping dst
+src address set to a lower adress than dst but with an overlapping size.
+Behavior:
+Return value:
+*** CODE NULL dst
+dst set to NULL.
+Behavior:
+Return value:
+*** CODE NULL src
+src set to NULL.
+Behavior:
+Return value:
+*** CODE NULL dst & src
+dst & src set to NULL.
+Behavior:
+Return value:
+** ft_strlcat
+** ft_toupper
+** ft_tolower
+** ft_strchr
+** ft_strrchr
+** ft_strncmp
+** ft_memchr
+** ft_memcmp
+** ft_strnstr
+** ft_atoi
+** ft_calloc
+** ft_strdup
+** ft_substr
+** ft_strjoin
+** ft_strtrim
+** ft_split
+** ft_itoa
+** ft_strmapi
+** ft_striteri
+** ft_putchar_fd
+** ft_putstr_fd
+** ft_putendl_fd
+** ft_putnbr_fd
+
+* Bonus part
+** ft_lstnew
+** ft_lstadd_front
+** ft_lstsize
+** ft_lstlast
+** ft_lastadd_back
+** ft_lstdelone
+** ft_lstclear
+** ft_lstiter
+** ft_lstmap
