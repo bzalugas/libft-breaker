@@ -8,37 +8,42 @@
 ** ft_memset
 ** ft_bzero
 ** ft_memcpy
-*** Description
-=void *memcpy(void *restrict dst, const void *restrict src, size_t n);=
-
-The memcpy() function copies n bytes from memory area src to memory
-     area dst.  If dst and src overlap, behavior is undefined.
-     Applications in which dst and src might overlap should use
-     memmove(3) instead.
-
-The memcpy() function returns the original value of dst.
 *** Basic input
-Basic test
-- src = "Basic test memcpy."
-- dst[strlen(src)]
-- n = strlen(src)
+Basic use of the function.
 *** Smaller n
-Normal input but with n < strlen(input)
-- src = "Basic test memcpy."
-- dst[strlen(src)]
-- n = strlen(src) - 5
+Normal input but with n < strlen(input).
 *** n = 0
+Normal input but with n = 0.
 *** destination & source the same
+dst & src pointing on same address.
 *** NULL destination
+dst set to NULL.
+Behavior on ubuntu: segfault.
 *** NULL source
+src set to NULL.
+Behavior on ubuntu: segfault.
 *** Both destination & source NULL
+dst & src set to NULL.
+Behavior on ubuntu: segfault.
 ** ft_memmove
 *** Basic input
+Basic use of the function.
 *** destination & source the same
-*** destination & source overlapping : destination lower than source
-*** destination & source overlapping : source lower than destination
-*** Samller n
+dst & src pointing on same address.
+*** Overlapping : destination lower than source
+dst address set to a lower address than src but with an overlapping length.
+*** Overlapping : source lower than destination
+src address set to a lower address than dst but with an overlapping length.
+*** Smaller n
+Normal input but with n < strlen(input).
 *** n = 0
+Normal input but with n = 0.
 *** NULL destination
+dst set to NULL.
+Behavior on ubuntu: segfault.
 *** NULL source
+src set to NULL.
+Behavior on ubuntu: segfault.
 *** Both destination & source NULL
+dst & src set to NULL.
+Behavior on ubuntu: segfault.
