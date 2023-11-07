@@ -51,20 +51,20 @@ Behavior on ubuntu: segfault.
 ** TODO ft_strlcpy [0/10]
 *** CODE Basic input
 Basic use of the function.
-Behavior:
-Return value:
+Behavior: copies size bytes from src to dst.
+Return value: length of src.
 *** CODE Smaller size
 Size smaller than src.
-Behavior:
-Return value:
+Behavior: copies size bytes from src to dst.
+Return value: length of src.
 *** CODE Bigger size
 Size bigger than src.
-Behavior:
-Return value:
+Behavior: copies only strlen(src) bytes from src to dst.
+Return value: length of src.
 *** CODE Size zero
 size = 0.
-Behavior:
-Return value:
+Behavior: doesn't copies anything.
+Return value: length of src.
 *** CODE dst too small
 Normal src & size but size of dst too small.
 Behavior:
