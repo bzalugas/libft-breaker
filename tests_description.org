@@ -48,14 +48,15 @@ Behavior on ubuntu: segfault.
 *** Both destination & source NULL
 dst & src set to NULL.
 Behavior on ubuntu: segfault.
+
 ** TODO ft_strlcpy [0/10]
 *** CODE Basic input
 Basic use of the function.
-Behavior: copies size bytes from src to dst.
+Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src.
 *** CODE Smaller size
 Size smaller than src.
-Behavior: copies size bytes from src to dst.
+Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src.
 *** CODE Bigger size
 Size bigger than src.
@@ -63,32 +64,29 @@ Behavior: copies only strlen(src) bytes from src to dst.
 Return value: length of src.
 *** CODE Size zero
 size = 0.
-Behavior: doesn't copies anything.
+Behavior: doesn't copy anything.
 Return value: length of src.
 *** CODE dst too small
 Normal src & size but size of dst too small.
-Behavior:
-Return value:
+Behavior: copies size-1 bytes from src to dst + \0 (cans segfault).
+Return value: length of src.
 *** CODE dst overlapping src
 dst address set to a lower adress than src but with an overlapping size.
-Behavior:
-Return value:
+Behavior: copies size-1 bytes from src to dst + \0.
+Return value: length of src (after the copy).
 *** CODE src overlapping dst
 src address set to a lower adress than dst but with an overlapping size.
-Behavior:
-Return value:
+Behavior: copies size-1 bytes from src to dst + \0.
+Return value: length of src (after the copy).
 *** CODE NULL dst
 dst set to NULL.
-Behavior:
-Return value:
+Behavior: SEGFAULT.
 *** CODE NULL src
 src set to NULL.
-Behavior:
-Return value:
+Behavior: SEGFAULT.
 *** CODE NULL dst & src
 dst & src set to NULL.
-Behavior:
-Return value:
+Behavior: SEGFAULT.
 ** ft_strlcat
 ** ft_toupper
 ** ft_tolower

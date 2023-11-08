@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/10/30 12:40:57 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:48:25 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -946,6 +946,41 @@ CuSuite *ft_memmove_get_suite()
 	SUITE_ADD_TEST(s, test_ft_memmove_null_dst);
 	SUITE_ADD_TEST(s, test_ft_memmove_null_src);
 	SUITE_ADD_TEST(s, test_ft_memmove_null_dest_and_src);
+	return (s);
+}
+
+/****************************/
+/*        FT_STRLCPY        */
+/****************************/
+
+void	test_ft_strlcpy_basic(CuTest *tc)
+{
+	char	*txt = "TESTING STRLCPY";
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(src, txt);
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	size = strlen(txt) + 1;
+	printf("\n########## FT_STRLCPY ##########\n");
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	res1 = strlcpy(dst1, src, size);
+	SANDBOX(ft_strlcpy(dst2, src, size););
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcpy(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+CuSuite *ft_strlcpy_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
 	return (s);
 }
 

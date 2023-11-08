@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/10/12 16:01:13 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/08 14:55:03 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,7 +22,7 @@ CC	 	=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror
 
-INCLUDES	=	-L../libft -lft
+INCLUDES	=	-L../libft -lft -lbsd
 
 all:		$(NAME)
 			./$(NAME)
