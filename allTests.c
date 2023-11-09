@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/08 15:48:25 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/09 09:27:31 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -977,10 +977,265 @@ void	test_ft_strlcpy_basic(CuTest *tc)
 	CuAssertIntEquals(tc, res1, res2);
 }
 
+void	test_ft_strlcpy_small_size(CuTest *tc)
+{
+	char	*txt = "TESTING STRLCPY";
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(src, txt);
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	size = strlen(txt) - 5;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	res1 = strlcpy(dst1, src, size);
+	SANDBOX(ft_strlcpy(dst2, src, size););
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcpy(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_bigger_size(CuTest *tc)
+{
+	char	*txt = "TESTING STRLCPY";
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(src, txt);
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	size = strlen(txt) + 10;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	res1 = strlcpy(dst1, src, size);
+	SANDBOX(ft_strlcpy(dst2, src, size););
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcpy(dst2, src, size);
+	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_size_zero(CuTest *tc)
+{
+	char	*txt = "TESTING STRLCPY";
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(src, txt);
+	memset(dst1, 'a', BUFFSIZE);
+	memset(dst2, 'a', BUFFSIZE);
+	size = 0;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	res1 = strlcpy(dst1, src, size);
+	SANDBOX(ft_strlcpy(dst2, src, size););
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcpy(dst2, src, size);
+	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_dst_too_small(CuTest *tc)
+{
+	char	dst1[5];
+	char	src1[BUFFSIZE];
+	char	dst2[5];
+	char	src2[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	memset(src1, 'a', BUFFSIZE - 1);
+	memset(src2, 'a', BUFFSIZE - 1);
+	src1[BUFFSIZE - 1] = '\0';
+	src2[BUFFSIZE - 1] = '\0';
+	bzero(dst1, 5);
+	bzero(dst2, 5);
+	size = BUFFSIZE;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	SANDBOX(strlcpy(dst1, src1, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst2, src2, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst1, src1, size);
+	res2 = ft_strlcpy(dst2, src2, size);
+	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
+{
+	char	mem1[BUFFSIZE];
+	char	mem2[BUFFSIZE];
+	char	*dst1 = &mem1[0];
+	char	*src1 = &mem1[5];
+	char	*dst2 = &mem2[0];
+	char	*src2 = &mem2[5];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	bzero(mem1, BUFFSIZE);
+	bzero(mem2, BUFFSIZE);
+	memset(src1, 'a', 10);
+	memset(src2, 'a', 10);
+	size = strlen(src1) + 1;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	SANDBOX(strlcpy(dst1, src1, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst2, src2, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst1, src1, size);
+	res2 = ft_strlcpy(dst2, src2, size);
+	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
+{
+	char	mem1[BUFFSIZE];
+	char	mem2[BUFFSIZE];
+	char	*dst1 = &mem1[5];
+	char	*src1 = &mem1[0];
+	char	*dst2 = &mem2[5];
+	char	*src2 = &mem2[0];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	bzero(mem1, BUFFSIZE);
+	bzero(mem2, BUFFSIZE);
+	memset(src1, 'a', BUFFSIZE - 1);
+	memset(src2, 'a', BUFFSIZE - 1);
+	src1[10] = '\0';
+	src2[10] = '\0';
+	size = strlen(src1) + 1;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	SANDBOX(strlcpy(dst1, src1, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst2, src2, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst1, src1, size);
+	res2 = ft_strlcpy(dst2, src2, size);
+	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_null_dst(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	src1[BUFFSIZE];
+	char	src2[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	memset(src1, 'a', BUFFSIZE - 1);
+	memset(src2, 'a', BUFFSIZE - 1);
+	src1[BUFFSIZE - 1] = '\0';
+	src2[BUFFSIZE - 1] = '\0';
+	size = strlen(src1) + 1;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	SANDBOX(strlcpy(dst, src1, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst, src2, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst, src1, size);
+	res2 = ft_strlcpy(dst, src2, size);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_null_src(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	*src = NULL;
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	bzero(dst1, BUFFSIZE);
+	bzero(dst2, BUFFSIZE);
+	size = 10;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	SANDBOX(strlcpy(dst1, src, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst2, src, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst1, src, size);
+	res2 = ft_strlcpy(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	*src = NULL;
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	size = 10;
+	printf("%s:\n\tsrc = %s (len = %lu)\tsize = %lu\n", __func__, src, strlen(src), size);
+	SANDBOX(strlcpy(dst, src, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcpy(dst, src, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	res1 = strlcpy(dst, src, size);
+	res2 = ft_strlcpy(dst, src, size);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
 CuSuite *ft_strlcpy_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
 
+	SUITE_ADD_TEST(s, test_ft_strlcpy_basic);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_small_size);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_bigger_size);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_size_zero);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_too_small);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_overlap_src);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_src_overlap_dst);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_null_src);
+	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst_and_src);
 	return (s);
 }
 

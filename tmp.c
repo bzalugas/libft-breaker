@@ -2,21 +2,26 @@
 #include <bsd/string.h>
 int	main(void)
 {
-	/* char	mem[BUFFSIZE]; */
-	char	*src = NULL;
-	char	*dst = NULL;
-	size_t	n = 3;
+	char	mem[BUFFSIZE];
+	char	*dst = &mem[0];
+	char	*src = &mem[5];
+	size_t	size;
+	size_t	res;
 
-	/* memset(dst, '\0', 24); */
-	/* strcpy(src, "Bonjour a tous"); */
-	printf("s = %p, d = %p\n", src, dst);
-	printf("s = %s (%lu), d = %s (%lu)\n", src, strlen(src), dst, strlen(dst));
-	size_t res = strlcpy(dst, src, n);
-	printf("src = %s (%lu), dst = %s (%lu), n = %lu\nres = %lu\n\n", src, strlen(src), dst, strlen(dst), n, res);
-	printf("dst = %s\n", dst);
-	printf("re dst = ");
-	for (int i = 0; i < BUFFSIZE; i++)
-		printf("%c", (dst[i] < 32 || dst[i] > 126 ? '.' : dst[i]));
+	/* bzero(mem, BUFFSIZE); */
+	memset(mem, 'x', BUFFSIZE);
+	memset(src, 'a', BUFFSIZE - 1);
+	/* src[24] = '\0'; */
+	size = 180;
+	printf("mem: ");
+	for (int i = 0; i < BUFFSIZE + 10; i++)
+		printf("%c", mem[i] < 32 || mem[i] > 126 ? '.' : mem[i]);
+	printf("\n");
+	res = strlcpy(dst, src, size);
+	printf("res = %lu\n", res);
+	printf("mem: ");
+	for (int i = 0; i < BUFFSIZE + 10; i++)
+		printf("%c", mem[i] < 32 || mem[i] > 126 ? '.' : mem[i]);
 	printf("\n");
 	return (0);
 }

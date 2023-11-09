@@ -49,42 +49,53 @@ Behavior on ubuntu: segfault.
 dst & src set to NULL.
 Behavior on ubuntu: segfault.
 
-** TODO ft_strlcpy [0/10]
-*** CODE Basic input
+** DONE ft_strlcpy [10/10]
+CLOSED: [2023-11-09 jeu. 09:27]
+*** CODED Basic input
+CLOSED: [2023-11-09 jeu. 08:21]
 Basic use of the function.
 Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src.
-*** CODE Smaller size
+*** CODED Smaller size
+CLOSED: [2023-11-09 jeu. 08:26]
 Size smaller than src.
 Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src.
-*** CODE Bigger size
+*** CODED Bigger size
+CLOSED: [2023-11-09 jeu. 08:28]
 Size bigger than src.
 Behavior: copies only strlen(src) bytes from src to dst.
 Return value: length of src.
-*** CODE Size zero
+*** CODED Size zero
+CLOSED: [2023-11-09 jeu. 08:32]
 size = 0.
 Behavior: doesn't copy anything.
 Return value: length of src.
-*** CODE dst too small
+*** CODED dst too small
+CLOSED: [2023-11-09 jeu. 08:40]
 Normal src & size but size of dst too small.
-Behavior: copies size-1 bytes from src to dst + \0 (cans segfault).
+Behavior: copies size-1 bytes from src to dst + \0 (can segfault).
 Return value: length of src.
-*** CODE dst overlapping src
+*** CODED dst overlapping src
+CLOSED: [2023-11-09 jeu. 09:16]
 dst address set to a lower adress than src but with an overlapping size.
 Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src (after the copy).
-*** CODE src overlapping dst
+*** CODED src overlapping dst
+CLOSED: [2023-11-09 jeu. 09:19]
 src address set to a lower adress than dst but with an overlapping size.
 Behavior: copies size-1 bytes from src to dst + \0.
 Return value: length of src (after the copy).
-*** CODE NULL dst
+*** CODED NULL dst
+CLOSED: [2023-11-09 jeu. 09:22]
 dst set to NULL.
 Behavior: SEGFAULT.
-*** CODE NULL src
+*** CODED NULL src
+CLOSED: [2023-11-09 jeu. 09:27]
 src set to NULL.
 Behavior: SEGFAULT.
-*** CODE NULL dst & src
+*** CODED NULL dst & src
+CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
 ** ft_strlcat
