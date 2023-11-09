@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 09:58:35 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:41:36 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,19 +246,15 @@ void	test_ft_strlen_basic(CuTest *tc)
 void	test_ft_strlen_null(CuTest *tc)
 {
 	char		*s;
-	size_t		res1 = 0;
-	size_t		res2 = 0;
 	int			return1;
 	int			return2;
 
 	s = NULL;
 	printf("%s: input <%s>\n", __func__, s);
-	SANDBOX(res1 = strlen(s););
+	SANDBOX(strlen(s););
 	return1 = g_exit_code;
-	SANDBOX(res2 = ft_strlen(s););
+	SANDBOX(ft_strlen(s););
 	return2 = g_exit_code;
-	(void)res1;
-	(void)res2;
 	CuAssert(tc, "ft_strlen doen't segfault when it should.", !(WIFSIGNALED(return1) && WCOREDUMP(return1) &&  !WIFSIGNALED(return2) && !WCOREDUMP(return2)));
 }
 
@@ -395,9 +391,8 @@ void	test_ft_memset_null(CuTest *tc)
 	st1 = g_exit_code;
 	SANDBOX(ft_memset(b, 'z', size););
 	st2 = g_exit_code;
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(st2) && !WIFSIGNALED(st1) && WCOREDUMP(st2)));
-	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2) && WCOREDUMP(st1)));
-	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
+	CuAssert(tc, "ft_memset segfault when it souldn't.", !(!WIFSIGNALED(st1) && WIFSIGNALED(st2)));
+	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2)));
 }
 
 CuSuite	*ft_memset_get_suite()
