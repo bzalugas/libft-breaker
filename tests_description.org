@@ -98,18 +98,18 @@ Behavior: SEGFAULT.
 CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
-** ft_strlcat
-** ft_toupper
-** ft_tolower
-** ft_strchr
-** ft_strrchr
-** ft_strncmp
-** ft_memchr
-** ft_memcmp
-** ft_strnstr
-** ft_atoi
-** ft_calloc
-** ft_strdup
+** TODO ft_strlcat
+** TODO ft_toupper
+** TODO ft_tolower
+** TODO ft_strchr
+** TODO ft_strrchr
+** TODO ft_strncmp
+** TODO ft_memchr
+** TODO ft_memcmp
+** TODO ft_strnstr
+** TODO ft_atoi
+** TODO ft_calloc
+** TODO ft_strdup
 ** ft_substr
 ** ft_strjoin
 ** ft_strtrim
