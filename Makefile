@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/09 08:18:24 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/09 15:21:33 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,7 +22,11 @@ CC	 	=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror
 
-INCLUDES	=	-L../libft -lft -lbsd
+INCLUDES	=	-L../libft -lft
+
+ifneq ($(shell uname), Darwin)
+	INCLUDES += -lbsd
+endif
 
 all:		$(NAME)
 			./$(NAME)
