@@ -3,6 +3,9 @@
 * tester-libft
 tester-libft is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
 
+* IMPORTANT INFORMATION
+For the moment, the tester compares output of the libft functions with the real functions of the libc, meaning that you need to use it on 42's machines (or same ubuntu version) to be sure you test the right behaviors.
+
 * Installation
 The default structure is:
 #+begin_example
