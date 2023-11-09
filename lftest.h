@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 15:14:21 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:06:04 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <ctype.h>
 # include <string.h>
-# ifdef __gnu__linux__
+# ifdef __linux__
 #  include <bsd/string.h>
 # endif
 # include <stdlib.h>

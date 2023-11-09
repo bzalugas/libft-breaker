@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/09 15:21:33 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/09 16:25:17 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,9 +14,15 @@ LIBFT	=	../libft/libft.a
 
 NAME 	=	libftest
 
-SRC	 	=	CuTest.c allTests.c
+SRC	 	=	CuTest.c
 
-OBJ	 	=	$(SRC:.c=.o)
+NORMAL	= allTests.c
+
+STATIC = staticAllTests.c
+
+OBJN 	=	CuTest.o allTests.o
+
+OBJS	=	CuTest.o staticAllTests.o
 
 CC	 	=	cc
 
@@ -37,8 +43,12 @@ $(LIBFT):
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-$(NAME):	$(LIBFT) $(OBJ)
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(INCLUDES)
+$(NAME):	$(LIBFT) $(OBJN)
+			$(CC) $(CFLAGS) $(OBJN) -o $(NAME) $(INCLUDES)
+
+static:		$(LIBFT) $(OBJS)
+			$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES)
+			./$(NAME)
 
 clean:
 			rm -f $(NAME) $(OBJ)
@@ -50,4 +60,4 @@ force:
 
 re:			clean force all
 
-.PHONY:		all clean $(LIBFT) force fclean
+.PHONY:		all clean $(LIBFT) force fclean static

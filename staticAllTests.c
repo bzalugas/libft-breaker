@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 15:40:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:06:03 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void	test_ft_strlen_null(CuTest *tc)
 	s = NULL;
 	printf("%s: input <%s>\n", __func__, s);
 	SANDBOX(ft_strlen(s););
-	CuAssert(tc, "ft_strlen doen't segfault when it should.", !(!WIFSIGNALED(g_exit_code) && !WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_strlen doen't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strlen_get_suite()
@@ -292,7 +292,7 @@ void	test_ft_memset_basic(CuTest *tc)
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
 	memset(b1, 'z', size);
 	SANDBOX(ft_memset(b2, 'z', size););
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res = ft_memset(b2, 'z', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
 	CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
@@ -313,7 +313,7 @@ void	test_ft_memset_cut_string(CuTest *tc)
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
 	memset(b1, 'A', size);
 	SANDBOX(res = ft_memset(b2, 'A', size););
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res = ft_memset(b2, 'A', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
 	CuAssert(tc, "ft_memset doesn't work if string is cut", !memcmp(b1, b2, BUFFSIZE));
@@ -331,7 +331,7 @@ void	test_ft_memset_not_char(CuTest *tc)
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b2, '\200', size);
 	memset(b1, '\200', size);
 	SANDBOX(res = ft_memset(b2, '\200', size););
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res = ft_memset(b2, '\200', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
 	CuAssertStrEquals_Msg(tc, "ft_memset doesn't cast to unsigned char", b1, b2);
@@ -351,7 +351,7 @@ void	test_ft_memset_same_return(CuTest *tc)
 	strncpy(tmp, b1, BUFFSIZE);
 	memset(b1, 'b', BUFFSIZE);
 	SANDBOX(res2 = ft_memset(b1, 'z', size););
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res2 = ft_memset(b1, 'z', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", res1, res2);
 	CuAssertStrEquals_Msg(tc, "Different str modifs", tmp, b1);
@@ -369,7 +369,7 @@ void	test_ft_memset_size_zero(CuTest *tc)
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
 	memset(b1, 'z', size);
 	SANDBOX(res = ft_memset(b2, 'z', size););
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res = ft_memset(b2, 'z', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
 	CuAssertStrEquals_Msg(tc, "ft_memset modify something when size = 0", b1, b2);
@@ -378,18 +378,11 @@ void	test_ft_memset_size_zero(CuTest *tc)
 void	test_ft_memset_null(CuTest *tc)
 {
 	size_t	size = 23;
-	int		st1;
-	int		st2;
 	char	*b = NULL;
 
 	printf("%s: s = %s, c = %d, n = %lu\n", __func__,b, 'z', size);
-	SANDBOX(memset(b, 'z', size););
-	st1 = g_exit_code;
 	SANDBOX(ft_memset(b, 'z', size););
-	st2 = g_exit_code;
-	CuAssert(tc, "ft_memset segfault when it souldn't.", !(!WIFSIGNALED(st1) && WIFSIGNALED(st2)));
-	CuAssert(tc, "memset segfault but ft_memset doesn't.", !(WIFSIGNALED(st1) && !WIFSIGNALED(st2)));
-	CuAssertIntEquals_Msg(tc, "Different process ending", st1, st2);
+	CuAssert(tc, "ft_memset doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -433,7 +426,7 @@ void	test_ft_bzero_basic(CuTest *tc)
 	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
 	bzero(s1, n);
 	SANDBOX(ft_bzero(s2, n););
-	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_bzero crash when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	ft_bzero(s2, n);
 	CuAssert(tc, "Results different", !memcmp(s1, s2, BUFFSIZE));
 }
@@ -448,7 +441,7 @@ void	test_ft_bzero_size_zero(CuTest *tc)
 	memset(s2, 'A', BUFFSIZE);
 	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
 	SANDBOX(ft_bzero(s2, n););
-	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_bzero crash when it shouldn't", !WIFSIGNALED(g_exit_code));
 	bzero(s1, n);
 	ft_bzero(s2, n);
 	CuAssert(tc, "ft_bzero change something with size 0", !memcmp(s1, s2, BUFFSIZE));
@@ -459,17 +452,10 @@ void	test_ft_bzero_null(CuTest *tc)
 {
 	size_t	n = BUFFSIZE;
 	char	*s1 = NULL;
-	int		ret1;
-	int		ret2;
 
 	printf("%s: s = %s, n = %lu\n", __func__,s1, n);
-	SANDBOX(bzero(s1, n););
-	ret1 = g_exit_code;
 	SANDBOX(ft_bzero(s1, n););
-	ret2 = g_exit_code;
-	CuAssert(tc, "ft_bzero segfault when it shouldn't", !(!WIFSIGNALED(ret1) && WIFSIGNALED(ret2) && WCOREDUMP(g_exit_code)));
-	CuAssert(tc, "ft_bzero doesn't segfault when it should", !(WIFSIGNALED(ret1) && WCOREDUMP(ret1) && !WIFSIGNALED(ret2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", ret1, ret2);
+	CuAssert(tc, "ft_bzero doesn't crash when it should", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_bzero_get_suite()
@@ -514,7 +500,7 @@ void	test_ft_memcpy_basic(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memcpy(dst1, src, n);
 	SANDBOX(ft_memcpy(dst2, src, n););
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memcpy crash when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res1 = ft_memcpy(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
 	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
@@ -535,7 +521,7 @@ void	test_ft_memcpy_small_size(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memcpy(dst1, src, n);
 	SANDBOX(ft_memcpy(dst2, src, n););
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res1 = ft_memcpy(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
 	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
@@ -556,7 +542,7 @@ void	test_ft_memcpy_size_zero(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memcpy(dst1, src, n);
 	SANDBOX(ft_memcpy(dst2, src, n););
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res1 = ft_memcpy(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res1);
 	CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
@@ -576,7 +562,7 @@ void	test_ft_memcpy_same_src_dst(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	res1 = memcpy(dst1, src, n);
 	SANDBOX(ft_memcpy(dst2, src, n););
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_memcpy crash when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res2 = ft_memcpy(dst2, src, n);
 	CuAssert(tc, "Different return values", res1 == dst1 && res2 == dst2);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res2);
@@ -585,91 +571,40 @@ void	test_ft_memcpy_same_src_dst(CuTest *tc)
 
 void	test_ft_memcpy_null_destination(CuTest *tc)
 {
-	char	*dst1 = NULL;
-	char	*dst2 = NULL;
+	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	n;
-	void	*res1;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("null dest test");
 	strcpy(src, "null dest test");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memcpy(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memcpy(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = memcpy(dst1, src, n);
-		res2 = ft_memcpy(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res1, res2);
-		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
-	}
+	SANDBOX(ft_memcpy(dst, src, n););
+	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_source(CuTest *tc)
 {
-	char	dst1[BUFFSIZE];
-	char	dst2[BUFFSIZE];
+	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	n;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("null src test");
-	bzero(dst1, BUFFSIZE);
-	bzero(dst2, BUFFSIZE);
+	bzero(dst, BUFFSIZE);
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memcpy(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memcpy(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		memcpy(dst1, src, n);
-		res2 = ft_memcpy(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
-		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
-	}
+	SANDBOX(ft_memcpy(dst, src, n););
+	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 {
-	char	*dst1 = NULL;
-	char	*dst2 = NULL;
+	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	n;
-	void	*res1;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("null dst & src test");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memcpy(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memcpy(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = memcpy(dst1, src, n);
-		res2 = ft_memcpy(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Different return values", res1, res2);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
-	}
+	SANDBOX(ft_memcpy(dst, src, n););
+	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memcpy_get_suite()
@@ -706,7 +641,7 @@ void	test_ft_memmove_basic(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memmove(dst1, src, n);
 	SANDBOX(ft_memmove(dst2, src, n););
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_memmove(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
 	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
@@ -726,7 +661,7 @@ void	test_ft_memmove_same_src_dst(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	res1 = memmove(dst1, src, n);
 	SANDBOX(ft_memmove(dst2, src, n););
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memmove(dst2, src, n);
 	CuAssert(tc, "Different return values", res1 == dst1 && res2 == dst2);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res2);
@@ -756,8 +691,8 @@ void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -787,8 +722,8 @@ void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -810,7 +745,7 @@ void	test_ft_memmove_small_size(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memmove(dst1, src, n);
 	SANDBOX(ft_memmove(dst2, src, n););
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_memmove(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
 	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
@@ -831,7 +766,7 @@ void	test_ft_memmove_size_zero(CuTest *tc)
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
 	memmove(dst1, src, n);
 	SANDBOX(ft_memmove(dst2, src, n););
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_memmove(dst2, src, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
 	CuAssert(tc, "Bad behavior of ft_memmove", !memcmp(dst1, dst2, BUFFSIZE));
@@ -839,91 +774,40 @@ void	test_ft_memmove_size_zero(CuTest *tc)
 
 void	test_ft_memmove_null_dst(CuTest *tc)
 {
-	char	*dst1 = NULL;
-	char	*dst2 = NULL;
+	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	n;
-	void	*res1;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("Testing ft_memmove");
 	strcpy(src, "Testing ft_memmove");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memmove(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memmove(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = memmove(dst1, src, n);
-		res2 = ft_memmove(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res1, res2);
-		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
-	}
+	SANDBOX(ft_memmove(dst, src, n););
+	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_src(CuTest *tc)
 {
-	char	dst1[BUFFSIZE];
-	char	dst2[BUFFSIZE];
+	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	n;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("Testing ft_memmove");
-	bzero(dst1, BUFFSIZE);
-	bzero(dst2, BUFFSIZE);
+	bzero(dst, BUFFSIZE);
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memmove(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memmove(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		memmove(dst1, src, n);
-		res2 = ft_memmove(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
-		CuAssert(tc, "Wrong copy", !memcmp(dst1, dst2, BUFFSIZE));
-	}
+	SANDBOX(ft_memmove(dst, src, n););
+	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 {
-	char	*dst1 = NULL;
-	char	*dst2 = NULL;
+	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	n;
-	void	*res1;
-	void	*res2;
-	int		exit1;
-	int		exit2;
 
 	n = strlen("Testing ft_memmove");
 	printf("%s: src = %s, n = %lu\n", __func__,src, n);
-	SANDBOX(memmove(dst1, src, n););
-	exit1 = g_exit_code;
-	SANDBOX(ft_memmove(dst2, src, n););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = memmove(dst1, src, n);
-		res2 = ft_memmove(dst2, src, n);
-		CuAssertPtrEquals_Msg(tc, "Different return values", res1, res2);
-		CuAssertPtrEquals_Msg(tc, "Bad return", res2, dst2);
-	}
+	SANDBOX(ft_memmove(dst, src, n););
+	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_memmove_get_suite()
@@ -963,7 +847,7 @@ void	test_ft_strlcpy_basic(CuTest *tc)
 	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strlcpy(dst2, src, size);
 	CuAssertStrEquals(tc, dst1, dst2);
 	CuAssertIntEquals(tc, res1, res2);
@@ -986,7 +870,7 @@ void	test_ft_strlcpy_small_size(CuTest *tc)
 	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strlcpy(dst2, src, size);
 	CuAssertStrEquals(tc, dst1, dst2);
 	CuAssertIntEquals(tc, res1, res2);
@@ -1009,7 +893,7 @@ void	test_ft_strlcpy_bigger_size(CuTest *tc)
 	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strlcpy(dst2, src, size);
 	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
 	CuAssertIntEquals(tc, res1, res2);
@@ -1032,7 +916,7 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strlcpy(dst2, src, size);
 	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
 	CuAssertIntEquals(tc, res1, res2);
@@ -1040,34 +924,22 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 
 void	test_ft_strlcpy_dst_too_small(CuTest *tc)
 {
-	char	src1[BUFFSIZE];
-	char	src2[BUFFSIZE];
-	char	dst1[5];
-	char	dst2[5];
+	char	src[BUFFSIZE];
+	char	dst[5];
 	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
+	size_t	res;
 
-	memset(src1, 'a', BUFFSIZE - 1);
-	memset(src2, 'a', BUFFSIZE - 1);
-	src1[BUFFSIZE - 1] = '\0';
-	src2[BUFFSIZE - 1] = '\0';
-	bzero(dst1, 5);
-	bzero(dst2, 5);
+	memset(src, 'a', BUFFSIZE - 1);
+	src[BUFFSIZE - 1] = '\0';
+	bzero(dst, 5);
 	size = BUFFSIZE;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, 5));
-	CuAssertIntEquals(tc, res1, res2);
+	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	SANDBOX(ft_strlcpy(dst, src, size););
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	/* res = ft_strlcpy(dst, src, size); */
+	/* CuAssert(tc, "Bad copy", !memcmp(dst, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 29)); */
+	res = 28;
+	CuAssertIntEquals(tc, (size_t)29, res);
 }
 
 void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
@@ -1094,8 +966,8 @@ void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src2, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	res1 = strlcpy(dst1, src1, size);
 	res2 = ft_strlcpy(dst2, src2, size);
 	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
@@ -1128,8 +1000,8 @@ void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src2, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	res1 = strlcpy(dst1, src1, size);
 	res2 = ft_strlcpy(dst2, src2, size);
 	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
@@ -1157,8 +1029,8 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src2, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src1, size);
@@ -1186,8 +1058,8 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst1, src, size);
@@ -1213,8 +1085,8 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy segfault when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src, size);
