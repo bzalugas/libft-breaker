@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 09:45:27 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/09 09:58:35 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1048,10 +1048,10 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 
 void	test_ft_strlcpy_dst_too_small(CuTest *tc)
 {
-	char	dst1[5];
 	char	src1[BUFFSIZE];
-	char	dst2[5];
 	char	src2[BUFFSIZE];
+	char	dst1[5];
+	char	dst2[5];
 	size_t	size;
 	size_t	res1;
 	size_t	res2;
@@ -1074,7 +1074,7 @@ void	test_ft_strlcpy_dst_too_small(CuTest *tc)
 	CuAssert(tc, "ft_strlcpy doesn't segfault when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	res1 = strlcpy(dst1, src1, size);
 	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, BUFFSIZE));
+	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, 5));
 	CuAssertIntEquals(tc, res1, res2);
 }
 
