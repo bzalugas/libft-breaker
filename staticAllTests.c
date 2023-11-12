@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 17:06:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 16:21:43 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -936,9 +936,8 @@ void	test_ft_strlcpy_dst_too_small(CuTest *tc)
 	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
 	SANDBOX(ft_strlcpy(dst, src, size););
 	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	/* res = ft_strlcpy(dst, src, size); */
-	/* CuAssert(tc, "Bad copy", !memcmp(dst, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 29)); */
-	res = 28;
+	res = ft_strlcpy(dst, src, size);
+	CuAssert(tc, "Bad copy", !memcmp(dst, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 29));
 	CuAssertIntEquals(tc, (size_t)29, res);
 }
 
@@ -1011,62 +1010,28 @@ void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
 void	test_ft_strlcpy_null_dst(CuTest *tc)
 {
 	char	*dst = NULL;
-	char	src1[BUFFSIZE];
-	char	src2[BUFFSIZE];
+	char	src[BUFFSIZE];
 	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
 
-	memset(src1, 'a', BUFFSIZE - 1);
-	memset(src2, 'a', BUFFSIZE - 1);
-	src1[BUFFSIZE - 1] = '\0';
-	src2[BUFFSIZE - 1] = '\0';
-	size = strlen(src1) + 1;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = strlcpy(dst, src1, size);
-		res2 = ft_strlcpy(dst, src2, size);
-		CuAssertIntEquals(tc, res1, res2);
-	}
+	memset(src, 'a', BUFFSIZE - 1);
+	src[BUFFSIZE - 1] = '\0';
+	size = strlen(src) + 1;
+	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	SANDBOX(ft_strlcpy(dst, src, size););
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_src(CuTest *tc)
 {
-	char	dst1[BUFFSIZE];
-	char	dst2[BUFFSIZE];
+	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
 
-	bzero(dst1, BUFFSIZE);
-	bzero(dst2, BUFFSIZE);
+	bzero(dst, BUFFSIZE);
 	size = 10;
 	printf("%s:\n\tsrc = %s (len = %d)\n\tsize = %lu\n", __func__, src, 0, size);
-	SANDBOX(strlcpy(dst1, src, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = strlcpy(dst1, src, size);
-		res2 = ft_strlcpy(dst2, src, size);
-		CuAssertStrEquals(tc, dst1, dst2);
-		CuAssertIntEquals(tc, res1, res2);
-	}
+	SANDBOX(ft_strlcpy(dst, src, size););
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
@@ -1074,25 +1039,11 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
 
 	size = 10;
 	printf("%s:\n\tsrc = %s (len = %d)\n\tsize = %lu\n", __func__, src, 0, size);
-	SANDBOX(strlcpy(dst, src, size););
-	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = strlcpy(dst, src, size);
-		res2 = ft_strlcpy(dst, src, size);
-		CuAssertIntEquals(tc, res1, res2);
-	}
+	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_strlcpy_get_suite()
