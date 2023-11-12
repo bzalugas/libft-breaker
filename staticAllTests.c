@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/12 16:21:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:58:40 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1064,6 +1064,181 @@ CuSuite *ft_strlcpy_get_suite()
 }
 
 /****************************/
+/*        FT_STRLCAT        */
+/****************************/
+
+void	test_ft_strlcat_basic(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(dst1, "hello");
+	strcpy(dst2, "hello");
+	strcpy(src, " everyone!");
+	size = strlen(dst1) + strlen(src) + 1;
+	printf("\n########## FT_STRLCAT ##########\n");
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst1, strlen(dst1), size);
+	res1 = strlcat(dst1, src, size);
+	SANDBOX(ft_strlcat(dst2, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcat(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcat_smaller_size(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(dst1, "hello");
+	strcpy(dst2, "hello");
+	strcpy(src, " everyone!");
+	size = strlen(dst1) + strlen(src) - 3;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst1, strlen(dst1), size);
+	res1 = strlcat(dst1, src, size);
+	SANDBOX(ft_strlcat(dst2, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcat(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcat_smaller_small_size(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(dst1, "hello");
+	strcpy(dst2, "hello");
+	strcpy(src, " everyone!");
+	size = strlen(dst1) - 2;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst1, strlen(dst1), size);
+	res1 = strlcat(dst1, src, size);
+	SANDBOX(ft_strlcat(dst2, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcat(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcat_bigger_size(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(dst1, "hello");
+	strcpy(dst2, "hello");
+	strcpy(src, " everyone!");
+	size = strlen(dst1) + strlen(src) + 23;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst1, strlen(dst1), size);
+	res1 = strlcat(dst1, src, size);
+	SANDBOX(ft_strlcat(dst2, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcat(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcat_size_zero(CuTest *tc)
+{
+	char	dst1[BUFFSIZE];
+	char	dst2[BUFFSIZE];
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+
+	strcpy(dst1, "hello");
+	strcpy(dst2, "hello");
+	strcpy(src, " everyone!");
+	size = 0;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst1, strlen(dst1), size);
+	res1 = strlcat(dst1, src, size);
+	SANDBOX(ft_strlcat(dst2, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strlcat(dst2, src, size);
+	CuAssertStrEquals(tc, dst1, dst2);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strlcat_null_dst(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	src[BUFFSIZE];
+	size_t	size;
+
+	strcpy(src, " everyone!");
+	size = strlen(src) + 1;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst, (size_t)0, size);
+	SANDBOX(ft_strlcat(dst, src, size););
+	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_strlcat_null_src(CuTest *tc)
+{
+	char	dst[BUFFSIZE];
+	char	*src = NULL;
+	size_t	size;
+
+	strcpy(dst, "hello");
+	size = strlen(dst) + 1;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, (size_t)0,
+		dst, strlen(dst), size);
+	SANDBOX(ft_strlcat(dst, src, size););
+	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	*src = NULL;
+	size_t	size;
+
+	size = BUFFSIZE;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, (size_t)0,
+		dst, (size_t)0, size);
+	SANDBOX(ft_strlcat(dst, src, size););
+	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+CuSuite *ft_strlcat_get_suite()
+{
+	CuSuite *s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strlcat_basic);
+	SUITE_ADD_TEST(s, test_ft_strlcat_smaller_size);
+	SUITE_ADD_TEST(s, test_ft_strlcat_smaller_small_size);
+	SUITE_ADD_TEST(s, test_ft_strlcat_bigger_size);
+	SUITE_ADD_TEST(s, test_ft_strlcat_size_zero);
+	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst);
+	SUITE_ADD_TEST(s, test_ft_strlcat_null_src);
+	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst_and_src);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -1083,6 +1258,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memcpy_get_suite());
 	CuSuiteAddSuite(suite, ft_memmove_get_suite());
 	CuSuiteAddSuite(suite, ft_strlcpy_get_suite());
+	CuSuiteAddSuite(suite, ft_strlcat_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
