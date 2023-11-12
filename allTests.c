@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 15:46:29 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 15:56:10 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void	test_ft_strlen_null(CuTest *tc)
 
 	s = NULL;
 	printf("%s: input <%s>\n", __func__, s);
-	SANDBOX(strlen(s););
+	SANDBOX((void)strlen(s););
 	return1 = g_exit_code;
 	SANDBOX(ft_strlen(s););
 	return2 = g_exit_code;
