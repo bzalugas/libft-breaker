@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/09 16:25:17 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/12 16:24:10 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -51,7 +51,7 @@ static:		$(LIBFT) $(OBJS)
 			./$(NAME)
 
 clean:
-			rm -f $(NAME) $(OBJ)
+			rm -f $(NAME) $(OBJN) $(OBJS)
 
 fclean:		clean
 
