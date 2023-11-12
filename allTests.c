@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/12 15:56:10 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 16:27:59 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -963,7 +963,7 @@ void	test_ft_strlcpy_basic(CuTest *tc)
 	bzero(dst2, BUFFSIZE);
 	size = strlen(txt) + 1;
 	printf("\n########## FT_STRLCPY ##########\n");
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -986,7 +986,7 @@ void	test_ft_strlcpy_small_size(CuTest *tc)
 	bzero(dst1, BUFFSIZE);
 	bzero(dst2, BUFFSIZE);
 	size = strlen(txt) - 5;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1009,7 +1009,7 @@ void	test_ft_strlcpy_bigger_size(CuTest *tc)
 	bzero(dst1, BUFFSIZE);
 	bzero(dst2, BUFFSIZE);
 	size = strlen(txt) + 10;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1032,7 +1032,7 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	memset(dst1, 'a', BUFFSIZE);
 	memset(dst2, 'a', BUFFSIZE);
 	size = 0;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src, strlen(src), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src, strlen(src), size);
 	res1 = strlcpy(dst1, src, size);
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1060,7 +1060,7 @@ void	test_ft_strlcpy_dst_too_small(CuTest *tc)
 	bzero(dst1, 5);
 	bzero(dst2, 5);
 	size = BUFFSIZE;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
 	SANDBOX(strlcpy(dst1, src1, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src2, size););
@@ -1092,7 +1092,7 @@ void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
 	memset(src1, 'a', 10);
 	memset(src2, 'a', 10);
 	size = strlen(src1) + 1;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
 	SANDBOX(strlcpy(dst1, src1, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src2, size););
@@ -1126,7 +1126,7 @@ void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
 	src1[10] = '\0';
 	src2[10] = '\0';
 	size = strlen(src1) + 1;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
 	SANDBOX(strlcpy(dst1, src1, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src2, size););
@@ -1155,7 +1155,7 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	src1[BUFFSIZE - 1] = '\0';
 	src2[BUFFSIZE - 1] = '\0';
 	size = strlen(src1) + 1;
-	printf("%s:\n\tsrc = %s (len = %lu)\n\tsize = %lu\n", __func__, src1, strlen(src1), size);
+	printf("%s:\n\tsrc = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
 	SANDBOX(strlcpy(dst, src1, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src2, size););
@@ -1184,7 +1184,7 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	bzero(dst1, BUFFSIZE);
 	bzero(dst2, BUFFSIZE);
 	size = 10;
-	printf("%s:\n\tsrc = %s (len = %d)\n\tsize = %lu\n", __func__, src, 0, size);
+	printf("%s:\n\tsrc = %s (len = %d), size = %lu\n", __func__, src, 0, size);
 	SANDBOX(strlcpy(dst1, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src, size););
@@ -1211,7 +1211,7 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 	int		exit2;
 
 	size = 10;
-	printf("%s:\n\tsrc = %s (len = %d)\n\tsize = %lu\n", __func__, src, 0, size);
+	printf("%s:\n\tsrc = %s (len = %d), size = %lu\n", __func__, src, 0, size);
 	SANDBOX(strlcpy(dst, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
