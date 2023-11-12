@@ -98,7 +98,48 @@ Behavior: SEGFAULT.
 CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
-** TODO ft_strlcat
+
+** TODO ft_strlcat [8/8]
+*** CODED Basic input
+CLOSED: [2023-11-12 dim. 19:01]
+Basic use of function.
+Behavior: Copies size - len(dst) - 1 bytes from src to end of dst + \0.
+Return value: Initial length of dst + length of src.
+*** CODED Smaller size
+CLOSED: [2023-11-12 dim. 19:02]
+Size smaller than final buffer.
+Behavior: Copies size - len(dst) - 1 bytes from src to end of dst + \0 (Truncation).
+Return value: *Initial length of dst + length of src if size >= len(dst) else size + length of src.*
+*** CODED Smaller small size
+CLOSED: [2023-11-12 dim. 19:05]
+Size smaller than len(dst).
+Behavior: Doesn't copy anything.
+Return value: *size + length of src.*
+*** CODED Bigger size
+CLOSED: [2023-11-12 dim. 19:07]
+Size bigger than final buffer.
+Behavior: Does the copy but stops at \0 of src.
+Return value: Initial length of dst + length of src.
+*** CODED Size zero
+CLOSED: [2023-11-12 dim. 19:08]
+Size = 0.
+Behavior: Doesn't copy anything.
+Return value: Length of src (same calculation than if size < len(dst)).
+*** CODED NULL dst
+CLOSED: [2023-11-12 dim. 19:18]
+dst set to NULL.
+Behavior: SEGFAULT.
+Return value: /
+*** CODED NULL src
+CLOSED: [2023-11-12 dim. 19:18]
+src set to NULL.
+Behavior: SEGFAULT.
+Return value: /
+*** CODED NULL dst & src
+CLOSED: [2023-11-12 dim. 19:18]
+dst & src set to NULL.
+Behavior: SEGFAULT.
+Return value: /
 ** TODO ft_toupper
 ** TODO ft_tolower
 ** TODO ft_strchr
