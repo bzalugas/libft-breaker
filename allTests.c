@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/12 19:36:26 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 20:14:21 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1391,6 +1391,34 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	}
 }
 
+void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res1;
+	size_t	res2;
+	int		exit1;
+	int		exit2;
+
+	strcpy(src, " everyone!");
+	size = 0;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst, (size_t)0, size);
+	SANDBOX(res1 = strlcat(dst, src, size););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strlcat(dst, src, size););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strlcat doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strlcat(dst, src, size);
+		res2 = ft_strlcat(dst, src, size);
+		CuAssertIntEquals(tc, res1, res2);
+	}
+}
+
 void	test_ft_strlcat_null_src(CuTest *tc)
 {
 	char	dst1[BUFFSIZE];
@@ -1457,6 +1485,7 @@ CuSuite *ft_strlcat_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcat_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcat_size_zero);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst);
+	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst_and_size_zero);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_src);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst_and_src);
 	return (s);

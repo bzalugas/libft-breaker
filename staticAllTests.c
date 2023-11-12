@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/12 19:58:40 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/12 20:18:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1197,6 +1197,23 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
+void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
+{
+	char	*dst = NULL;
+	char	src[BUFFSIZE];
+	size_t	size;
+	size_t	res;
+
+	strcpy(src, " everyone!");
+	size = 0;
+	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n\n", __func__, src, strlen(src),
+		dst, (size_t)0, size);
+	SANDBOX(ft_strlcat(dst, src, size););
+	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strlcat(dst, src, size);
+	CuAssertIntEquals(tc, strlen(src), res);
+}
+
 void	test_ft_strlcat_null_src(CuTest *tc)
 {
 	char	dst[BUFFSIZE];
@@ -1233,6 +1250,7 @@ CuSuite *ft_strlcat_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcat_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcat_size_zero);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst);
+	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst_and_size_zero);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_src);
 	SUITE_ADD_TEST(s, test_ft_strlcat_null_dst_and_src);
 	return (s);

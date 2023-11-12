@@ -99,7 +99,7 @@ CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
 
-** TODO ft_strlcat [8/8]
+** TODO ft_strlcat [8/9]
 *** CODED Basic input
 CLOSED: [2023-11-12 dim. 19:01]
 Basic use of function.
@@ -130,6 +130,10 @@ CLOSED: [2023-11-12 dim. 19:18]
 dst set to NULL.
 Behavior: SEGFAULT.
 Return value: /
+*** CODE NULL dst & size zero
+dst set to NULL and size set to zero.
+Behavior: Doesn't copy anything. (NO SEGFAULT).
+Return value: length of src.
 *** CODED NULL src
 CLOSED: [2023-11-12 dim. 19:18]
 src set to NULL.
