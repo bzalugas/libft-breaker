@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 12:23:47 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:35:34 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1766,6 +1766,320 @@ CuSuite	*ft_strrchr_get_suite()
 }
 
 /****************************/
+/*        FT_STRNCMP        */
+/****************************/
+
+void	test_ft_strncmp_basic_1(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s1);
+	printf("\n########## FT_STRNCMP ##########\n");
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_basic_2_1(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Montres");
+	n = strlen(s1);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_basic_2_2(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Montres");
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s1);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_len_s1_lt_len_s2(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Mons");
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s2);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_len_s1_gt_len_s2(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Mons");
+	n = strlen(s1);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_smaller_n(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s1) - 5;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_bigger_n(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s1) + 10;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_n_zero(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	strcpy(s1, "Triple Monstre");
+	strcpy(s2, "Triple Monstre");
+	n = 0;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_not_u_char(CuTest *tc)
+{
+	char	s1[2];
+	char	s2[2];
+	size_t	n;
+	int		res1;
+	int		res2;
+
+	s1[0] = '\200';
+	s1[1] = '\0';
+	s2[0] = '\0';
+	n = 1;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	res1 = strncmp(s1, s2, n);
+	SANDBOX(ft_strncmp(s1, s2, n););
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strncmp(s1, s2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_strncmp_null_s1(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	s2[BUFFSIZE];
+	size_t	n;
+	int		res1;
+	int		res2;
+	int		exit1;
+	int		exit2;
+
+	strcpy(s2, "Triple Monstre");
+	n = strlen(s2);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	SANDBOX(res1 = strncmp(s1, s2, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strncmp(s1, s2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strncmp(s1, s2, n);
+		res2 = ft_strncmp(s1, s2, n);
+		CuAssertIntEquals(tc, res1, res2);
+	}
+}
+
+void	test_ft_strncmp_null_s2(CuTest *tc)
+{
+	char	s1[BUFFSIZE];
+	char	*s2 = NULL;
+	size_t	n;
+	int		res1;
+	int		res2;
+	int		exit1;
+	int		exit2;
+
+	strcpy(s1, "Triple Monstre");
+	n = strlen(s1);
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	SANDBOX(res1 = strncmp(s1, s2, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strncmp(s1, s2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strncmp(s1, s2, n);
+		res2 = ft_strncmp(s1, s2, n);
+		CuAssertIntEquals(tc, res1, res2);
+	}
+}
+
+void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	*s2 = NULL;
+	size_t	n;
+	int		res1;
+	int		res2;
+	int		exit1;
+	int		exit2;
+
+	n = 10;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	SANDBOX(res1 = strncmp(s1, s2, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strncmp(s1, s2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strncmp(s1, s2, n);
+		res2 = ft_strncmp(s1, s2, n);
+		CuAssertIntEquals(tc, res1, res2);
+	}
+}
+
+void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	*s2 = NULL;
+	size_t	n;
+	int		res1;
+	int		res2;
+	int		exit1;
+	int		exit2;
+
+	n = 0;
+	printf("%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	SANDBOX(res1 = strncmp(s1, s2, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strncmp(s1, s2, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strncmp(s1, s2, n);
+		res2 = ft_strncmp(s1, s2, n);
+		CuAssertIntEquals(tc, res1, res2);
+	}
+}
+
+CuSuite	*ft_strncmp_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strncmp_basic_1);
+	SUITE_ADD_TEST(s, test_ft_strncmp_basic_2_1);
+	SUITE_ADD_TEST(s, test_ft_strncmp_basic_2_2);
+	SUITE_ADD_TEST(s, test_ft_strncmp_len_s1_lt_len_s2);
+	SUITE_ADD_TEST(s, test_ft_strncmp_len_s1_gt_len_s2);
+	SUITE_ADD_TEST(s, test_ft_strncmp_smaller_n);
+	SUITE_ADD_TEST(s, test_ft_strncmp_bigger_n);
+	SUITE_ADD_TEST(s, test_ft_strncmp_n_zero);
+	SUITE_ADD_TEST(s, test_ft_strncmp_not_u_char);
+	SUITE_ADD_TEST(s, test_ft_strncmp_null_s1);
+	SUITE_ADD_TEST(s, test_ft_strncmp_null_s2);
+	SUITE_ADD_TEST(s, test_ft_strncmp_null_s1_and_s2_n_gt_zero);
+	SUITE_ADD_TEST(s, test_ft_strncmp_null_s1_and_s2_n_zero);
+	return (s);
+}
+
+/****************************/
+/*        FT_MEMCHR         */
+/****************************/
+
+
+
+CuSuite	*ft_memchr_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -1790,6 +2104,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_tolower_get_suite());
 	CuSuiteAddSuite(suite, ft_strchr_get_suite());
 	CuSuiteAddSuite(suite, ft_strrchr_get_suite());
+	CuSuiteAddSuite(suite, ft_strncmp_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

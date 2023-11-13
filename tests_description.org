@@ -99,7 +99,8 @@ CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
 
-** TODO ft_strlcat [9/9]
+** DONE ft_strlcat [9/9]
+CLOSED: [2023-11-12 dim. 19:18]
 *** CODED Basic input
 CLOSED: [2023-11-12 dim. 19:01]
 Basic use of function.
@@ -153,7 +154,8 @@ CLOSED: [2023-11-13 lun. 11:33]
 CLOSED: [2023-11-13 lun. 11:34]
 *** CODED basic inputs (all unsigned char)
 CLOSED: [2023-11-13 lun. 11:33]
-** TODO ft_strchr
+** DONE ft_strchr
+CLOSED: [2023-11-13 lun. 13:17]
 *** CODED Basic inputs (c in s)
 CLOSED: [2023-11-13 lun. 12:09]
 *** CODED multiple c in s
@@ -164,7 +166,8 @@ CLOSED: [2023-11-13 lun. 12:09]
 CLOSED: [2023-11-13 lun. 12:09]
 *** CODED s set to NULL
 CLOSED: [2023-11-13 lun. 12:09]
-** TODO ft_strrchr
+** DONE ft_strrchr
+CLOSED: [2023-11-13 lun. 13:17]
 *** CODED Basic inputs (c in s)
 CLOSED: [2023-11-13 lun. 12:12]
 *** CODED multiple c in s
@@ -175,8 +178,82 @@ CLOSED: [2023-11-13 lun. 12:13]
 CLOSED: [2023-11-13 lun. 12:13]
 *** CODED s set to NULL
 CLOSED: [2023-11-13 lun. 12:13]
-** TODO ft_strncmp
-** TODO ft_memchr
+** DONE ft_strncmp [13/13]
+CLOSED: [2023-11-13 lun. 15:03]
+*** CODED Basic inputs s1 == s2
+CLOSED: [2023-11-13 lun. 13:41]
+s1 & s2 the same.
+Return value: 0
+*** CODED Basic inputs s1 != s2, n = len(s1) (s1 < s2)
+CLOSED: [2023-11-13 lun. 13:46]
+s1 & s2 different, s1 less than s2
+Return value: negative (s1[i] - s2[i])
+*** CODED Basic inputs s1 != s2, n = len(s1) (s1 > s2)
+CLOSED: [2023-11-13 lun. 13:46]
+s1 & s2 different, s1 greater than s2
+Return value: positive (s1[i] - s2[i])
+*** CODED len s1 < len s2
+CLOSED: [2023-11-13 lun. 13:48]
+s1 & s2 the same until '\0' in s1. n set to length of s2.
+Return value: negative (0 - s2[i])
+*** CODED len s1 > len s2
+CLOSED: [2023-11-13 lun. 13:49]
+s1 & s2 the same until '\0' in s2. n set to length of s1.
+Return value: positive (s1[i] - 0)
+*** CODED Smaller n
+CLOSED: [2023-11-13 lun. 13:51]
+n smaller than the 2 lengths.
+Return value: difference between n^{th} char of the 2 strings.
+*** CODED Bigger n
+CLOSED: [2023-11-13 lun. 13:51]
+n bigger than the 2 lengths.
+Return value: difference between last char of the smaller string and equivalent char of the other.
+*** CODED n = 0
+CLOSED: [2023-11-13 lun. 13:52]
+n set to zero.
+Return value: 0
+*** CODED not unsigned char inside strings
+CLOSED: [2023-11-13 lun. 15:02]
+Insertion of values not initially unsigned char to test that the function casts to unsigned char.
+Return value: diff as usual.
+*** CODED NULL s1, n > 0
+CLOSED: [2023-11-13 lun. 13:55]
+s1 set to NULL with n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s2, n > 0
+CLOSED: [2023-11-13 lun. 13:59]
+s2 set to NULL with n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s1 & s2, n > 0
+CLOSED: [2023-11-13 lun. 13:57]
+s1 & s2 set to NULL with n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s1 & s2, n = 0
+CLOSED: [2023-11-13 lun. 13:57]
+s1 & s2 set to NULL with n > 0.
+Return value: 0 (NO SEGFAULT)
+** TODO ft_memchr [0/7]
+*** CODE Basic with c in s
+Normal use of the function with c placed in s.
+Return value: pointer to first instance of c in s.
+*** CODE multiple c in s
+Normal use of the function, c has multiple instances in s.
+Return value: pointer to first instance of c in s.
+*** CODE c not in s
+Normal use of the function, c not in s.
+Return value: NULL.
+*** CODE c not unsigned char
+Test the function with a non unsigned char value in c (present in s).
+Return value: pointer to instance of c in s (only if c and s[i] are cast to unsigned char).
+*** CODE c set to '\0'
+Search for '\0' ('\0' is also put in s).
+Return value: pointer to '\0' in s.
+*** CODE s set to NULL with n > 0
+s set to NULL.
+Return value: / (SEGFAULT).
+*** CODE s set to NULL with n = 0
+s set to NULL and n to zero.
+Return value: NULL.
 ** TODO ft_memcmp
 ** TODO ft_strnstr
 ** TODO ft_atoi
