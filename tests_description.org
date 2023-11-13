@@ -312,7 +312,7 @@ Return value: / (SEGFAULT)
 CLOSED: [2023-11-13 lun. 17:29]
 s1 & s2 set to NULL, n = 0.
 Return value: 0.
-** DONE ft_strnstr [14/14]
+** DONE ft_strnstr [15/15]
 CLOSED: [2023-11-13 lun. 18:49]
 *** CODED Basic inputs
 CLOSED: [2023-11-13 lun. 18:30]
@@ -321,6 +321,10 @@ Return value: pointer to first char of first occurrence of little in big.
 *** CODED little not in big
 CLOSED: [2023-11-13 lun. 18:31]
 string little not contained in big.
+Return value: NULL.
+*** CODED len = len(little)
+CLOSED: [2023-11-13 lun. 19:30]
+len set len(little). len is contained in big but only after len.
 Return value: NULL.
 *** CODED Smaller len
 CLOSED: [2023-11-13 lun. 18:32]

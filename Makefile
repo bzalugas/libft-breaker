@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/12 16:24:10 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/13 19:46:54 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -16,9 +16,9 @@ NAME 	=	libftest
 
 SRC	 	=	CuTest.c
 
-NORMAL	= allTests.c
+NORMAL	=	allTests.c
 
-STATIC = staticAllTests.c
+STATIC	=	staticAllTests.c
 
 OBJN 	=	CuTest.o allTests.o
 

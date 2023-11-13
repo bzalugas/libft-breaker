@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 18:54:00 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:58:53 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2488,8 +2488,8 @@ CuSuite	*ft_memcmp_get_suite()
 
 void	test_ft_strnstr_basic(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "MON";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "MON";
 	size_t	len = strlen(big);
 	char	*res1;
 	char	*res2;
@@ -2500,14 +2500,15 @@ void	test_ft_strnstr_basic(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
+	printf("%p\n%p\n", res1, res2);
 	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_little_not_in_big(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "DOUBLE";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "DOUBLE";
 	size_t	len = strlen(big);
 	char	*res1;
 	char	*res2;
@@ -2517,14 +2518,30 @@ void	test_ft_strnstr_little_not_in_big(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strnstr_len_of_little(CuTest *tc)
+{
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "MONSTRE (COUCOU)";
+	size_t	len = strlen(little);
+	char	*res1;
+	char	*res2;
+
+	printf("%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	res1 = strnstr(big, little, len);
+	/* SANDBOX(ft_strnstr(big, little, len);); */
+	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strnstr(big, little, len);
+	printf("%p\n%p\n", res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_smaller_len(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "COUCOU";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "COUCOU";
 	size_t	len = 16;
 	char	*res1;
 	char	*res2;
@@ -2534,14 +2551,13 @@ void	test_ft_strnstr_smaller_len(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_bigger_len(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "DOUBLE";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "TRIPLES";
 	size_t	len = 160;
 	char	*res1;
 	char	*res2;
@@ -2551,14 +2567,13 @@ void	test_ft_strnstr_bigger_len(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_len_zero(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "TRIPLE";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "TRIPLE";
 	size_t	len = 0;
 	char	*res1;
 	char	*res2;
@@ -2568,14 +2583,13 @@ void	test_ft_strnstr_len_zero(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_empty_big(CuTest *tc)
 {
-	char	*big = "";
-	char	*little = "TRIPLE";
+	char	big[] = "";
+	char	little[] = "TRIPLE";
 	size_t	len = 16;
 	char	*res1;
 	char	*res2;
@@ -2585,14 +2599,13 @@ void	test_ft_strnstr_empty_big(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_empty_little(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
-	char	*little = "";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
+	char	little[] = "";
 	size_t	len = strlen(big);
 	char	*res1;
 	char	*res2;
@@ -2602,14 +2615,13 @@ void	test_ft_strnstr_empty_little(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_empty_big_and_little(CuTest *tc)
 {
-	char	*big = "";
-	char	*little = "";
+	char	big[] = "";
+	char	little[] = "";
 	size_t	len = 16;
 	char	*res1;
 	char	*res2;
@@ -2619,14 +2631,13 @@ void	test_ft_strnstr_empty_big_and_little(CuTest *tc)
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strnstr(big, little, len);
-	CuAssertStrEquals(tc, res1, res2);
 	CuAssertPtrEquals(tc, res1, res2);
 }
 
 void	test_ft_strnstr_null_big_1(CuTest *tc)
 {
 	char	*big = NULL;
-	char	*little = "TRIPLE";
+	char	little[] = "TRIPLE";
 	size_t	len = 16;
 	char	*res1;
 	char	*res2;
@@ -2644,7 +2655,6 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
@@ -2652,7 +2662,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 void	test_ft_strnstr_null_big_2(CuTest *tc)
 {
 	char	*big = NULL;
-	char	*little = "TRIPLE";
+	char	little[] = "TRIPLE";
 	size_t	len = 0;
 	char	*res1;
 	char	*res2;
@@ -2670,14 +2680,13 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
 
 void	test_ft_strnstr_null_little_1(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	*little = NULL;
 	size_t	len = 16;
 	char	*res1;
@@ -2696,14 +2705,13 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
 
 void	test_ft_strnstr_null_little_2(CuTest *tc)
 {
-	char	*big = "TRIPLE MONSTRE (COUCOU)";
+	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	*little = NULL;
 	size_t	len = 0;
 	char	*res1;
@@ -2722,7 +2730,6 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
@@ -2748,7 +2755,6 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
@@ -2774,7 +2780,6 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 	{
 		res1 = strnstr(big, little, len);
 		res2 = ft_strnstr(big, little, len);
-		CuAssertStrEquals(tc, res1, res2);
 		CuAssertPtrEquals(tc, res1, res2);
 	}
 }
@@ -2784,6 +2789,7 @@ CuSuite	*ft_strnstr_get_suite()
 	CuSuite	*s = CuSuiteNew();
 	SUITE_ADD_TEST(s, test_ft_strnstr_basic);
 	SUITE_ADD_TEST(s, test_ft_strnstr_little_not_in_big);
+	SUITE_ADD_TEST(s, test_ft_strnstr_len_of_little);
 	SUITE_ADD_TEST(s, test_ft_strnstr_smaller_len);
 	SUITE_ADD_TEST(s, test_ft_strnstr_bigger_len);
 	SUITE_ADD_TEST(s, test_ft_strnstr_len_zero);
