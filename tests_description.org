@@ -232,26 +232,38 @@ Return value: / (SEGFAULT)
 CLOSED: [2023-11-13 lun. 13:57]
 s1 & s2 set to NULL with n > 0.
 Return value: 0 (NO SEGFAULT)
-** TODO ft_memchr [0/7]
-*** CODE Basic with c in s
+** DONE ft_memchr [8/8]
+CLOSED: [2023-11-13 lun. 16:12]
+*** CODED Basic with c in s
+CLOSED: [2023-11-13 lun. 15:46]
 Normal use of the function with c placed in s.
 Return value: pointer to first instance of c in s.
-*** CODE multiple c in s
+*** CODED multiple c in s
+CLOSED: [2023-11-13 lun. 15:47]
 Normal use of the function, c has multiple instances in s.
 Return value: pointer to first instance of c in s.
-*** CODE c not in s
+*** CODED c not in s
+CLOSED: [2023-11-13 lun. 15:48]
 Normal use of the function, c not in s.
 Return value: NULL.
-*** CODE c not unsigned char
+*** CODED c not unsigned char
+CLOSED: [2023-11-13 lun. 15:49]
 Test the function with a non unsigned char value in c (present in s).
 Return value: pointer to instance of c in s (only if c and s[i] are cast to unsigned char).
-*** CODE c set to '\0'
+*** CODED c set to '\0'
+CLOSED: [2023-11-13 lun. 15:51]
 Search for '\0' ('\0' is also put in s).
 Return value: pointer to '\0' in s.
-*** CODE s set to NULL with n > 0
+*** CODED Smaller n
+CLOSED: [2023-11-13 lun. 15:52]
+Normal inputs but n smaller than s.
+Return value: pointer to first instance of c but tests at most n bytes.
+*** CODED s set to NULL with n > 0
+CLOSED: [2023-11-13 lun. 15:55]
 s set to NULL.
 Return value: / (SEGFAULT).
-*** CODE s set to NULL with n = 0
+*** CODED s set to NULL with n = 0
+CLOSED: [2023-11-13 lun. 15:56]
 s set to NULL and n to zero.
 Return value: NULL.
 ** TODO ft_memcmp

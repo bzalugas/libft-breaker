@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 15:35:34 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:09:06 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2071,11 +2071,180 @@ CuSuite	*ft_strncmp_get_suite()
 /*        FT_MEMCHR         */
 /****************************/
 
+void	test_ft_memchr_basic(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
 
+	c = '\42';
+	n = 14;
+	printf("\n########## FT_MEMCHR ###########\n");
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_multiple_c(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+
+	c = '\23';
+	n = 14;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_c_not_in_s(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+
+	c = '\1';
+	n = 14;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_c_not_unsigned_char(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\2002\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+
+	c = '\200';
+	n = 14;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_c_zero(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+
+	c = '\0';
+	n = 14;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_smaller_n(CuTest *tc)
+{
+	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+
+	c = '\12';
+	n = 5;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	res1 = memchr(s, c, n);
+	SANDBOX(ft_memchr(s, c, n););
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memchr(s, c, n);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_memchr_null_s_1(CuTest *tc)
+{
+	char	*s = NULL;
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+	int		exit1;
+	int		exit2;
+
+	c = '\12';
+	n = 14;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	SANDBOX(res1 = memchr(s, c, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memchr(s, c, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit1))
+	{
+		res1 = memchr(s, c, n);
+		res2 = ft_memchr(s, c, n);
+		CuAssertPtrEquals(tc, res1, res2);
+	}
+}
+
+void	test_ft_memchr_null_s_2(CuTest *tc)
+{
+	char	*s = NULL;
+	int		c;
+	size_t	n;
+	char	*res1;
+	char	*res2;
+	int		exit1;
+	int		exit2;
+
+	c = '\12';
+	n = 0;
+	printf("%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	SANDBOX(res1 = memchr(s, c, n););
+	exit1 = g_exit_code;
+	SANDBOX(ft_memchr(s, c, n););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_memchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit1))
+	{
+		res1 = memchr(s, c, n);
+		res2 = ft_memchr(s, c, n);
+		CuAssertPtrEquals(tc, res1, res2);
+	}
+}
 
 CuSuite	*ft_memchr_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_memchr_basic);
+	SUITE_ADD_TEST(s, test_ft_memchr_multiple_c);
+	SUITE_ADD_TEST(s, test_ft_memchr_c_not_in_s);
+	SUITE_ADD_TEST(s, test_ft_memchr_c_not_unsigned_char);
+	SUITE_ADD_TEST(s, test_ft_memchr_c_zero);
+	SUITE_ADD_TEST(s, test_ft_memchr_smaller_n);
+	SUITE_ADD_TEST(s, test_ft_memchr_null_s_1);
+	SUITE_ADD_TEST(s, test_ft_memchr_null_s_2);
 	return (s);
 }
 
@@ -2105,6 +2274,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strchr_get_suite());
 	CuSuiteAddSuite(suite, ft_strrchr_get_suite());
 	CuSuiteAddSuite(suite, ft_strncmp_get_suite());
+	CuSuiteAddSuite(suite, ft_memchr_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
