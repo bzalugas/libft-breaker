@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/12 20:18:44 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:43:02 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1257,6 +1257,62 @@ CuSuite *ft_strlcat_get_suite()
 }
 
 /****************************/
+/*        FT_TOUPPER        */
+/****************************/
+
+void	test_ft_toupper_all(CuTest *tc)
+{
+	int	c = 0;
+	int	res1;
+	int	res2;
+
+	printf("\n########## FT_TOUPPER ##########\n");
+	printf("%s: Basic inputs (0 => 255)\n", __func__);
+	while (c < 256)
+	{
+		res1 = toupper(c);
+		res2 = ft_toupper(c);
+		CuAssertIntEquals(tc, res1, res2);
+		c++;
+	}
+}
+
+CuSuite	*ft_toupper_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_toupper_all);
+	return (s);
+}
+
+/****************************/
+/*        FT_TOLOWER        */
+/****************************/
+
+void	test_ft_tolower_all(CuTest *tc)
+{
+	int	c = 0;
+	int	res1;
+	int	res2;
+
+	printf("\n########## FT_TOLOWER ##########\n");
+	printf("%s: Basic inputs (0 => 255)\n", __func__);
+	while (c < 256)
+	{
+		res1 = tolower(c);
+		res2 = ft_tolower(c);
+		CuAssertIntEquals(tc, res1, res2);
+		c++;
+	}
+}
+
+CuSuite	*ft_tolower_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_tolower_all);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -1277,6 +1333,8 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memmove_get_suite());
 	CuSuiteAddSuite(suite, ft_strlcpy_get_suite());
 	CuSuiteAddSuite(suite, ft_strlcat_get_suite());
+	CuSuiteAddSuite(suite, ft_toupper_get_suite());
+	CuSuiteAddSuite(suite, ft_tolower_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

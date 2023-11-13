@@ -144,8 +144,14 @@ CLOSED: [2023-11-12 dim. 19:18]
 dst & src set to NULL.
 Behavior: SEGFAULT.
 Return value: /
-** TODO ft_toupper
-** TODO ft_tolower
+** DONE ft_toupper
+CLOSED: [2023-11-13 lun. 11:34]
+*** CODED basic inputs (all unsigned char)
+CLOSED: [2023-11-13 lun. 11:33]
+** DONE ft_tolower
+CLOSED: [2023-11-13 lun. 11:34]
+*** CODED basic inputs (all unsigned char)
+CLOSED: [2023-11-13 lun. 11:33]
 ** TODO ft_strchr
 ** TODO ft_strrchr
 ** TODO ft_strncmp
