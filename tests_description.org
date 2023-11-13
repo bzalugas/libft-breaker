@@ -312,47 +312,62 @@ Return value: / (SEGFAULT)
 CLOSED: [2023-11-13 lun. 17:29]
 s1 & s2 set to NULL, n = 0.
 Return value: 0.
-** TODO ft_strnstr [0/13]
-*** CODE Basic inputs
+** DONE ft_strnstr [14/14]
+CLOSED: [2023-11-13 lun. 18:49]
+*** CODED Basic inputs
+CLOSED: [2023-11-13 lun. 18:30]
 string little contained in big and len = len(big).
 Return value: pointer to first char of first occurrence of little in big.
-*** CODE little not in big
+*** CODED little not in big
+CLOSED: [2023-11-13 lun. 18:31]
 string little not contained in big.
 Return value: NULL.
-*** CODE Smaller len
+*** CODED Smaller len
+CLOSED: [2023-11-13 lun. 18:32]
 little contained in big but after len.
 Return value: NULL.
-*** CODE Bigger len
+*** CODED Bigger len
+CLOSED: [2023-11-13 lun. 18:33]
 little not contained in big and len > len(big).
 Return value: NULL.
-*** CODE len = 0
+*** CODED len = 0
+CLOSED: [2023-11-13 lun. 18:34]
 len set to zero.
 Return value: NULL.
-*** CODE big empty
+*** CODED big empty
+CLOSED: [2023-11-13 lun. 18:35]
 big set to an empty string.
 Return value: NULL.
-*** CODE little empty
+*** CODED little empty
+CLOSED: [2023-11-13 lun. 18:36]
 little set to an empty string.
 Return value: big.
-*** CODE big & little empty
+*** CODED big & little empty
+CLOSED: [2023-11-13 lun. 18:37]
 little & big set to an empty string.
 Return value: pointer to big.
-*** CODE NULL big, len > 0
+*** CODED NULL big, len > 0
+CLOSED: [2023-11-13 lun. 18:39]
 big set to NULL.
 Return value: / (SEGFAULT)
-*** CODE NULL big, len = 0
+*** CODED NULL big, len = 0
+CLOSED: [2023-11-13 lun. 18:40]
 big set to NULL.
 Return value: NULL.
-*** CODE NULL little, len > 0
+*** CODED NULL little, len > 0
+CLOSED: [2023-11-13 lun. 18:41]
 little set to NULL.
 Return value: / (SEGFAULT)
-*** CODE NULL little, len = 0
+*** CODED NULL little, len = 0
+CLOSED: [2023-11-13 lun. 18:41]
 little set to NULL.
 Return value: / (SEGFAULT)
-*** CODE NULL big & little, len > 0
+*** CODED NULL big & little, len > 0
+CLOSED: [2023-11-13 lun. 18:42]
 big & little set to NULL with len > 0.
 Return value: / (SEGFAULT)
-*** CODE NULL big & little, len = 0
+*** CODED NULL big & little, len = 0
+CLOSED: [2023-11-13 lun. 18:42]
 big & little set to NULL with len = 0.
 Return value: / (SEGFAULT)
 ** TODO ft_atoi
