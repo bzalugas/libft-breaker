@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 11:41:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 12:23:47 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1548,6 +1548,224 @@ CuSuite	*ft_tolower_get_suite()
 }
 
 /****************************/
+/*        FT_STRCHR         */
+/****************************/
+
+void	test_ft_strchr_basic(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = '!';
+	printf("\n########### FT_STRCHR ##########\n");
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strchr(s, c);
+	SANDBOX(ft_strchr(s, c););
+	CuAssert(tc, "ft_strchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strchr_multiple_occur(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = 'o';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strchr(s, c);
+	SANDBOX(ft_strchr(s, c););
+	CuAssert(tc, "ft_strchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strchr_no_c_in_s(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = 'A';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strchr(s, c);
+	SANDBOX(ft_strchr(s, c););
+	CuAssert(tc, "ft_strchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strchr_c_zero(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = '\0';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strchr(s, c);
+	SANDBOX(ft_strchr(s, c););
+	CuAssert(tc, "ft_strchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strchr_null_s(CuTest *tc)
+{
+	char	*s = NULL;
+	int		c;
+	char	*res1;
+	char	*res2;
+	int		exit1;
+	int		exit2;
+
+	c = 'o';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	SANDBOX(res1 = strchr(s, c););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strchr(s, c););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strchr(s, c);
+		res2 = ft_strchr(s, c);
+		CuAssertPtrEquals(tc, res1, res2);
+	}
+}
+
+CuSuite	*ft_strchr_get_suite()
+{
+	CuSuite *s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strchr_basic);
+	SUITE_ADD_TEST(s, test_ft_strchr_multiple_occur);
+	SUITE_ADD_TEST(s, test_ft_strchr_no_c_in_s);
+	SUITE_ADD_TEST(s, test_ft_strchr_c_zero);
+	SUITE_ADD_TEST(s, test_ft_strchr_null_s);
+	return (s);
+}
+
+/****************************/
+/*        FT_STRRCHR        */
+/****************************/
+
+void	test_ft_strrchr_basic(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = '!';
+	printf("\n########## FT_STRRCHR ##########\n");
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strrchr(s, c);
+	SANDBOX(ft_strrchr(s, c););
+	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strrchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strrchr_multiple_occur(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = 'o';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strrchr(s, c);
+	SANDBOX(ft_strrchr(s, c););
+	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strrchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strrchr_no_c_in_s(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = 'A';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strrchr(s, c);
+	SANDBOX(ft_strrchr(s, c););
+	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strrchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strrchr_c_zero(CuTest *tc)
+{
+	char	s[BUFFSIZE];
+	int		c;
+	char	*res1;
+	char	*res2;
+
+	strcpy(s, "Hello everyone!");
+	c = '\0';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	res1 = strrchr(s, c);
+	SANDBOX(ft_strrchr(s, c););
+	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_strrchr(s, c);
+	CuAssertPtrEquals(tc, res1, res2);
+}
+
+void	test_ft_strrchr_null_s(CuTest *tc)
+{
+	char	*s = NULL;
+	int		c;
+	char	*res1;
+	char	*res2;
+	int		exit1;
+	int		exit2;
+
+	c = 'o';
+	printf("%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	SANDBOX(res1 = strrchr(s, c););
+	exit1 = g_exit_code;
+	SANDBOX(ft_strrchr(s, c););
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strrchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strrchr(s, c);
+		res2 = ft_strrchr(s, c);
+		CuAssertPtrEquals(tc, res1, res2);
+	}
+}
+
+CuSuite	*ft_strrchr_get_suite()
+{
+	CuSuite *s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strrchr_basic);
+	SUITE_ADD_TEST(s, test_ft_strrchr_multiple_occur);
+	SUITE_ADD_TEST(s, test_ft_strrchr_no_c_in_s);
+	SUITE_ADD_TEST(s, test_ft_strrchr_c_zero);
+	SUITE_ADD_TEST(s, test_ft_strrchr_null_s);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -1570,6 +1788,8 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strlcat_get_suite());
 	CuSuiteAddSuite(suite, ft_toupper_get_suite());
 	CuSuiteAddSuite(suite, ft_tolower_get_suite());
+	CuSuiteAddSuite(suite, ft_strchr_get_suite());
+	CuSuiteAddSuite(suite, ft_strrchr_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

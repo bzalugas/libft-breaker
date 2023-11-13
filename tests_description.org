@@ -99,7 +99,7 @@ CLOSED: [2023-11-09 jeu. 09:25]
 dst & src set to NULL.
 Behavior: SEGFAULT.
 
-** TODO ft_strlcat [8/9]
+** TODO ft_strlcat [9/9]
 *** CODED Basic input
 CLOSED: [2023-11-12 dim. 19:01]
 Basic use of function.
@@ -130,7 +130,8 @@ CLOSED: [2023-11-12 dim. 19:18]
 dst set to NULL.
 Behavior: SEGFAULT.
 Return value: /
-*** CODE NULL dst & size zero
+*** CODED NULL dst & size zero
+CLOSED: [2023-11-12 dim. 19:18]
 dst set to NULL and size set to zero.
 Behavior: Doesn't copy anything. (NO SEGFAULT).
 Return value: length of src.
@@ -153,7 +154,27 @@ CLOSED: [2023-11-13 lun. 11:34]
 *** CODED basic inputs (all unsigned char)
 CLOSED: [2023-11-13 lun. 11:33]
 ** TODO ft_strchr
+*** CODED Basic inputs (c in s)
+CLOSED: [2023-11-13 lun. 12:09]
+*** CODED multiple c in s
+CLOSED: [2023-11-13 lun. 12:09]
+*** CODED no c in s
+CLOSED: [2023-11-13 lun. 12:09]
+*** CODED c set to '\0'
+CLOSED: [2023-11-13 lun. 12:09]
+*** CODED s set to NULL
+CLOSED: [2023-11-13 lun. 12:09]
 ** TODO ft_strrchr
+*** CODED Basic inputs (c in s)
+CLOSED: [2023-11-13 lun. 12:12]
+*** CODED multiple c in s
+CLOSED: [2023-11-13 lun. 12:13]
+*** CODED no c in s
+CLOSED: [2023-11-13 lun. 12:13]
+*** CODED c set to '\0'
+CLOSED: [2023-11-13 lun. 12:13]
+*** CODED s set to NULL
+CLOSED: [2023-11-13 lun. 12:13]
 ** TODO ft_strncmp
 ** TODO ft_memchr
 ** TODO ft_memcmp
