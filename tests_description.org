@@ -266,7 +266,51 @@ Return value: / (SEGFAULT).
 CLOSED: [2023-11-13 lun. 15:56]
 s set to NULL and n to zero.
 Return value: NULL.
-** TODO ft_memcmp
+** TODO ft_memcmp [11/11]
+*** CODED Basic, s1 == s2
+CLOSED: [2023-11-13 lun. 17:16]
+Basic use of the function, s1 and s2 beeing equal and n = len(s1).
+Return value: 0.
+*** CODED Basic, s1 != s2 1
+CLOSED: [2023-11-13 lun. 17:18]
+Basic use of the function, s1 and s2 differs (s1 < s2) and n = len(s1).
+Return value: negative (s1[i] - s2[i]).
+*** CODED Basic, s1 != s2 2
+CLOSED: [2023-11-13 lun. 17:18]
+Basic use of the function, s1 and s2 differs (s1 > s2) and n = len(s1).
+Return value: positive (s1[i] - s2[i]).
+*** CODED byte zero in both strings
+CLOSED: [2023-11-13 lun. 17:20]
+Both strings contain multiple '\0' inside and then a byte is different (s1 > s2).
+Return value: positive.
+*** CODED n = 0
+CLOSED: [2023-11-13 lun. 17:20]
+n set to zero.
+Return value: 0.
+*** CODED s1 not unsigned char
+CLOSED: [2023-11-13 lun. 17:23]
+s1 value set to an integer bigger than unsigned char.
+Return value: Same as usual if values are casted to unsigned char.
+*** CODED s2 not unsigned char
+CLOSED: [2023-11-13 lun. 17:24]
+s2 value set to an integer bigger than unsigned char.
+Return value: Same as usual if values are casted to unsigned char.
+*** CODED NULL s1, n > 0
+CLOSED: [2023-11-13 lun. 17:28]
+s1 set to NULL and n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s2, n > 0
+CLOSED: [2023-11-13 lun. 17:28]
+s2 set to NULL and n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s1 & s2, n > 0
+CLOSED: [2023-11-13 lun. 17:29]
+s1 & s2 set to NULL, n > 0.
+Return value: / (SEGFAULT)
+*** CODED NULL s1 & s2, n = 0
+CLOSED: [2023-11-13 lun. 17:29]
+s1 & s2 set to NULL, n = 0.
+Return value: 0.
 ** TODO ft_strnstr
 ** TODO ft_atoi
 ** TODO ft_calloc

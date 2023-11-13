@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 16:15:26 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:33:02 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1902,6 +1902,187 @@ CuSuite	*ft_memchr_get_suite()
 }
 
 /****************************/
+/*        FT_MEMCMP         */
+/****************************/
+
+void	test_ft_memcmp_basic_1(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	size_t	n = 5;
+	int		res1;
+	int		res2;
+
+	printf("\n########## FT_MEMCMP ###########\n");
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_basic_2_1(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x10};
+	size_t	n = 5;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_basic_2_2(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	size_t	n = 5;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_byte_zero(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, '\0', 0x04, 0x10};
+	int		arr2[] = {0x01, 0x02, '\0', 0x04, 0x05};
+	size_t	n = 5;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_zero_n(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	size_t	n = 0;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_not_u_char_1(CuTest *tc)
+{
+	int		arr1[] = {0x01020304};
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04};
+	size_t	n = 4;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_not_u_char_2(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04};
+	int		arr2[] = {0x01020304};
+	size_t	n = 4;
+	int		res1;
+	int		res2;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	res1 = memcmp(arr1, arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res2 = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, res1, res2);
+}
+
+void	test_ft_memcmp_null_s1(CuTest *tc)
+{
+	int		*arr1 = NULL;
+	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	size_t	n = 5;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_memcmp_null_s2(CuTest *tc)
+{
+	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
+	int		*arr2 = NULL;
+	size_t	n = 5;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
+{
+	int		*arr1 = NULL;
+	int		*arr2 = NULL;
+	size_t	n = 5;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
+{
+	int		*arr1 = NULL;
+	int		*arr2 = NULL;
+	size_t	n = 0;
+	int		res;
+
+	printf("%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	SANDBOX(ft_memcmp(arr1, arr2, n););
+	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_memcmp(arr1, arr2, n);
+	CuAssertIntEquals(tc, 0, res);
+}
+
+CuSuite	*ft_memcmp_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_memcmp_basic_1);
+	SUITE_ADD_TEST(s, test_ft_memcmp_basic_2_1);
+	SUITE_ADD_TEST(s, test_ft_memcmp_basic_2_2);
+	SUITE_ADD_TEST(s, test_ft_memcmp_byte_zero);
+	SUITE_ADD_TEST(s, test_ft_memcmp_zero_n);
+	SUITE_ADD_TEST(s, test_ft_memcmp_not_u_char_1);
+	SUITE_ADD_TEST(s, test_ft_memcmp_not_u_char_2);
+	SUITE_ADD_TEST(s, test_ft_memcmp_null_s1);
+	SUITE_ADD_TEST(s, test_ft_memcmp_null_s2);
+	SUITE_ADD_TEST(s, test_ft_memcmp_null_s1_and_s2_1);
+	SUITE_ADD_TEST(s, test_ft_memcmp_null_s1_and_s2_2);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -1928,6 +2109,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strrchr_get_suite());
 	CuSuiteAddSuite(suite, ft_strncmp_get_suite());
 	CuSuiteAddSuite(suite, ft_memchr_get_suite());
+	CuSuiteAddSuite(suite, ft_memcmp_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
