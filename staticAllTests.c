@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 20:41:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:27:47 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -922,25 +922,6 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	CuAssertIntEquals(tc, res1, res2);
 }
 
-void	test_ft_strlcpy_dst_too_small(CuTest *tc)
-{
-	char	src[BUFFSIZE];
-	char	dst[5];
-	size_t	size;
-	size_t	res;
-
-	memset(src, 'a', BUFFSIZE - 1);
-	src[BUFFSIZE - 1] = '\0';
-	bzero(dst, 5);
-	size = BUFFSIZE;
-	printf("%s: src = %s (len = %lu) size = %lu\n", __func__, src, strlen(src), size);
-	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	res = ft_strlcpy(dst, src, size);
-	CuAssert(tc, "Bad copy", !memcmp(dst, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 29));
-	CuAssertIntEquals(tc, (size_t)29, res);
-}
-
 void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
 {
 	char	mem1[BUFFSIZE];
@@ -1054,7 +1035,6 @@ CuSuite *ft_strlcpy_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcpy_small_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_size_zero);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_too_small);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_overlap_src);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_src_overlap_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst);

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/13 20:33:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:26:27 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1041,38 +1041,6 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	CuAssertIntEquals(tc, res1, res2);
 }
 
-void	test_ft_strlcpy_dst_too_small(CuTest *tc)
-{
-	char	src1[BUFFSIZE];
-	char	src2[BUFFSIZE];
-	char	dst1[5];
-	char	dst2[5];
-	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
-
-	memset(src1, 'a', BUFFSIZE - 1);
-	memset(src2, 'a', BUFFSIZE - 1);
-	src1[BUFFSIZE - 1] = '\0';
-	src2[BUFFSIZE - 1] = '\0';
-	bzero(dst1, 5);
-	bzero(dst2, 5);
-	size = BUFFSIZE;
-	printf("%s: src = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(dst1, dst2, 5));
-	CuAssertIntEquals(tc, res1, res2);
-}
-
 void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
 {
 	char	mem1[BUFFSIZE];
@@ -1234,7 +1202,6 @@ CuSuite *ft_strlcpy_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcpy_small_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_size_zero);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_too_small);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_overlap_src);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_src_overlap_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst);

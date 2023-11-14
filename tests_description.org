@@ -71,11 +71,6 @@ CLOSED: [2023-11-09 jeu. 08:32]
 size = 0.
 Behavior: doesn't copy anything.
 Return value: length of src.
-*** CODED dst too small
-CLOSED: [2023-11-09 jeu. 08:40]
-Normal src & size but size of dst too small.
-Behavior: copies size-1 bytes from src to dst + \0 (can segfault).
-Return value: length of src.
 *** CODED dst overlapping src
 CLOSED: [2023-11-09 jeu. 09:16]
 dst address set to a lower adress than src but with an overlapping size.
