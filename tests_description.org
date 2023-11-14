@@ -370,6 +370,16 @@ CLOSED: [2023-11-13 lun. 18:42]
 big & little set to NULL with len = 0.
 Return value: / (SEGFAULT)
 ** TODO ft_atoi
+~int atoi(const char *nptr)~
+
+
+#+begin_src C
+int atoi(const char *nptr)
+#+end_src
+*** CODE Basic input
+Simple number passed.
+Return value: integer version of number in string.
+*** CODE
 ** TODO ft_calloc
 ** TODO ft_strdup
 ** ft_substr
