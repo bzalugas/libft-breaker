@@ -369,17 +369,63 @@ Return value: / (SEGFAULT)
 CLOSED: [2023-11-13 lun. 18:42]
 big & little set to NULL with len = 0.
 Return value: / (SEGFAULT)
-** TODO ft_atoi
-~int atoi(const char *nptr)~
-
-
+** DONE ft_atoi [13/13]
+CLOSED: [2023-11-14 Tue 15:50]
 #+begin_src C
 int atoi(const char *nptr)
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-11-14 Tue 11:03]
 Simple number passed.
-Return value: integer version of number in string.
-*** CODE
+Return value: integer version of number in nptr.
+*** CODED negative integer
+CLOSED: [2023-11-14 Tue 11:04]
+Negative number passed.
+Return value: integer version of number in nptr.
+*** CODED Normal number with positive sign
+CLOSED: [2023-11-14 Tue 11:05]
+Normal number with positive sign before.
+Return value: integer version of number in nptr.
+*** CODED Multiple signs
+CLOSED: [2023-11-14 Tue 11:05]
+Normal number with more than one signs before.
+Return value: 0.
+*** CODED Whitespaces before sign
+CLOSED: [2023-11-14 Tue 11:08]
+Normal number with multiple whitespaces before sign.
+Return value: integer version of number in nptr.
+*** CODED Whitespaces after sign
+CLOSED: [2023-11-14 Tue 11:08]
+Normal number with multiple whitespaces after sign.
+Return value: 0.
+*** CODED Whitespace in number
+CLOSED: [2023-11-14 Tue 11:09]
+Normal number with whitespaces after some numbers.
+Return value: integer version of number before whitespaces.
+*** CODED Int min
+CLOSED: [2023-11-14 Tue 11:16]
+Minimum integer passed.
+Return value: integer version of number in nptr.
+*** CODED Int max
+CLOSED: [2023-11-14 Tue 11:16]
+Maximum integer passed.
+Return value: integer version of number in nptr.
+*** CODED Greater than int max
+CLOSED: [2023-11-14 Tue 11:17]
+Number greater than int max passed.
+Return value: equivalent value of number converted to int (bits).
+*** CODED Greater than unsigned int max
+CLOSED: [2023-11-14 Tue 11:18]
+Number greater than unsigned int max passed.
+Return value: -1
+*** CODED Empty nptr
+CLOSED: [2023-11-14 Tue 11:19]
+nptr set to empty string.
+Return value: 0.
+*** CODED NULL nptr
+CLOSED: [2023-11-14 Tue 11:21]
+nptr set to NULL.
+Return value: / (SEGFAULT)
 ** TODO ft_calloc
 ** TODO ft_strdup
 ** ft_substr

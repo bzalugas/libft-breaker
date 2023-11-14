@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/14 10:27:47 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:37:23 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2304,6 +2304,159 @@ CuSuite	*ft_strnstr_get_suite()
 }
 
 /****************************/
+/*          FT_ATOI         */
+/****************************/
+
+void	test_ft_atoi_basic(CuTest *tc)
+{
+	char	nptr[] = "123";
+
+	printf("\n########### FT_ATOI ###########\n");
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 123, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_negative(CuTest *tc)
+{
+	char	nptr[] = "-123";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -123, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_positive(CuTest *tc)
+{
+	char	nptr[] = "+123";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 123, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_multiple_signs(CuTest *tc)
+{
+	char	nptr[] = "+++---+123";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 0, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_whitespaces_1(CuTest *tc)
+{
+	char	nptr[] = " \t\t\n -123";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -123, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_whitespaces_2(CuTest *tc)
+{
+	char	nptr[] = "- \t123";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 0, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_whitespaces_3(CuTest *tc)
+{
+	char	nptr[] = "-12\t453";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -12, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_int_min(CuTest *tc)
+{
+	char	nptr[] = "-2147483648";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -2147483648, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_int_max(CuTest *tc)
+{
+	char	nptr[] = "2147483647";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 2147483647, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_too_big_int(CuTest *tc)
+{
+	char	nptr[] = "21474836478";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -2, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_uint(CuTest *tc)
+{
+	char	nptr[] = "4294967293";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, -3, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_empty(CuTest *tc)
+{
+	char	nptr[] = "";
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	CuAssertIntEquals(tc, 0, ft_atoi(nptr));
+}
+
+void	test_ft_atoi_null(CuTest *tc)
+{
+	char	*nptr = NULL;
+
+	printf("%s: nptr=%s\n", __func__, nptr);
+	SANDBOX(ft_atoi(nptr););
+	CuAssert(tc, "ft_atoi doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+}
+
+CuSuite	*ft_atoi_get_suite()
+{
+	CuSuite *s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_atoi_basic);
+	SUITE_ADD_TEST(s, test_ft_atoi_negative);
+	SUITE_ADD_TEST(s, test_ft_atoi_positive);
+	SUITE_ADD_TEST(s, test_ft_atoi_multiple_signs);
+	SUITE_ADD_TEST(s, test_ft_atoi_whitespaces_1);
+	SUITE_ADD_TEST(s, test_ft_atoi_whitespaces_2);
+	SUITE_ADD_TEST(s, test_ft_atoi_whitespaces_3);
+	SUITE_ADD_TEST(s, test_ft_atoi_int_min);
+	SUITE_ADD_TEST(s, test_ft_atoi_int_max);
+	SUITE_ADD_TEST(s, test_ft_atoi_too_big_int);
+	SUITE_ADD_TEST(s, test_ft_atoi_uint);
+	SUITE_ADD_TEST(s, test_ft_atoi_empty);
+	SUITE_ADD_TEST(s, test_ft_atoi_null);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -2332,6 +2485,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memchr_get_suite());
 	CuSuiteAddSuite(suite, ft_memcmp_get_suite());
 	CuSuiteAddSuite(suite, ft_strnstr_get_suite());
+	CuSuiteAddSuite(suite, ft_atoi_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
