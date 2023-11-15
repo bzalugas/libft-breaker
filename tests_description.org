@@ -1,14 +1,41 @@
 #+title: Libft tests description
 * Mandatory part
 ** ft_isalnum
+#+begin_src C
+int ft_isalnum(int c);
+#+end_src
 ** ft_isalpha
+#+begin_src C
+int ft_isalpha(int c);
+#+end_src
 ** ft_isascii
+#+begin_src C
+int ft_isascii(int c);
+#+end_src
 ** ft_isdigit
+#+begin_src C
+int ft_isdigit(int c);
+#+end_src
 ** ft_isprint
+#+begin_src C
+int ft_isprint(int c);
+#+end_src
 ** ft_strlen
+#+begin_src C
+size_t ft_strlen(const char *s);
+#+end_src
 ** ft_memset
+#+begin_src C
+void    *ft_memset(void *s, int c, size_t n);
+#+end_src
 ** ft_bzero
+#+begin_src C
+void    ft_bzero(void *s, size_t n);
+#+end_src
 ** ft_memcpy
+#+begin_src C
+void    *ft_memcpy(void *dest, const void *src, size_t n);
+#+end_src
 *** Basic input
 Basic use of the function.
 *** Smaller n
@@ -27,6 +54,9 @@ Behavior on ubuntu: segfault.
 dst & src set to NULL.
 Behavior on ubuntu: segfault.
 ** ft_memmove
+#+begin_src C
+void    *ft_memmove(void *dest, const void *src, size_t n);
+#+end_src
 *** Basic input
 Basic use of the function.
 *** destination & source the same
@@ -50,6 +80,9 @@ dst & src set to NULL.
 Behavior on ubuntu: segfault.
 
 ** DONE ft_strlcpy [10/10]
+#+begin_src C
+size_t  ft_strlcpy(char *dst, const char *src, size_t size);
+#+end_src
 CLOSED: [2023-11-09 jeu. 09:27]
 *** CODED Basic input
 CLOSED: [2023-11-09 jeu. 08:21]
@@ -95,6 +128,9 @@ dst & src set to NULL.
 Behavior: SEGFAULT.
 
 ** DONE ft_strlcat [9/9]
+#+begin_src C
+size_t  ft_strlcat(char *dst, const char *src, size_t size);
+#+end_src
 CLOSED: [2023-11-12 dim. 19:18]
 *** CODED Basic input
 CLOSED: [2023-11-12 dim. 19:01]
@@ -142,10 +178,16 @@ dst & src set to NULL.
 Behavior: SEGFAULT.
 Return value: /
 ** DONE ft_toupper
+#+begin_src C
+int ft_toupper(int c);
+#+end_src
 CLOSED: [2023-11-13 lun. 11:34]
 *** CODED basic inputs (all unsigned char)
 CLOSED: [2023-11-13 lun. 11:33]
 ** DONE ft_tolower
+#+begin_src C
+int ft_tolower(int c);
+#+end_src
 CLOSED: [2023-11-13 lun. 11:34]
 *** CODED basic inputs (all unsigned char)
 CLOSED: [2023-11-13 lun. 11:33]
@@ -174,6 +216,9 @@ CLOSED: [2023-11-13 lun. 12:13]
 *** CODED s set to NULL
 CLOSED: [2023-11-13 lun. 12:13]
 ** DONE ft_strncmp [13/13]
+#+begin_src C
+int ft_strncmp(const char *s1, const char *s2, size_t n);
+#+end_src
 CLOSED: [2023-11-13 lun. 15:03]
 *** CODED Basic inputs s1 == s2
 CLOSED: [2023-11-13 lun. 13:41]
@@ -228,6 +273,9 @@ CLOSED: [2023-11-13 lun. 13:57]
 s1 & s2 set to NULL with n > 0.
 Return value: 0 (NO SEGFAULT)
 ** DONE ft_memchr [8/8]
+#+begin_src C
+void    *ft_memchr(const void *s, int c, size_t n);
+#+end_src
 CLOSED: [2023-11-13 lun. 16:12]
 *** CODED Basic with c in s
 CLOSED: [2023-11-13 lun. 15:46]
@@ -262,6 +310,9 @@ CLOSED: [2023-11-13 lun. 15:56]
 s set to NULL and n to zero.
 Return value: NULL.
 ** DONE ft_memcmp [11/11]
+#+begin_src C
+int ft_memcmp(const void *s1, const void *s2, size_t n);
+#+end_src
 CLOSED: [2023-11-13 lun. 17:33]
 *** CODED Basic, s1 == s2
 CLOSED: [2023-11-13 lun. 17:16]
@@ -308,6 +359,9 @@ CLOSED: [2023-11-13 lun. 17:29]
 s1 & s2 set to NULL, n = 0.
 Return value: 0.
 ** DONE ft_strnstr [15/15]
+#+begin_src C
+char    *ft_strnstr(const char *big, const char *little, size_t len);
+#+end_src
 CLOSED: [2023-11-13 lun. 18:49]
 *** CODED Basic inputs
 CLOSED: [2023-11-13 lun. 18:30]
@@ -372,7 +426,7 @@ Return value: / (SEGFAULT)
 ** DONE ft_atoi [13/13]
 CLOSED: [2023-11-14 Tue 15:50]
 #+begin_src C
-int atoi(const char *nptr)
+int ft_atoi(const char *nptr);
 #+end_src
 *** CODED Basic input
 CLOSED: [2023-11-14 Tue 11:03]
