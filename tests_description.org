@@ -480,16 +480,18 @@ Return value: 0.
 CLOSED: [2023-11-14 Tue 11:21]
 nptr set to NULL.
 Return value: / (SEGFAULT)
-** TODO ft_calloc [0/5]
+** TODO ft_calloc [2/5]
 #+begin_src C
 void    *ft_calloc(size_t nmemb, size_t size);
 #+end_src
-*** CODE normal allocation
+*** CODED normal allocation
+CLOSED: [2023-11-15 Wed 13:59]
 Try to free memory allocated by ft_calloc with normal inputs.
 Behavior: Allocation & initialization of memory.
 Return value: pointer to memory.
-*** CODE basic
-Normal values passed & size of pointer compared to calloc.
+*** CODED check size
+CLOSED: [2023-11-15 Wed 14:13]
+Normal values passed and size asked to malloc compared to right value.
 Behavior: Allocation & initialization of memory.
 Return value: pointer to memory.
 *** CODE malloc protection

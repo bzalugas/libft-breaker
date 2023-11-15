@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/09 16:06:04 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:12:24 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,15 @@
 # include <sys/wait.h>
 # define BUFFSIZE 30
 # define BUFFBSIZE 30000
+
 int		g_exit_code;
 pid_t	g_pid;
+int		g_malloc_fail = 0;
+size_t	g_last_malloc_size = 0;
+void	*mmalloc(size_t size);
+
+# define FAIL_MALLOC g_malloc_fail = 1;
+
 # define SANDBOX(X) if ((g_pid = fork()) == -1){perror("Error during fork");exit(1);}if (!g_pid){X;exit(0);}wait(&g_exit_code);
 
 #endif

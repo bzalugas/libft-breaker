@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/14 15:28:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:16:58 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2988,6 +2988,81 @@ CuSuite	*ft_atoi_get_suite()
 	SUITE_ADD_TEST(s, test_ft_atoi_null);
 	return (s);
 }
+
+/****************************/
+/*         FT_CALLOC        */
+/****************************/
+
+void	test_ft_calloc_allocation(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	void	*ptr;
+
+	nmemb = 23;
+	size = 1;
+	printf("\n########### FT_CALLOC ##########\n");
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_calloc_check_size(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 5;
+	size = sizeof(int);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb, size);
+	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
+			 g_last_malloc_size == size * nmemb);
+	free(ptr);
+}
+
+#define malloc(x) mmalloc(x)
+void	test_ft_calloc_protection(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 5;
+	size = sizeof(int);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb, size);
+	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
+			 g_last_malloc_size == size * nmemb);
+	free(ptr);
+}
+
+#undef malloc
+CuSuite	*ft_calloc_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_calloc_allocation);
+	SUITE_ADD_TEST(s, test_ft_calloc_check_size);
+	return (s);
+}
+
+/****************************/
+/*         FT_STRDUP        */
+/****************************/
 
 /****************************/
 /*        RUN TESTS         */
