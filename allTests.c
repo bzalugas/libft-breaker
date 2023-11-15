@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/15 14:16:58 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:01:56 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3031,7 +3031,7 @@ void	test_ft_calloc_check_size(CuTest *tc)
 }
 
 #define malloc(x) mmalloc(x)
-void	test_ft_calloc_protection(CuTest *tc)
+void	test_ft_calloc_malloc_protection(CuTest *tc)
 {
 	size_t	nmemb;
 	size_t	size;
@@ -3040,23 +3040,48 @@ void	test_ft_calloc_protection(CuTest *tc)
 	nmemb = 5;
 	size = sizeof(int);
 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	FAIL_MALLOC;
 	SANDBOX(
 		ptr = ft_calloc(nmemb, size);
-		free(ptr);
+		if (ptr)
+			free(ptr);
 		);
-	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_calloc fails when malloc fails.", !WIFSIGNALED(g_exit_code));
 	ptr = ft_calloc(nmemb, size);
-	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
-			 g_last_malloc_size == size * nmemb);
-	free(ptr);
+	if (ptr)
+		free(ptr);
+	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
+}
+#undef malloc
+
+void	test_ft_calloc_zero(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 0;
+	size = 0;
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	FAIL_MALLOC;
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		if (ptr)
+			free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails when malloc fails.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb, size);
+	if (ptr)
+		free(ptr);
+	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
 }
 
-#undef malloc
 CuSuite	*ft_calloc_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
 	SUITE_ADD_TEST(s, test_ft_calloc_allocation);
 	SUITE_ADD_TEST(s, test_ft_calloc_check_size);
+	SUITE_ADD_TEST(s, test_ft_calloc_malloc_protection);
 	return (s);
 }
 
