@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/15 15:40:26 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:26:18 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@
 # define BUFFSIZE 30
 # define BUFFBSIZE 30000
 
-int		g_exit_code;
-pid_t	g_pid;
-int		g_malloc_fail = 0;
-size_t	g_last_malloc_size = 0;
+extern int		g_exit_code;
+extern pid_t	g_pid;
+extern int		g_malloc_fail;
+extern size_t	g_last_malloc_size;
+
+/* #define malloc(x) mmalloc(x) */
 void	*mmalloc(size_t size);
 
 # define FAIL_MALLOC g_malloc_fail = 1;

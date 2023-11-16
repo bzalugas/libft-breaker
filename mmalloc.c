@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/15 14:12:17 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:22:46 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	*mmalloc(size_t size)
 		g_last_malloc_size = 0;
 		return (NULL);
 	}
+	#undef malloc
 	g_last_malloc_size = size;
-	return (malloc(size));
+	void	*ptr = malloc(size);
+	#define malloc(x) mmalloc(x)
+	return (ptr);
 }

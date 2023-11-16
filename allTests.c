@@ -6,11 +6,16 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/15 15:01:56 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:16:38 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lftest.h"
+
+int		g_exit_code;
+pid_t	g_pid;
+int		g_malloc_fail;
+size_t	g_last_malloc_size;
 
 /****************************/
 /*        FT_ISALPHA        */
@@ -3010,6 +3015,7 @@ void	test_ft_calloc_allocation(CuTest *tc)
 	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
 }
 
+#define malloc(x) mmalloc(x)
 void	test_ft_calloc_check_size(CuTest *tc)
 {
 	size_t	nmemb;
@@ -3030,7 +3036,6 @@ void	test_ft_calloc_check_size(CuTest *tc)
 	free(ptr);
 }
 
-#define malloc(x) mmalloc(x)
 void	test_ft_calloc_malloc_protection(CuTest *tc)
 {
 	size_t	nmemb;
@@ -3059,6 +3064,7 @@ void	test_ft_calloc_zero(CuTest *tc)
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
+	int		*ptr2;
 
 	nmemb = 0;
 	size = 0;
@@ -3069,12 +3075,33 @@ void	test_ft_calloc_zero(CuTest *tc)
 		if (ptr)
 			free(ptr);
 		);
-	CuAssert(tc, "ft_calloc fails when malloc fails.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_calloc crash when params are 0.", !WIFSIGNALED(g_exit_code));
 	ptr = ft_calloc(nmemb, size);
 	if (ptr)
 		free(ptr);
-	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
+	ptr2 = malloc(0);
+	CuAssert(tc, "ft_calloc .", ptr == ptr2);
 }
+
+/* void	test_ft_calloc_int_overflow(CuTest *tc) */
+/* { */
+/* 	size_t	nmemb; */
+/* 	size_t	size; */
+/* 	int		*ptr; */
+
+/* 	nmemb = 1431655765; */
+/* 	size = 2; */
+/* 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size); */
+/* 	SANDBOX( */
+/* 		ptr = ft_calloc(nmemb, size); */
+/* 		if (ptr) */
+/* 			free(ptr); */
+/* 		); */
+/* 	CuAssert(tc, "ft_calloc crash with int overflow.", !WIFSIGNALED(g_exit_code)); */
+/* 	ptr = ft_calloc(nmemb, size); */
+/* 	if (ptr) */
+/* 		free(ptr); */
+/* } */
 
 CuSuite	*ft_calloc_get_suite()
 {
@@ -3082,6 +3109,7 @@ CuSuite	*ft_calloc_get_suite()
 	SUITE_ADD_TEST(s, test_ft_calloc_allocation);
 	SUITE_ADD_TEST(s, test_ft_calloc_check_size);
 	SUITE_ADD_TEST(s, test_ft_calloc_malloc_protection);
+	SUITE_ADD_TEST(s, test_ft_calloc_zero);
 	return (s);
 }
 
