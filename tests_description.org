@@ -510,7 +510,14 @@ CLOSED: [2023-11-17 Fri 11:00]
 Too big size passed to ft_calloc.
 Behavior: No allocation.
 Return value: NULL for too big number (ULONG_MAX for ex.) and a pointer for int overflow.
-** TODO ft_strdup [/]
+** TODO ft_strdup [0/4]
+#+begin_src C
+char    *ft_strdup(const char *s);
+#+end_src
+*** CODE basic input
+*** CODE protected malloc
+*** CODE s empty
+*** CODE NULL s
 ** ft_substr
 ** ft_strjoin
 ** ft_strtrim

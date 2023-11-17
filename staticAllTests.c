@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 19:33:21 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 19:48:24 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2455,6 +2455,7 @@ CuSuite	*ft_atoi_get_suite()
 	SUITE_ADD_TEST(s, test_ft_atoi_null);
 	return (s);
 }
+
 /****************************/
 /*         FT_CALLOC        */
 /****************************/
