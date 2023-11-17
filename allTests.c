@@ -6,16 +6,11 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 17:36:34 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 19:11:58 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lftest.h"
-
-int		g_exit_code;
-pid_t	g_pid;
-int		g_malloc_fail;
-size_t	g_last_malloc_size;
 
 /****************************/
 /*        FT_ISALPHA        */

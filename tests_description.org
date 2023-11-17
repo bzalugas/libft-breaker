@@ -480,7 +480,8 @@ Return value: 0.
 CLOSED: [2023-11-14 Tue 11:21]
 nptr set to NULL.
 Return value: / (SEGFAULT)
-** TODO ft_calloc [5/5]
+** DONE ft_calloc [5/5]
+CLOSED: [2023-11-17 Fri 19:13]
 #+begin_src C
 void    *ft_calloc(size_t nmemb, size_t size);
 #+end_src

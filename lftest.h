@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 17:24:19 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:54:27 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 
 extern int		g_exit_code;
 extern pid_t	g_pid;
-extern int		g_malloc_fail;
 extern size_t	g_last_malloc_size;
+extern int		g_malloc_fail;
 
 /* void	*malloc(size_t size); */
 
