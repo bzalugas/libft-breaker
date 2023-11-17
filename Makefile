@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/17 19:10:24 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/17 19:26:11 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -51,7 +51,7 @@ $(LIBFT):
 # $(LMALLOC):
 # 			gcc -shared -fPIC -o $< $(MALLOC) -ldl
 
-$(NAME):	$(LIBFT) $(LMALLOC) $(OBJN)
+$(NAME):	$(LIBFT) $(OBJN)
 			$(CC) $(CFLAGS) $(OBJN) -o $(NAME) $(INCLUDES)
 
 static:		$(LIBFT) $(OBJS)

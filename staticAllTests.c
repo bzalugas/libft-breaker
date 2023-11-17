@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/14 15:37:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 19:33:21 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2455,6 +2455,139 @@ CuSuite	*ft_atoi_get_suite()
 	SUITE_ADD_TEST(s, test_ft_atoi_null);
 	return (s);
 }
+/****************************/
+/*         FT_CALLOC        */
+/****************************/
+
+void	test_ft_calloc_allocation(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	void	*ptr;
+
+	nmemb = 23;
+	size = 1;
+	printf("\n########### FT_CALLOC ##########\n");
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_calloc_check_size(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 5;
+	size = sizeof(int);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = (int *)ft_calloc(nmemb, size);
+		free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
+	ptr = (int *)ft_calloc(nmemb, size);
+	/* printf("last malloc size = %lu\n", g_last_malloc_size); */
+	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
+			 g_last_malloc_size == size * nmemb);
+	free(ptr);
+}
+
+void	test_ft_calloc_malloc_protection(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 5;
+	size = sizeof(int);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	FAIL_MALLOC;
+	SANDBOX(
+		ptr = ft_calloc(nmemb, size);
+		if (ptr)
+			free(ptr);
+		);
+	CuAssert(tc, "ft_calloc fails when malloc fails.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb, size);
+	if (ptr)
+		free(ptr);
+	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
+}
+
+void	test_ft_calloc_zero(CuTest *tc)
+{
+	size_t	nmemb;
+	size_t	size;
+	int		*ptr;
+
+	nmemb = 0;
+	size = 0;
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
+	SANDBOX(
+		ptr = (int *)ft_calloc(nmemb, size);
+		if (ptr)
+			free(ptr);
+		);
+	CuAssert(tc, "ft_calloc crash when params are 0.", !WIFSIGNALED(g_exit_code));
+	ptr = (int *)ft_calloc(nmemb, size);
+	if (ptr)
+		free(ptr);
+	CuAssert(tc, "ft_calloc doesn't work with 0 as params.", ptr != NULL);
+}
+
+void	test_ft_calloc_big_nums(CuTest *tc)
+{
+	size_t	nmemb1;
+	size_t	size1;
+	size_t	nmemb2;
+	size_t	size2;
+	int		*ptr;
+	int		*ptr2;
+
+	nmemb1 = ULONG_MAX;
+	size1 = 1;
+	nmemb2 = INT_MAX / 1.5;
+	size2 = 2;
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb1, size1);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb2, size2);
+	SANDBOX(
+		ptr = ft_calloc(nmemb1, size1);
+		ptr2 = ft_calloc(nmemb2, size2);
+		if (ptr)
+			free(ptr);
+		if (ptr2)
+			free(ptr2);
+		);
+	CuAssert(tc, "ft_calloc crash with big number.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb1, size1);
+	ptr2 = ft_calloc(nmemb2, size2);
+	if (ptr)
+		free(ptr);
+	if (ptr2)
+		free(ptr2);
+	CuAssertPtrEquals(tc, NULL, ptr);
+	CuAssert(tc, "ft_calloc doesn't work with int overflow", ptr2 != NULL);
+}
+
+CuSuite	*ft_calloc_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_calloc_allocation);
+	SUITE_ADD_TEST(s, test_ft_calloc_check_size);
+	SUITE_ADD_TEST(s, test_ft_calloc_malloc_protection);
+	SUITE_ADD_TEST(s, test_ft_calloc_zero);
+	SUITE_ADD_TEST(s, test_ft_calloc_big_nums);
+	return (s);
+}
+
+/****************************/
+/*         FT_STRDUP        */
+/****************************/
 
 /****************************/
 /*        RUN TESTS         */
@@ -2486,6 +2619,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memcmp_get_suite());
 	CuSuiteAddSuite(suite, ft_strnstr_get_suite());
 	CuSuiteAddSuite(suite, ft_atoi_get_suite());
+	CuSuiteAddSuite(suite, ft_calloc_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
