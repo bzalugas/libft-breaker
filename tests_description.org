@@ -480,7 +480,7 @@ Return value: 0.
 CLOSED: [2023-11-14 Tue 11:21]
 nptr set to NULL.
 Return value: / (SEGFAULT)
-** TODO ft_calloc [3/5]
+** TODO ft_calloc [5/5]
 #+begin_src C
 void    *ft_calloc(size_t nmemb, size_t size);
 #+end_src
@@ -499,14 +499,16 @@ CLOSED: [2023-11-15 Wed 15:01]
 Make malloc fail.
 Behavior: No allocation.
 Return value: NULL.
-*** CODE zero
+*** CODED zero
+CLOSED: [2023-11-17 Fri 11:00]
 nmemb & size set to 0.
 Behavior: No allocation.
 Return value: unique pointer value that can be passed to free().
-*** CODE Size too big
+*** CODED Size too big
+CLOSED: [2023-11-17 Fri 11:00]
 Too big size passed to ft_calloc.
 Behavior: No allocation.
-Return value: NULL.
+Return value: NULL for too big number (ULONG_MAX for ex.) and a pointer for int overflow.
 ** TODO ft_strdup [/]
 ** ft_substr
 ** ft_strjoin

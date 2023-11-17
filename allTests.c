@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/16 17:16:38 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:01:30 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3064,7 +3064,6 @@ void	test_ft_calloc_zero(CuTest *tc)
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
-	int		*ptr2;
 
 	nmemb = 0;
 	size = 0;
@@ -3079,29 +3078,42 @@ void	test_ft_calloc_zero(CuTest *tc)
 	ptr = ft_calloc(nmemb, size);
 	if (ptr)
 		free(ptr);
-	ptr2 = malloc(0);
-	CuAssert(tc, "ft_calloc .", ptr == ptr2);
+	CuAssert(tc, "ft_calloc doesn't work with 0 as params.", ptr != NULL);
 }
 
-/* void	test_ft_calloc_int_overflow(CuTest *tc) */
-/* { */
-/* 	size_t	nmemb; */
-/* 	size_t	size; */
-/* 	int		*ptr; */
+void	test_ft_calloc_big_nums(CuTest *tc)
+{
+	size_t	nmemb1;
+	size_t	size1;
+	size_t	nmemb2;
+	size_t	size2;
+	int		*ptr;
+	int		*ptr2;
 
-/* 	nmemb = 1431655765; */
-/* 	size = 2; */
-/* 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size); */
-/* 	SANDBOX( */
-/* 		ptr = ft_calloc(nmemb, size); */
-/* 		if (ptr) */
-/* 			free(ptr); */
-/* 		); */
-/* 	CuAssert(tc, "ft_calloc crash with int overflow.", !WIFSIGNALED(g_exit_code)); */
-/* 	ptr = ft_calloc(nmemb, size); */
-/* 	if (ptr) */
-/* 		free(ptr); */
-/* } */
+	nmemb1 = ULONG_MAX;
+	size1 = 1;
+	nmemb2 = INT_MAX / 1.5;
+	size2 = 2;
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb1, size1);
+	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb2, size2);
+	SANDBOX(
+		ptr = ft_calloc(nmemb1, size1);
+		ptr2 = ft_calloc(nmemb2, size2);
+		if (ptr)
+			free(ptr);
+		if (ptr2)
+			free(ptr2);
+		);
+	CuAssert(tc, "ft_calloc crash with big number.", !WIFSIGNALED(g_exit_code));
+	ptr = ft_calloc(nmemb1, size1);
+	ptr2 = ft_calloc(nmemb2, size2);
+	if (ptr)
+		free(ptr);
+	if (ptr2)
+		free(ptr2);
+	CuAssertPtrEquals(tc, NULL, ptr);
+	CuAssert(tc, "ft_calloc doesn't work with int overflow", ptr2 != NULL);
+}
 
 CuSuite	*ft_calloc_get_suite()
 {
@@ -3110,6 +3122,7 @@ CuSuite	*ft_calloc_get_suite()
 	SUITE_ADD_TEST(s, test_ft_calloc_check_size);
 	SUITE_ADD_TEST(s, test_ft_calloc_malloc_protection);
 	SUITE_ADD_TEST(s, test_ft_calloc_zero);
+	SUITE_ADD_TEST(s, test_ft_calloc_big_nums);
 	return (s);
 }
 

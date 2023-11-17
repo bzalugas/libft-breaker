@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/16 16:26:18 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:53:30 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/wait.h>
+# include <limits.h>
 # define BUFFSIZE 30
 # define BUFFBSIZE 30000
 
