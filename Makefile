@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/17 11:39:03 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/17 17:23:42 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,19 +14,23 @@ LIBFT	=	../libft/libft.a
 
 NAME 	=	libftest
 
-SRC	 	=	CuTest.c mmalloc.c
+SRC	 	=	CuTest.c
+
+MALLOC	=	malloc.c
+
+LMALLOC	=	malloc.so
 
 NORMAL	=	allTests.c
 
 STATIC	=	staticAllTests.c
 
-OBJN 	=	CuTest.o allTests.o mmalloc.o
+OBJN 	=	CuTest.o allTests.o malloc.o
 
-OBJS	=	CuTest.o staticAllTests.o
+OBJS	=	CuTest.o staticAllTests.o malloc.o
 
 CC	 	=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror
 
 INCLUDES	=	-L../libft -lft
 
@@ -43,7 +47,10 @@ $(LIBFT):
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-$(NAME):	$(LIBFT) $(OBJN)
+$(LMALLOC):
+			gcc -shared -fPIC -o $< $(MALLOC) -ldl
+
+$(NAME):	$(LIBFT) $(LMALLOC) $(OBJN)
 			$(CC) $(CFLAGS) $(OBJN) -o $(NAME) $(INCLUDES)
 
 static:		$(LIBFT) $(OBJS)

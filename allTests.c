@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 11:33:53 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:36:34 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3015,7 +3015,6 @@ void	test_ft_calloc_allocation(CuTest *tc)
 	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
 }
 
-#define malloc(x) mmalloc(x)
 void	test_ft_calloc_check_size(CuTest *tc)
 {
 	size_t	nmemb;
@@ -3026,12 +3025,12 @@ void	test_ft_calloc_check_size(CuTest *tc)
 	size = sizeof(int);
 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
 	SANDBOX(
-		ptr = ft_calloc(nmemb, size);
+		ptr = (int *)ft_calloc(nmemb, size);
 		free(ptr);
 		);
 	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
-	ptr = ft_calloc(nmemb, size);
-	printf("last malloc size = %lu\n", g_last_malloc_size);
+	ptr = (int *)ft_calloc(nmemb, size);
+	/* printf("last malloc size = %lu\n", g_last_malloc_size); */
 	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
 			 g_last_malloc_size == size * nmemb);
 	free(ptr);
@@ -3058,7 +3057,6 @@ void	test_ft_calloc_malloc_protection(CuTest *tc)
 		free(ptr);
 	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
 }
-#undef malloc
 
 void	test_ft_calloc_zero(CuTest *tc)
 {
@@ -3069,14 +3067,13 @@ void	test_ft_calloc_zero(CuTest *tc)
 	nmemb = 0;
 	size = 0;
 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
-	FAIL_MALLOC;
 	SANDBOX(
-		ptr = ft_calloc(nmemb, size);
+		ptr = (int *)ft_calloc(nmemb, size);
 		if (ptr)
 			free(ptr);
 		);
 	CuAssert(tc, "ft_calloc crash when params are 0.", !WIFSIGNALED(g_exit_code));
-	ptr = ft_calloc(nmemb, size);
+	ptr = (int *)ft_calloc(nmemb, size);
 	if (ptr)
 		free(ptr);
 	CuAssert(tc, "ft_calloc doesn't work with 0 as params.", ptr != NULL);

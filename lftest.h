@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 10:53:30 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:24:19 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ extern pid_t	g_pid;
 extern int		g_malloc_fail;
 extern size_t	g_last_malloc_size;
 
-/* #define malloc(x) mmalloc(x) */
-void	*mmalloc(size_t size);
+/* void	*malloc(size_t size); */
 
 # define FAIL_MALLOC g_malloc_fail = 1;
 
