@@ -3,6 +3,7 @@
 *.out
 *.a
 *.o
+*.so
 munit/
 libftest
 # tmp.c

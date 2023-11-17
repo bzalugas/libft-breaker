@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 11:01:30 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:33:53 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3031,6 +3031,7 @@ void	test_ft_calloc_check_size(CuTest *tc)
 		);
 	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
 	ptr = ft_calloc(nmemb, size);
+	printf("last malloc size = %lu\n", g_last_malloc_size);
 	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
 			 g_last_malloc_size == size * nmemb);
 	free(ptr);
@@ -3160,6 +3161,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_memcmp_get_suite());
 	CuSuiteAddSuite(suite, ft_strnstr_get_suite());
 	CuSuiteAddSuite(suite, ft_atoi_get_suite());
+	CuSuiteAddSuite(suite, ft_calloc_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

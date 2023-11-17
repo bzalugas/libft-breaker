@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/13 19:46:54 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/17 11:39:03 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,19 +14,19 @@ LIBFT	=	../libft/libft.a
 
 NAME 	=	libftest
 
-SRC	 	=	CuTest.c
+SRC	 	=	CuTest.c mmalloc.c
 
 NORMAL	=	allTests.c
 
 STATIC	=	staticAllTests.c
 
-OBJN 	=	CuTest.o allTests.o
+OBJN 	=	CuTest.o allTests.o mmalloc.o
 
 OBJS	=	CuTest.o staticAllTests.o
 
 CC	 	=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g3
 
 INCLUDES	=	-L../libft -lft
 
