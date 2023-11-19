@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 19:48:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:34:20 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2625,7 +2625,19 @@ void	run_all()
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
 	CuSuiteDetails(suite, output);
-	printf("\n\nlibft: %s\n", output->buffer);
+	printf("\n\nlibft: ");
+	int	i;
+	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
+	{
+		if (output->buffer[i] == '.')
+			printf("%s%c%s", ANSI_COLOR_GREEN, output->buffer[i], ANSI_COLOT_RESET);
+		else
+			printf("%s%c%s", ANSI_COLOR_RED, output->buffer[i], ANSI_COLOT_RESET);
+	}
+	if (!strncmp(&output->buffer[i], "\n\nOK", 3))
+		printf("%s%s%s",ANSI_COLOR_GREEN, &output->buffer[i], ANSI_COLOT_RESET);
+	else
+		printf("%s%s%s",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOT_RESET);
 }
 
 int	main(void)

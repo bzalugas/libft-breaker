@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 18:54:27 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:25:21 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # include <limits.h>
 # define BUFFSIZE 30
 # define BUFFBSIZE 30000
+# define ANSI_COLOR_RED     "\033[31m"
+# define ANSI_COLOR_GREEN   "\033[32m"
+# define ANSI_COLOT_RESET	"\033[0m"
 
 extern int		g_exit_code;
 extern pid_t	g_pid;
