@@ -6,11 +6,13 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/20 13:33:05 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:17:06 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lftest.h"
+
+/*********************************** PART 2 ***********************************/
 
 /****************************/
 /*        FT_ISALPHA        */
@@ -3251,6 +3253,217 @@ CuSuite	*ft_strdup_get_suite()
 	return (s);
 }
 
+/*********************************** PART 2 ***********************************/
+
+/****************************/
+/*         FT_SUBSTR        */
+/****************************/
+
+void	test_ft_substr_basic(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = 6;
+	size_t			len = 8;
+	char			*res;
+
+	printf("\n########### FT_SUBSTR ##########\n");
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == 9);
+	CuAssertStrEquals(tc, "everyone", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_all_s(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = 0;
+	size_t			len = strlen(s);
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == strlen(s) + 1);
+	CuAssertStrEquals(tc, "Hello everyone here!", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_big_len(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = 6;
+	size_t			len = 20;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssertIntEquals_Msg(tc, "Wrong allocated size", 15, g_last_malloc_size);
+	CuAssertStrEquals(tc, "everyone here!", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_len_zero(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = 6;
+	size_t			len = 0;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == 1);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_start_gt_len_s(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = strlen(s) + 2;
+	size_t			len = 5;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == 1);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_start_eq_len_s(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = strlen(s);
+	size_t			len = 5;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == 1);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_empty_s(CuTest *tc)
+{
+	char			s[] = "";
+	unsigned int	start = 0;
+	size_t			len = 1;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssert(tc, "Wrong allocated size", g_last_malloc_size == 1);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_NULL_s(CuTest *tc)
+{
+	char			*s = NULL;
+	unsigned int	start = 0;
+	size_t			len = 10;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	res = ft_substr(s, start, len);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_substr_malloc_fail(CuTest *tc)
+{
+	char			s[] = "Hello everyone here!";
+	unsigned int	start = 0;
+	size_t			len = 5;
+	char			*res;
+
+	printf("%s: s=<%s>, start=%u, len=%lu\n", __func__, s, start, len);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_substr(s, start, len);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_substr(s, start, len);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+CuSuite	*ft_substr_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_substr_basic);
+	SUITE_ADD_TEST(s, test_ft_substr_all_s);
+	SUITE_ADD_TEST(s, test_ft_substr_big_len);
+	SUITE_ADD_TEST(s, test_ft_substr_len_zero);
+	SUITE_ADD_TEST(s, test_ft_substr_start_gt_len_s);
+	SUITE_ADD_TEST(s, test_ft_substr_start_eq_len_s);
+	SUITE_ADD_TEST(s, test_ft_substr_empty_s);
+	SUITE_ADD_TEST(s, test_ft_substr_NULL_s);
+	SUITE_ADD_TEST(s, test_ft_substr_malloc_fail);
+	return (s);
+}
+
 /****************************/
 /*        RUN TESTS         */
 /****************************/
@@ -3283,6 +3496,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_atoi_get_suite());
 	CuSuiteAddSuite(suite, ft_calloc_get_suite());
 	CuSuiteAddSuite(suite, ft_strdup_get_suite());
+	CuSuiteAddSuite(suite, ft_substr_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

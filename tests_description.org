@@ -46,13 +46,13 @@ Normal input but with n = 0.
 dst & src pointing on same address.
 *** NULL destination
 dst set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 *** NULL source
 src set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 *** Both destination & source NULL
 dst & src set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 ** ft_memmove
 #+begin_src C
 void    *ft_memmove(void *dest, const void *src, size_t n);
@@ -71,481 +71,418 @@ Normal input but with n < strlen(input).
 Normal input but with n = 0.
 *** NULL destination
 dst set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 *** NULL source
 src set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 *** Both destination & source NULL
 dst & src set to NULL.
-Behavior on ubuntu: segfault.
+*Behavior* on ubuntu: segfault.
 
-** DONE ft_strlcpy [10/10]
+** ft_strlcpy
 #+begin_src C
 size_t  ft_strlcpy(char *dst, const char *src, size_t size);
 #+end_src
-CLOSED: [2023-11-09 jeu. 09:27]
-*** CODED Basic input
-CLOSED: [2023-11-09 jeu. 08:21]
+*** Basic input
 Basic use of the function.
-Behavior: copies size-1 bytes from src to dst + \0.
-Return value: length of src.
-*** CODED Smaller size
-CLOSED: [2023-11-09 jeu. 08:26]
+*Behavior*: copies size-1 bytes from src to dst + \0.
+*Return value*: length of src.
+*** Smaller size
 Size smaller than src.
-Behavior: copies size-1 bytes from src to dst + \0.
-Return value: length of src.
-*** CODED Bigger size
-CLOSED: [2023-11-09 jeu. 08:28]
+*Behavior*: copies size-1 bytes from src to dst + \0.
+*Return value*: length of src.
+*** Bigger size
 Size bigger than src.
-Behavior: copies only strlen(src) bytes from src to dst.
-Return value: length of src.
-*** CODED Size zero
-CLOSED: [2023-11-09 jeu. 08:32]
+*Behavior*: copies only strlen(src) bytes from src to dst.
+*Return value*: length of src.
+*** Size zero
 size = 0.
-Behavior: doesn't copy anything.
-Return value: length of src.
-*** CODED dst overlapping src
-CLOSED: [2023-11-09 jeu. 09:16]
+*Behavior*: doesn't copy anything.
+*Return value*: length of src.
+*** dst overlapping src
 dst address set to a lower adress than src but with an overlapping size.
-Behavior: copies size-1 bytes from src to dst + \0.
-Return value: length of src (after the copy).
-*** CODED src overlapping dst
-CLOSED: [2023-11-09 jeu. 09:19]
+*Behavior*: copies size-1 bytes from src to dst + \0.
+*Return value*: length of src (after the copy).
+*** src overlapping dst
 src address set to a lower adress than dst but with an overlapping size.
-Behavior: copies size-1 bytes from src to dst + \0.
-Return value: length of src (after the copy).
-*** CODED NULL dst
-CLOSED: [2023-11-09 jeu. 09:22]
+*Behavior*: copies size-1 bytes from src to dst + \0.
+*Return value*: length of src (after the copy).
+*** NULL dst
 dst set to NULL.
-Behavior: SEGFAULT.
-*** CODED NULL src
-CLOSED: [2023-11-09 jeu. 09:27]
+*Behavior*: SEGFAULT.
+*** NULL src
 src set to NULL.
-Behavior: SEGFAULT.
-*** CODED NULL dst & src
-CLOSED: [2023-11-09 jeu. 09:25]
+*Behavior*: SEGFAULT.
+*** NULL dst & src
 dst & src set to NULL.
-Behavior: SEGFAULT.
+*Behavior*: SEGFAULT.
 
-** DONE ft_strlcat [9/9]
+** ft_strlcat
 #+begin_src C
 size_t  ft_strlcat(char *dst, const char *src, size_t size);
 #+end_src
-CLOSED: [2023-11-12 dim. 19:18]
-*** CODED Basic input
-CLOSED: [2023-11-12 dim. 19:01]
+*** Basic input
 Basic use of function.
-Behavior: Copies size - len(dst) - 1 bytes from src to end of dst + \0.
-Return value: Initial length of dst + length of src.
-*** CODED Smaller size
-CLOSED: [2023-11-12 dim. 19:02]
+*Behavior*: Copies size - len(dst) - 1 bytes from src to end of dst + \0.
+*Return value*: Initial length of dst + length of src.
+*** Smaller size
 Size smaller than final buffer.
-Behavior: Copies size - len(dst) - 1 bytes from src to end of dst + \0 (Truncation).
-Return value: *Initial length of dst + length of src if size >= len(dst) else size + length of src.*
-*** CODED Smaller small size
-CLOSED: [2023-11-12 dim. 19:05]
+*Behavior*: Copies size - len(dst) - 1 bytes from src to end of dst + \0 (Truncation).
+*Return value*: *Initial length of dst + length of src if size >= len(dst) else size + length of src.*
+*** Smaller small size
 Size smaller than len(dst).
-Behavior: Doesn't copy anything.
-Return value: *size + length of src.*
-*** CODED Bigger size
-CLOSED: [2023-11-12 dim. 19:07]
+*Behavior*: Doesn't copy anything.
+*Return value*: *size + length of src.*
+*** Bigger size
 Size bigger than final buffer.
-Behavior: Does the copy but stops at \0 of src.
-Return value: Initial length of dst + length of src.
-*** CODED Size zero
-CLOSED: [2023-11-12 dim. 19:08]
+*Behavior*: Does the copy but stops at \0 of src.
+*Return value*: Initial length of dst + length of src.
+*** Size zero
 Size = 0.
-Behavior: Doesn't copy anything.
-Return value: Length of src (same calculation than if size < len(dst)).
-*** CODED NULL dst
-CLOSED: [2023-11-12 dim. 19:18]
+*Behavior*: Doesn't copy anything.
+*Return value*: Length of src (same calculation than if size < len(dst)).
+*** NULL dst
 dst set to NULL.
-Behavior: SEGFAULT.
-Return value: /
-*** CODED NULL dst & size zero
-CLOSED: [2023-11-12 dim. 19:18]
+*Behavior*: SEGFAULT.
+*Return value*: /
+*** NULL dst & size zero
 dst set to NULL and size set to zero.
-Behavior: Doesn't copy anything. (NO SEGFAULT).
-Return value: length of src.
-*** CODED NULL src
-CLOSED: [2023-11-12 dim. 19:18]
+*Behavior*: Doesn't copy anything. (NO SEGFAULT).
+*Return value*: length of src.
+*** NULL src
 src set to NULL.
-Behavior: SEGFAULT.
-Return value: /
-*** CODED NULL dst & src
-CLOSED: [2023-11-12 dim. 19:18]
+*Behavior*: SEGFAULT.
+*Return value*: /
+*** NULL dst & src
 dst & src set to NULL.
-Behavior: SEGFAULT.
-Return value: /
-** DONE ft_toupper
+*Behavior*: SEGFAULT.
+*Return value*: /
+** ft_toupper
 #+begin_src C
 int ft_toupper(int c);
 #+end_src
-CLOSED: [2023-11-13 lun. 11:34]
-*** CODED basic inputs (all unsigned char)
-CLOSED: [2023-11-13 lun. 11:33]
-** DONE ft_tolower
+*** basic inputs (all unsigned char)
+** ft_tolower
 #+begin_src C
 int ft_tolower(int c);
 #+end_src
-CLOSED: [2023-11-13 lun. 11:34]
-*** CODED basic inputs (all unsigned char)
-CLOSED: [2023-11-13 lun. 11:33]
-** DONE ft_strchr
-CLOSED: [2023-11-13 lun. 13:17]
-*** CODED Basic inputs (c in s)
-CLOSED: [2023-11-13 lun. 12:09]
-*** CODED multiple c in s
-CLOSED: [2023-11-13 lun. 12:09]
-*** CODED no c in s
-CLOSED: [2023-11-13 lun. 12:09]
-*** CODED c set to '\0'
-CLOSED: [2023-11-13 lun. 12:09]
-*** CODED s set to NULL
-CLOSED: [2023-11-13 lun. 12:09]
-** DONE ft_strrchr
-CLOSED: [2023-11-13 lun. 13:17]
-*** CODED Basic inputs (c in s)
-CLOSED: [2023-11-13 lun. 12:12]
-*** CODED multiple c in s
-CLOSED: [2023-11-13 lun. 12:13]
-*** CODED no c in s
-CLOSED: [2023-11-13 lun. 12:13]
-*** CODED c set to '\0'
-CLOSED: [2023-11-13 lun. 12:13]
-*** CODED s set to NULL
-CLOSED: [2023-11-13 lun. 12:13]
-** DONE ft_strncmp [13/13]
+*** basic inputs (all unsigned char)
+** ft_strchr
+*** Basic inputs (c in s)
+*** multiple c in s
+*** no c in s
+*** c set to '\0'
+*** s set to NULL
+** ft_strrchr
+*** Basic inputs (c in s)
+*** multiple c in s
+*** no c in s
+*** c set to '\0'
+*** s set to NULL
+** ft_strncmp
 #+begin_src C
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 #+end_src
-CLOSED: [2023-11-13 lun. 15:03]
-*** CODED Basic inputs s1 == s2
-CLOSED: [2023-11-13 lun. 13:41]
+*** Basic inputs s1 == s2
 s1 & s2 the same.
-Return value: 0
-*** CODED Basic inputs s1 != s2, n = len(s1) (s1 < s2)
-CLOSED: [2023-11-13 lun. 13:46]
+*Return value*: 0
+*** Basic inputs s1 != s2, n = len(s1) (s1 < s2)
 s1 & s2 different, s1 less than s2
-Return value: negative (s1[i] - s2[i])
-*** CODED Basic inputs s1 != s2, n = len(s1) (s1 > s2)
-CLOSED: [2023-11-13 lun. 13:46]
+*Return value*: negative (s1[i] - s2[i])
+*** Basic inputs s1 != s2, n = len(s1) (s1 > s2)
 s1 & s2 different, s1 greater than s2
-Return value: positive (s1[i] - s2[i])
-*** CODED len s1 < len s2
-CLOSED: [2023-11-13 lun. 13:48]
+*Return value*: positive (s1[i] - s2[i])
+*** len s1 < len s2
 s1 & s2 the same until '\0' in s1. n set to length of s2.
-Return value: negative (0 - s2[i])
-*** CODED len s1 > len s2
-CLOSED: [2023-11-13 lun. 13:49]
+*Return value*: negative (0 - s2[i])
+*** len s1 > len s2
 s1 & s2 the same until '\0' in s2. n set to length of s1.
-Return value: positive (s1[i] - 0)
-*** CODED Smaller n
-CLOSED: [2023-11-13 lun. 13:51]
+*Return value*: positive (s1[i] - 0)
+*** Smaller n
 n smaller than the 2 lengths.
-Return value: difference between n^{th} char of the 2 strings.
-*** CODED Bigger n
-CLOSED: [2023-11-13 lun. 13:51]
+*Return value*: difference between n^{th} char of the 2 strings.
+*** Bigger n
 n bigger than the 2 lengths.
-Return value: difference between last char of the smaller string and equivalent char of the other.
-*** CODED n = 0
-CLOSED: [2023-11-13 lun. 13:52]
+*Return value*: difference between last char of the smaller string and equivalent char of the other.
+*** n = 0
 n set to zero.
-Return value: 0
-*** CODED not unsigned char inside strings
-CLOSED: [2023-11-13 lun. 15:02]
+*Return value*: 0
+*** not unsigned char inside strings
 Insertion of values not initially unsigned char to test that the function casts to unsigned char.
-Return value: diff as usual.
-*** CODED NULL s1, n > 0
-CLOSED: [2023-11-13 lun. 13:55]
+*Return value*: diff as usual.
+*** NULL s1, n > 0
 s1 set to NULL with n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s2, n > 0
-CLOSED: [2023-11-13 lun. 13:59]
+*Return value*: / (SEGFAULT)
+*** NULL s2, n > 0
 s2 set to NULL with n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s1 & s2, n > 0
-CLOSED: [2023-11-13 lun. 13:57]
+*Return value*: / (SEGFAULT)
+*** NULL s1 & s2, n > 0
 s1 & s2 set to NULL with n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s1 & s2, n = 0
-CLOSED: [2023-11-13 lun. 13:57]
+*Return value*: / (SEGFAULT)
+*** NULL s1 & s2, n = 0
 s1 & s2 set to NULL with n > 0.
-Return value: 0 (NO SEGFAULT)
-** DONE ft_memchr [8/8]
+*Return value*: 0 (NO SEGFAULT)
+** ft_memchr
 #+begin_src C
 void    *ft_memchr(const void *s, int c, size_t n);
 #+end_src
-CLOSED: [2023-11-13 lun. 16:12]
-*** CODED Basic with c in s
-CLOSED: [2023-11-13 lun. 15:46]
+*** Basic with c in s
 Normal use of the function with c placed in s.
-Return value: pointer to first instance of c in s.
-*** CODED multiple c in s
-CLOSED: [2023-11-13 lun. 15:47]
+*Return value*: pointer to first instance of c in s.
+*** multiple c in s
 Normal use of the function, c has multiple instances in s.
-Return value: pointer to first instance of c in s.
-*** CODED c not in s
-CLOSED: [2023-11-13 lun. 15:48]
+*Return value*: pointer to first instance of c in s.
+*** c not in s
 Normal use of the function, c not in s.
-Return value: NULL.
-*** CODED c not unsigned char
-CLOSED: [2023-11-13 lun. 15:49]
+*Return value*: NULL.
+*** c not unsigned char
 Test the function with a non unsigned char value in c (present in s).
-Return value: pointer to instance of c in s (only if c and s[i] are cast to unsigned char).
-*** CODED c set to '\0'
-CLOSED: [2023-11-13 lun. 15:51]
+*Return value*: pointer to instance of c in s (only if c and s[i] are cast to unsigned char).
+*** c set to '\0'
 Search for '\0' ('\0' is also put in s).
-Return value: pointer to '\0' in s.
-*** CODED Smaller n
-CLOSED: [2023-11-13 lun. 15:52]
+*Return value*: pointer to '\0' in s.
+*** Smaller n
 Normal inputs but n smaller than s.
-Return value: pointer to first instance of c but tests at most n bytes.
-*** CODED s set to NULL with n > 0
-CLOSED: [2023-11-13 lun. 15:55]
+*Return value*: pointer to first instance of c but tests at most n bytes.
+*** s set to NULL with n > 0
 s set to NULL.
-Return value: / (SEGFAULT).
-*** CODED s set to NULL with n = 0
-CLOSED: [2023-11-13 lun. 15:56]
+*Return value*: / (SEGFAULT).
+*** s set to NULL with n = 0
 s set to NULL and n to zero.
-Return value: NULL.
-** DONE ft_memcmp [11/11]
+*Return value*: NULL.
+** ft_memcmp
 #+begin_src C
 int ft_memcmp(const void *s1, const void *s2, size_t n);
 #+end_src
-CLOSED: [2023-11-13 lun. 17:33]
-*** CODED Basic, s1 == s2
-CLOSED: [2023-11-13 lun. 17:16]
+*** Basic, s1 == s2
 Basic use of the function, s1 and s2 beeing equal and n = len(s1).
-Return value: 0.
-*** CODED Basic, s1 != s2 1
-CLOSED: [2023-11-13 lun. 17:18]
+*Return value*: 0.
+*** Basic, s1 != s2 1
 Basic use of the function, s1 and s2 differs (s1 < s2) and n = len(s1).
-Return value: negative (s1[i] - s2[i]).
-*** CODED Basic, s1 != s2 2
-CLOSED: [2023-11-13 lun. 17:18]
+*Return value*: negative (s1[i] - s2[i]).
+*** Basic, s1 != s2 2
 Basic use of the function, s1 and s2 differs (s1 > s2) and n = len(s1).
-Return value: positive (s1[i] - s2[i]).
-*** CODED byte zero in both strings
-CLOSED: [2023-11-13 lun. 17:20]
+*Return value*: positive (s1[i] - s2[i]).
+*** byte zero in both strings
 Both strings contain multiple '\0' inside and then a byte is different (s1 > s2).
-Return value: positive.
-*** CODED n = 0
-CLOSED: [2023-11-13 lun. 17:20]
+*Return value*: positive.
+*** n = 0
 n set to zero.
-Return value: 0.
-*** CODED s1 not unsigned char
-CLOSED: [2023-11-13 lun. 17:23]
+*Return value*: 0.
+*** s1 not unsigned char
 s1 value set to an integer bigger than unsigned char.
-Return value: Same as usual if values are casted to unsigned char.
-*** CODED s2 not unsigned char
-CLOSED: [2023-11-13 lun. 17:24]
+*Return value*: Same as usual if values are casted to unsigned char.
+*** s2 not unsigned char
 s2 value set to an integer bigger than unsigned char.
-Return value: Same as usual if values are casted to unsigned char.
-*** CODED NULL s1, n > 0
-CLOSED: [2023-11-13 lun. 17:28]
+*Return value*: Same as usual if values are casted to unsigned char.
+*** NULL s1, n > 0
 s1 set to NULL and n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s2, n > 0
-CLOSED: [2023-11-13 lun. 17:28]
+*Return value*: / (SEGFAULT)
+*** NULL s2, n > 0
 s2 set to NULL and n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s1 & s2, n > 0
-CLOSED: [2023-11-13 lun. 17:29]
+*Return value*: / (SEGFAULT)
+*** NULL s1 & s2, n > 0
 s1 & s2 set to NULL, n > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL s1 & s2, n = 0
-CLOSED: [2023-11-13 lun. 17:29]
+*Return value*: / (SEGFAULT)
+*** NULL s1 & s2, n = 0
 s1 & s2 set to NULL, n = 0.
-Return value: 0.
-** DONE ft_strnstr [15/15]
+*Return value*: 0.
+** ft_strnstr
 #+begin_src C
 char    *ft_strnstr(const char *big, const char *little, size_t len);
 #+end_src
-CLOSED: [2023-11-13 lun. 18:49]
-*** CODED Basic inputs
-CLOSED: [2023-11-13 lun. 18:30]
+*** Basic inputs
 string little contained in big and len = len(big).
-Return value: pointer to first char of first occurrence of little in big.
-*** CODED little not in big
-CLOSED: [2023-11-13 lun. 18:31]
+*Return value*: pointer to first char of first occurrence of little in big.
+*** little not in big
 string little not contained in big.
-Return value: NULL.
-*** CODED len = len(little)
-CLOSED: [2023-11-13 lun. 19:30]
+*Return value*: NULL.
+*** len = len(little)
 len set len(little). len is contained in big but only after len.
-Return value: NULL.
-*** CODED Smaller len
-CLOSED: [2023-11-13 lun. 18:32]
+*Return value*: NULL.
+*** Smaller len
 little contained in big but after len.
-Return value: NULL.
-*** CODED Bigger len
-CLOSED: [2023-11-13 lun. 18:33]
+*Return value*: NULL.
+*** Bigger len
 little not contained in big and len > len(big).
-Return value: NULL.
-*** CODED len = 0
-CLOSED: [2023-11-13 lun. 18:34]
+*Return value*: NULL.
+*** len = 0
 len set to zero.
-Return value: NULL.
-*** CODED big empty
-CLOSED: [2023-11-13 lun. 18:35]
+*Return value*: NULL.
+*** big empty
 big set to an empty string.
-Return value: NULL.
-*** CODED little empty
-CLOSED: [2023-11-13 lun. 18:36]
+*Return value*: NULL.
+*** little empty
 little set to an empty string.
-Return value: big.
-*** CODED big & little empty
-CLOSED: [2023-11-13 lun. 18:37]
+*Return value*: big.
+*** big & little empty
 little & big set to an empty string.
-Return value: pointer to big.
-*** CODED NULL big, len > 0
-CLOSED: [2023-11-13 lun. 18:39]
+*Return value*: pointer to big.
+*** NULL big, len > 0
 big set to NULL.
-Return value: / (SEGFAULT)
-*** CODED NULL big, len = 0
-CLOSED: [2023-11-13 lun. 18:40]
+*Return value*: / (SEGFAULT)
+*** NULL big, len = 0
 big set to NULL.
-Return value: NULL.
-*** CODED NULL little, len > 0
-CLOSED: [2023-11-13 lun. 18:41]
+*Return value*: NULL.
+*** NULL little, len > 0
 little set to NULL.
-Return value: / (SEGFAULT)
-*** CODED NULL little, len = 0
-CLOSED: [2023-11-13 lun. 18:41]
+*Return value*: / (SEGFAULT)
+*** NULL little, len = 0
 little set to NULL.
-Return value: / (SEGFAULT)
-*** CODED NULL big & little, len > 0
-CLOSED: [2023-11-13 lun. 18:42]
+*Return value*: / (SEGFAULT)
+*** NULL big & little, len > 0
 big & little set to NULL with len > 0.
-Return value: / (SEGFAULT)
-*** CODED NULL big & little, len = 0
-CLOSED: [2023-11-13 lun. 18:42]
+*Return value*: / (SEGFAULT)
+*** NULL big & little, len = 0
 big & little set to NULL with len = 0.
-Return value: / (SEGFAULT)
-** DONE ft_atoi [13/13]
-CLOSED: [2023-11-14 Tue 15:50]
+*Return value*: / (SEGFAULT)
+** ft_atoi
 #+begin_src C
 int ft_atoi(const char *nptr);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-11-14 Tue 11:03]
+*** Basic input
 Simple number passed.
-Return value: integer version of number in nptr.
-*** CODED negative integer
-CLOSED: [2023-11-14 Tue 11:04]
+*Return value*: integer version of number in nptr.
+*** negative integer
 Negative number passed.
-Return value: integer version of number in nptr.
-*** CODED Normal number with positive sign
-CLOSED: [2023-11-14 Tue 11:05]
+*Return value*: integer version of number in nptr.
+*** Normal number with positive sign
 Normal number with positive sign before.
-Return value: integer version of number in nptr.
-*** CODED Multiple signs
-CLOSED: [2023-11-14 Tue 11:05]
+*Return value*: integer version of number in nptr.
+*** Multiple signs
 Normal number with more than one signs before.
-Return value: 0.
-*** CODED Whitespaces before sign
-CLOSED: [2023-11-14 Tue 11:08]
+*Return value*: 0.
+*** Whitespaces before sign
 Normal number with multiple whitespaces before sign.
-Return value: integer version of number in nptr.
-*** CODED Whitespaces after sign
-CLOSED: [2023-11-14 Tue 11:08]
+*Return value*: integer version of number in nptr.
+*** Whitespaces after sign
 Normal number with multiple whitespaces after sign.
-Return value: 0.
-*** CODED Whitespace in number
-CLOSED: [2023-11-14 Tue 11:09]
+*Return value*: 0.
+*** Whitespace in number
 Normal number with whitespaces after some numbers.
-Return value: integer version of number before whitespaces.
-*** CODED Int min
-CLOSED: [2023-11-14 Tue 11:16]
+*Return value*: integer version of number before whitespaces.
+*** Int min
 Minimum integer passed.
-Return value: integer version of number in nptr.
-*** CODED Int max
-CLOSED: [2023-11-14 Tue 11:16]
+*Return value*: integer version of number in nptr.
+*** Int max
 Maximum integer passed.
-Return value: integer version of number in nptr.
-*** CODED Greater than int max
-CLOSED: [2023-11-14 Tue 11:17]
+*Return value*: integer version of number in nptr.
+*** Greater than int max
 Number greater than int max passed.
-Return value: equivalent value of number converted to int (bits).
-*** CODED Greater than unsigned int max
-CLOSED: [2023-11-14 Tue 11:18]
+*Return value*: equivalent value of number converted to int (bits).
+*** Greater than unsigned int max
 Number greater than unsigned int max passed.
-Return value: -1
-*** CODED Empty nptr
-CLOSED: [2023-11-14 Tue 11:19]
+*Return value*: -1
+*** Empty nptr
 nptr set to empty string.
-Return value: 0.
-*** CODED NULL nptr
-CLOSED: [2023-11-14 Tue 11:21]
+*Return value*: 0.
+*** NULL nptr
 nptr set to NULL.
-Return value: / (SEGFAULT)
-** DONE ft_calloc [5/5]
-CLOSED: [2023-11-17 Fri 19:13]
+*Return value*: / (SEGFAULT)
+** ft_calloc
 #+begin_src C
 void    *ft_calloc(size_t nmemb, size_t size);
 #+end_src
-*** CODED normal allocation
-CLOSED: [2023-11-15 Wed 13:59]
+*** normal allocation
 Try to free memory allocated by ft_calloc with normal inputs.
-Behavior: Allocation & initialization of memory.
-Return value: pointer to memory.
-*** CODED check size
-CLOSED: [2023-11-15 Wed 14:13]
+*Behavior*: Allocation & initialization of memory.
+*Return value*: pointer to memory.
+*** check size
 Normal values passed and size asked to malloc compared to right value.
-Behavior: Allocation & initialization of memory.
-Return value: pointer to memory.
-*** CODED malloc protection
-CLOSED: [2023-11-15 Wed 15:01]
+*Behavior*: Allocation & initialization of memory.
+*Return value*: pointer to memory.
+*** malloc protection
 Make malloc fail.
-Behavior: No allocation.
-Return value: NULL.
-*** CODED zero
-CLOSED: [2023-11-17 Fri 11:00]
+*Behavior*: No allocation.
+*Return value*: NULL.
+*** zero
 nmemb & size set to 0.
-Behavior: No allocation.
-Return value: unique pointer value that can be passed to free().
-*** CODED Size too big
-CLOSED: [2023-11-17 Fri 11:00]
+*Behavior*: No allocation.
+*Return value*: unique pointer value that can be passed to free().
+*** Size too big
 Too big size passed to ft_calloc.
-Behavior: No allocation.
-Return value: NULL for too big number (ULONG_MAX for ex.) and a pointer for int overflow.
-** DONE ft_strdup [4/4]
-CLOSED: [2023-11-20 lun. 13:36]
+*Behavior*: No allocation.
+*Return value*: NULL for too big number (ULONG_MAX for ex.) and a pointer for int overflow.
+** ft_strdup
 #+begin_src C
 char    *ft_strdup(const char *s);
 #+end_src
-*** CODED basic input
-CLOSED: [2023-11-20 lun. 13:06]
+*** basic input
 Normal c string passed.
-Behavior: s copied in new pointer allocated.
-Return value: pointer to s.
-*** CODED malloc fail
-CLOSED: [2023-11-20 lun. 13:10]
+*Behavior*: s copied in new pointer allocated.
+*Return value*: pointer to s.
+*** malloc fail
 Make malloc fail.
-Behavior: s not copied because function stops after malloc fail.
-Return value: NULL.
-*** CODED s empty
-CLOSED: [2023-11-20 lun. 13:11]
+*Behavior*: s not copied because function stops after malloc fail.
+*Return value*: NULL.
+*** s empty
 s allocated but empty string.
-Behavior: empty string copied.
-Return value: pointer to s.
-*** CODED NULL s
-CLOSED: [2023-11-20 lun. 13:19]
+*Behavior*: empty string copied.
+*Return value*: pointer to s.
+*** NULL s
 s set to NULL.
-Behavior: CRASH
-Return value: / (CRASH)
-** ft_substr
-** ft_strjoin
-** ft_strtrim
-** ft_split
-** ft_itoa
-** ft_strmapi
-** ft_striteri
-** ft_putchar_fd
-** ft_putstr_fd
-** ft_putendl_fd
-** ft_putnbr_fd
+*Behavior*: CRASH
+*Return value*: / (CRASH)
+** DONE ft_substr
+CLOSED: [2023-11-20 lun. 18:37]
+#+begin_src C
+char    *ft_substr(char const *s, unsigned int start, size_t len);
+#+end_src
+*** CODED Basic inputs
+CLOSED: [2023-11-20 lun. 17:26]
+Basic inputs passed to the function.
+*Behavior*: copies string s from index start with length len.
+*Return value*: the substring.
+*** CODED all string
+CLOSED: [2023-11-20 lun. 17:54]
+start set to 0 & len set to strlen(s).
+*Behavior*: copies string s from index start with length len.
+*Return value*: the substring (same string as s).
+*** CODED Bigger len
+CLOSED: [2023-11-20 lun. 17:32]
+Same inputs but with len > strlen(s) - start.
+*Behavior*: copies string s from index start with length = length of s from start to '\0'.
+*Return value*: the substring.
+*** CODED len zero
+CLOSED: [2023-11-20 lun. 17:34]
+len set to 0.
+*Behavior*: Copies empty string (copy = len - 1, last character beeing '\0').
+*Return value*: the substring (empty string).
+*** CODED start > strlen(s)
+CLOSED: [2023-11-20 lun. 17:40]
+start set to a greater number than strlen(s).
+*Behavior*: Creates empty string.
+*Return value*: the substring (empty string).
+*** CODED start = strlen(s)
+CLOSED: [2023-11-20 lun. 17:41]
+start set to strlen(s).
+*Behavior*: Creates empty string.
+*Return value*: the substring (empty string).
+*** CODED s empty
+CLOSED: [2023-11-20 lun. 17:49]
+s set to an empty string (start = 0 & len = 1)
+*Behavior*: Copies empty string.
+*Return value*: the substring (empty string).
+*** CODED NULL s
+CLOSED: [2023-11-20 lun. 17:52]
+s set to NULL.
+*Behavior*: No copy.
+*Return value*: NULL.
+*** CODED malloc fail
+CLOSED: [2023-11-20 lun. 17:54]
+Make malloc fail.
+*Behavior*: No copy.
+*Return value*: NULL.
+** TODO ft_strjoin
+** TODO ft_strtrim
+** TODO ft_split
+** TODO ft_itoa
+** TODO ft_strmapi
+** TODO ft_striteri
+** TODO ft_putchar_fd
+** TODO ft_putstr_fd
+** TODO ft_putendl_fd
+** TODO ft_putnbr_fd
 
 * Bonus part
 ** ft_lstnew
