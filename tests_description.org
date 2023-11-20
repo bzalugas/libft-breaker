@@ -510,14 +510,30 @@ CLOSED: [2023-11-17 Fri 11:00]
 Too big size passed to ft_calloc.
 Behavior: No allocation.
 Return value: NULL for too big number (ULONG_MAX for ex.) and a pointer for int overflow.
-** TODO ft_strdup [0/4]
+** TODO ft_strdup [4/4]
 #+begin_src C
 char    *ft_strdup(const char *s);
 #+end_src
-*** CODE basic input
-*** CODE protected malloc
-*** CODE s empty
-*** CODE NULL s
+*** CODED basic input
+CLOSED: [2023-11-20 lun. 13:06]
+Normal c string passed.
+Behavior: s copied in new pointer allocated.
+Return value: pointer to s.
+*** CODED malloc fail
+CLOSED: [2023-11-20 lun. 13:10]
+Make malloc fail.
+Behavior: s not copied because function stops after malloc fail.
+Return value: NULL.
+*** CODED s empty
+CLOSED: [2023-11-20 lun. 13:11]
+s allocated but empty string.
+Behavior: empty string copied.
+Return value: pointer to s.
+*** CODED NULL s
+CLOSED: [2023-11-20 lun. 13:19]
+s set to NULL.
+Behavior: CRASH
+Return value: / (CRASH)
 ** ft_substr
 ** ft_strjoin
 ** ft_strtrim

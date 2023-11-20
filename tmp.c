@@ -6,15 +6,9 @@ extern int		g_malloc_fail;
 
 int	main(void)
 {
-	size_t	count;
-	size_t	size;
-	count = 1;
-	size = 1;
+	char *s = "abcde";
 	FAIL_MALLOC;
-	int *s = NULL;
-	s = (int *)ft_calloc(count, size);
-	printf("s = %p\nlast malloc size = %lu\n", s, g_last_malloc_size);
-	/* printf("s = %p\n", s); */
-	free(s);
+	char *s2 = strdup(s);
+	printf("%p, %s\n", s2, s2);
 	return (0);
 }

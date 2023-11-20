@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/19 12:34:09 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:33:05 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3123,6 +3123,134 @@ CuSuite	*ft_calloc_get_suite()
 /*         FT_STRDUP        */
 /****************************/
 
+void	test_ft_strdup_basic(CuTest *tc)
+{
+	char	s[] = "TRIple Mooonstre!!! COUCOU";
+	char	*res1;
+	char	*res2;
+	size_t	size1;
+	size_t	size2;
+
+	printf("\n########### FT_STRDUP ##########\n");
+	printf("%s: s = <%s>\n", __func__, s);
+	SANDBOX(res2 = ft_strdup(s);free(res2));
+	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res1 = strdup(s);
+	size1 = g_last_malloc_size;
+	res2 = ft_strdup(s);
+	size2 = g_last_malloc_size;
+	CuAssertStrEquals(tc, res1, res2);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
+	if (res1)
+		free(res1);
+	if (res2)
+		free(res2);
+}
+
+void	test_ft_strdup_malloc_fail(CuTest *tc)
+{
+	char	s[] = "TRIple Mooonstre!!! COUCOU";
+	char	*res1;
+	char	*res2;
+
+	printf("%s: s = <%s>\n", __func__, s);
+	SANDBOX(
+		FAIL_MALLOC;
+		res2 = ft_strdup(s);
+		if(res2)
+			free(res2)
+		);
+	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res1 = strdup(s);
+	FAIL_MALLOC;
+	res2 = ft_strdup(s);
+	CuAssertPtrEquals(tc, res1, res2);
+	if (res1)
+		free(res1);
+	if (res2)
+		free(res2);
+}
+
+void	test_ft_strdup_empty_s(CuTest *tc)
+{
+	char	s[] = "";
+	char	*res1;
+	char	*res2;
+	size_t	size1;
+	size_t	size2;
+
+	printf("%s: s = <%s>\n", __func__, s);
+	SANDBOX(
+		res2 = ft_strdup(s);
+		if (res2)
+			free(res2);
+		);
+	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res1 = strdup(s);
+	size1 = g_last_malloc_size;
+	res2 = ft_strdup(s);
+	size2 = g_last_malloc_size;
+	CuAssertStrEquals(tc, res1, res2);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
+	if (res1)
+		free(res1);
+	if (res2)
+		free(res2);
+}
+
+void	test_ft_strdup_null_s(CuTest *tc)
+{
+	char	*s = NULL;
+	char	*res1;
+	char	*res2;
+	size_t	size1;
+	size_t	size2;
+	int		exit1;
+	int		exit2;
+
+	printf("%s: s = <%s>\n", __func__, s);
+	SANDBOX(
+		res1 = strdup(s);
+		if (res1)
+			free(res1);
+		);
+	exit1 = g_exit_code;
+	SANDBOX(
+		res2 = ft_strdup(s);
+		if (res2)
+			free(res2);
+		);
+	exit2 = g_exit_code;
+	CuAssert(tc, "ft_strdup doesn't crash when it should.", !(WIFSIGNALED(exit1)
+				 && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strdup crash when it shouldn't.", !(!WIFSIGNALED(exit1)
+				 && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strdup(s);
+		size1 = g_last_malloc_size;
+		res2 = ft_strdup(s);
+		size2 = g_last_malloc_size;
+		CuAssertStrEquals(tc, res1, res2);
+		CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
+		if (res1)
+			free(res1);
+		if (res2)
+			free(res2);
+	}
+}
+
+CuSuite	*ft_strdup_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strdup_basic);
+	SUITE_ADD_TEST(s, test_ft_strdup_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_strdup_empty_s);
+	SUITE_ADD_TEST(s, test_ft_strdup_null_s);
+	return (s);
+}
+
 /****************************/
 /*        RUN TESTS         */
 /****************************/
@@ -3154,6 +3282,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strnstr_get_suite());
 	CuSuiteAddSuite(suite, ft_atoi_get_suite());
 	CuSuiteAddSuite(suite, ft_calloc_get_suite());
+	CuSuiteAddSuite(suite, ft_strdup_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
