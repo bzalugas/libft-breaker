@@ -1,7 +1,7 @@
 #+author: bazaluga (bzalugas)
 
 * tester-libft
-tester-libft is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best is to use the maximum tests/testers you find to be sure your libft is perfect.
+tester-libft is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best thing to do is to use the maximum tests/testers to be sure your libft is perfect.
 
 * IMPORTANT INFORMATION
 ** Running tests on ubuntu
@@ -19,7 +19,7 @@ The default structure is:
 Change the location of your ~libft.a~ in the Makefile (variable LIBFT) if needed. Don't forget to also change the location of ~libft.h~ in ~lftest.h~
 
 * Usage
-Just run ~make~ and the Makefile will build your libft & launch the tests.
+Just run ~make run~ and the Makefile will build your libft & launch the tests.
 
 If you want to run "static tests", run ~make static~.
 
