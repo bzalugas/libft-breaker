@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/20 18:17:06 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/21 12:54:15 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,7 +302,6 @@ void	test_ft_memset_basic(CuTest *tc)
 	res = ft_memset(b2, 'z', size);
 	CuAssertPtrEquals_Msg(tc, "Bad return adress", b2, res);
 	CuAssertStrEquals_Msg(tc, "Results differents", b1, b2);
-
 }
 
 void	test_ft_memset_cut_string(CuTest *tc)

@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/17 19:26:11 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/21 12:52:37 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -30,7 +30,7 @@ OBJS	=	CuTest.o staticAllTests.o malloc.o utils.o
 
 CC	 	=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g
 
 INCLUDES	=	-L../libft -lft
 
@@ -39,6 +39,8 @@ ifneq ($(shell uname), Darwin)
 endif
 
 all:		$(NAME)
+
+run:		$(NAME)
 			./$(NAME)
 # 			LD_PRELOAD=./$(LMALLOC) ./$(NAME)
 
@@ -68,4 +70,4 @@ force:
 
 re:			clean force all
 
-.PHONY:		all clean $(LIBFT) force fclean static
+.PHONY:		all clean $(LIBFT) force fclean static run
