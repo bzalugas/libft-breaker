@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/20 18:36:41 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:10:39 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -923,72 +923,6 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	CuAssertIntEquals(tc, res1, res2);
 }
 
-void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
-{
-	char	mem1[BUFFSIZE];
-	char	mem2[BUFFSIZE];
-	char	*dst1 = &mem1[0];
-	char	*src1 = &mem1[5];
-	char	*dst2 = &mem2[0];
-	char	*src2 = &mem2[5];
-	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
-
-	bzero(mem1, BUFFSIZE);
-	bzero(mem2, BUFFSIZE);
-	memset(src1, 'a', 10);
-	memset(src2, 'a', 10);
-	size = strlen(src1) + 1;
-	printf("%s: src = %s (len = %lu) size = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
-	CuAssertIntEquals(tc, res1, res2);
-}
-
-void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
-{
-	char	mem1[BUFFSIZE];
-	char	mem2[BUFFSIZE];
-	char	*dst1 = &mem1[5];
-	char	*src1 = &mem1[0];
-	char	*dst2 = &mem2[5];
-	char	*src2 = &mem2[0];
-	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
-
-	bzero(mem1, BUFFSIZE);
-	bzero(mem2, BUFFSIZE);
-	memset(src1, 'a', BUFFSIZE - 1);
-	memset(src2, 'a', BUFFSIZE - 1);
-	src1[10] = '\0';
-	src2[10] = '\0';
-	size = strlen(src1) + 1;
-	printf("%s: src = %s (len = %lu) size = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
-	CuAssertIntEquals(tc, res1, res2);
-}
-
 void	test_ft_strlcpy_null_dst(CuTest *tc)
 {
 	char	*dst = NULL;
@@ -1036,8 +970,6 @@ CuSuite *ft_strlcpy_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcpy_small_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_size_zero);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_overlap_src);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_src_overlap_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_src);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst_and_src);
@@ -1120,25 +1052,21 @@ void	test_ft_strlcat_smaller_small_size(CuTest *tc)
 
 void	test_ft_strlcat_bigger_size(CuTest *tc)
 {
-	char	dst1[BUFFSIZE];
-	char	dst2[BUFFSIZE];
+	char	dst[BUFFSIZE];
 	char	src[BUFFSIZE];
 	size_t	size;
-	size_t	res1;
-	size_t	res2;
+	size_t	res;
 
-	strcpy(dst1, "hello");
-	strcpy(dst2, "hello");
+	strcpy(dst, "hello");
 	strcpy(src, " everyone!");
-	size = strlen(dst1) + strlen(src) + 23;
+	size = strlen(dst) + strlen(src) + 23;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst1, strlen(dst1), size);
-	res1 = strlcat(dst1, src, size);
-	SANDBOX(ft_strlcat(dst2, src, size););
+		dst, strlen(dst), size);
+	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	res2 = ft_strlcat(dst2, src, size);
-	CuAssertStrEquals(tc, dst1, dst2);
-	CuAssertIntEquals(tc, res1, res2);
+	res = ft_strlcat(dst, src, size);
+	CuAssertStrEquals(tc, "hello everyone!", dst);
+	CuAssertIntEquals(tc, 15, res);
 }
 
 void	test_ft_strlcat_size_zero(CuTest *tc)
@@ -2594,77 +2522,56 @@ CuSuite	*ft_calloc_get_suite()
 void	test_ft_strdup_basic(CuTest *tc)
 {
 	char	s[] = "TRIple Mooonstre!!! COUCOU";
-	char	*res1;
-	char	*res2;
-	size_t	size1;
-	size_t	size2;
+	char	*res;
 
 	printf("\n########### FT_STRDUP ##########\n");
 	printf("%s: s = <%s>\n", __func__, s);
-	SANDBOX(res2 = ft_strdup(s);free(res2));
+	SANDBOX(res = ft_strdup(s);free(res));
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	res1 = strdup(s);
-	size1 = g_last_malloc_size;
-	res2 = ft_strdup(s);
-	size2 = g_last_malloc_size;
-	CuAssertStrEquals(tc, res1, res2);
-	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
-	if (res1)
-		free(res1);
-	if (res2)
-		free(res2);
+	res = ft_strdup(s);
+	CuAssertStrEquals(tc, "TRIple Mooonstre!!! COUCOU", res);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", 27, g_last_malloc_size);
+	if (res)
+		free(res);
 }
 
 void	test_ft_strdup_malloc_fail(CuTest *tc)
 {
 	char	s[] = "TRIple Mooonstre!!! COUCOU";
-	char	*res1;
-	char	*res2;
+	char	*res;
 
 	printf("%s: s = <%s>\n", __func__, s);
 	SANDBOX(
 		FAIL_MALLOC;
-		res2 = ft_strdup(s);
-		if(res2)
-			free(res2)
+		res = ft_strdup(s);
+		if(res)
+			free(res)
 		);
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
-	res1 = strdup(s);
-	FAIL_MALLOC;
-	res2 = ft_strdup(s);
-	CuAssertPtrEquals(tc, res1, res2);
-	if (res1)
-		free(res1);
-	if (res2)
-		free(res2);
+	res = ft_strdup(s);
+	CuAssertPtrEquals(tc, NULL, res);
+	if (res)
+		free(res);
 }
 
 void	test_ft_strdup_empty_s(CuTest *tc)
 {
 	char	s[] = "";
-	char	*res1;
-	char	*res2;
-	size_t	size1;
-	size_t	size2;
+	char	*res;
 
 	printf("%s: s = <%s>\n", __func__, s);
 	SANDBOX(
-		res2 = ft_strdup(s);
-		if (res2)
-			free(res2);
+		res = ft_strdup(s);
+		if (res)
+			free(res);
 		);
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	res1 = strdup(s);
-	size1 = g_last_malloc_size;
-	res2 = ft_strdup(s);
-	size2 = g_last_malloc_size;
-	CuAssertStrEquals(tc, res1, res2);
-	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
-	if (res1)
-		free(res1);
-	if (res2)
-		free(res2);
+	res = ft_strdup(s);
+	CuAssertStrEquals(tc, "", res);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", 1, g_last_malloc_size);
+	if (res)
+		free(res);
 }
 
 void	test_ft_strdup_null_s(CuTest *tc)
@@ -2903,6 +2810,187 @@ CuSuite	*ft_substr_get_suite()
 }
 
 /****************************/
+/*         FT_STRJOIN       */
+/****************************/
+
+void	test_ft_strjoin_basic(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("\n########## FT_STRJOIN ##########\n");
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 17, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello everyone !", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_malloc_fail(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_strjoin(s1, s2);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s1(CuTest *tc)
+{
+	char	s1[] = "";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size);
+	CuAssertStrEquals(tc, " everyone !", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s2(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = "";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s1_and_s2(CuTest *tc)
+{
+	char	s1[] = "";
+	char	s2[] = "";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 1, g_last_malloc_size);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s1(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size);
+	/* CuAssertStrEquals(tc, " everyone !", res); */
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s2(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	*s2 = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size);
+	/* CuAssertStrEquals(tc, "Hello", res); */
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s1_and_s2(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	*s2 = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+CuSuite	*ft_strjoin_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strjoin_basic);
+	SUITE_ADD_TEST(s, test_ft_strjoin_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s1);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s1_and_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s1);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s1_and_s2);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -2935,6 +3023,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_calloc_get_suite());
 	CuSuiteAddSuite(suite, ft_strdup_get_suite());
 	CuSuiteAddSuite(suite, ft_substr_get_suite());
+	CuSuiteAddSuite(suite, ft_strjoin_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

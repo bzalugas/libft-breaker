@@ -473,7 +473,50 @@ CLOSED: [2023-11-20 lun. 17:54]
 Make malloc fail.
 *Behavior*: No copy.
 *Return value*: NULL.
-** TODO ft_strjoin
+** TODO ft_strjoin [8/8]
+#+begin_src C
+char    *ft_strjoin(char const *s1, char const *s2);
+#+end_src
+*** CODED Basic inputs
+CLOSED: [2023-11-23 Thu 16:15]
+s1 & s2 set to differents strings.
+*Behavior*: allocation of a new string in which s1 + s2 are copied.
+*Return value*: the new string.
+*** CODED malloc fail
+CLOSED: [2023-11-23 Thu 16:17]
+make malloc fail.
+*Behavior*: No copy.
+*Return value*: NULL.
+*** CODED empty s1
+CLOSED: [2023-11-23 Thu 16:19]
+s1 set to an empty string.
+*Behavior*: allocation of a new string in which s1 + s2 are copied (so only s2).
+*Return value*: the new string (=s2).
+*** CODED empty s2
+CLOSED: [2023-11-23 Thu 16:19]
+s2 set to an empty string.
+*Behavior*: allocation of a new string in which s1 + s2 are copied (so only s1).
+*Return value*: the new string (=s1).
+*** CODED empty s1 & s2
+CLOSED: [2023-11-23 Thu 16:20]
+s1 & s2 set to empty strings.
+*Behavior*: allocation of a new string in which s1 + s2 are copied (so '\0').
+*Return value*: the new string (='\0').
+*** CODED NULL s1
+CLOSED: [2023-11-23 Thu 16:22]
+s1 set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL s2
+CLOSED: [2023-11-23 Thu 16:23]
+s2 set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL s1 & s2
+CLOSED: [2023-11-23 Thu 16:24]
+s1 & s2 set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
 ** TODO ft_strtrim
 ** TODO ft_split
 ** TODO ft_itoa

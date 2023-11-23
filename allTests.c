@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/21 12:54:15 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:39:15 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3464,6 +3464,187 @@ CuSuite	*ft_substr_get_suite()
 }
 
 /****************************/
+/*         FT_STRJOIN       */
+/****************************/
+
+void	test_ft_strjoin_basic(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("\n########## FT_STRJOIN ##########\n");
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 17, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello everyone !", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_malloc_fail(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_strjoin(s1, s2);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s1(CuTest *tc)
+{
+	char	s1[] = "";
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size);
+	CuAssertStrEquals(tc, " everyone !", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s2(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	s2[] = "";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_empty_s1_and_s2(CuTest *tc)
+{
+	char	s1[] = "";
+	char	s2[] = "";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 1, g_last_malloc_size);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s1(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	s2[] = " everyone !";
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size);
+	/* CuAssertStrEquals(tc, " everyone !", res); */
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s2(CuTest *tc)
+{
+	char	s1[] = "Hello";
+	char	*s2 = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size);
+	/* CuAssertStrEquals(tc, "Hello", res); */
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strjoin_null_s1_and_s2(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	*s2 = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, s2=<%s>\n", __func__, s1, s2);
+	SANDBOX(
+		res = ft_strjoin(s1, s2);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
+	res = ft_strjoin(s1, s2);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+CuSuite	*ft_strjoin_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strjoin_basic);
+	SUITE_ADD_TEST(s, test_ft_strjoin_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s1);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_empty_s1_and_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s1);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s2);
+	SUITE_ADD_TEST(s, test_ft_strjoin_null_s1_and_s2);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -3496,6 +3677,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_calloc_get_suite());
 	CuSuiteAddSuite(suite, ft_strdup_get_suite());
 	CuSuiteAddSuite(suite, ft_substr_get_suite());
+	CuSuiteAddSuite(suite, ft_strjoin_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
