@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/23 17:10:39 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:49:30 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2929,8 +2929,6 @@ void	test_ft_strjoin_null_s1(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size);
-	/* CuAssertStrEquals(tc, " everyone !", res); */
 	CuAssertStrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -2950,8 +2948,6 @@ void	test_ft_strjoin_null_s2(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size);
-	/* CuAssertStrEquals(tc, "Hello", res); */
 	CuAssertStrEquals(tc, NULL, res);
 	if (res)
 		free(res);
