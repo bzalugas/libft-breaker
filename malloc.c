@@ -6,12 +6,12 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/17 19:12:28 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 00:40:52 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #define _GNU_SOURCE
 #include "lftest.h"
-#include <dlfcn.h>
 
 extern int		g_malloc_fail;
 extern size_t	g_last_malloc_size;

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/19 12:25:21 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 00:28:07 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <errno.h>
 # include <sys/wait.h>
 # include <limits.h>
+# include <dlfcn.h>
 # define BUFFSIZE 30
 # define BUFFBSIZE 30000
 # define ANSI_COLOR_RED     "\033[31m"

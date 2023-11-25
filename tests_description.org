@@ -499,7 +499,61 @@ s2 set to NULL.
 s1 & s2 set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** TODO ft_strtrim
+** DONE ft_strtrim [10/10]
+CLOSED: [2023-11-26 dim. 00:58]
+#+begin_src C
+char    *ft_strtrim(char const *s1, char const *set);
+#+end_src
+*** CODED Basic inputs
+CLOSED: [2023-11-25 sam. 19:25]
+Basic inputs passed to the function.
+*Behavior*: s1 is trimmed and returned.
+*Return value*: trimmed s1 (copy).
+*** CODED Characters in middle of s1
+CLOSED: [2023-11-25 sam. 19:28]
+Characters of set only in the string (not at beginning or end).
+*Behavior*: s1 is not modified.
+*Return value*: s1 (copy).
+*** CODED No character of set in s1
+CLOSED: [2023-11-25 sam. 19:33]
+No character of set present in s1.
+*Behavior*: s1 is not modified.
+*Return value*: s1 (copy).
+*** CODED Only characters of set in s1
+CLOSED: [2023-11-26 dim. 19:48]
+s1 contains only characters from set.
+*Behavior*: empty string copied.
+*Return value*: empty string.
+*** CODED empty set
+CLOSED: [2023-11-25 sam. 19:35]
+set set to an empty string.
+*Behavior*: s1 is not modified.
+*Return value*: s1 (copy).
+*** CODED emtpy s1
+CLOSED: [2023-11-25 sam. 19:40]
+s1 set to an empty string.
+*Behavior*: s1 is not modified.
+*Return value*: s1 (copy).
+*** CODED malloc fail
+CLOSED: [2023-11-25 sam. 19:44]
+Make malloc fail.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL s1
+CLOSED: [2023-11-25 sam. 19:45]
+s1 set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL set
+CLOSED: [2023-11-25 sam. 19:46]
+set set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL s1 & set
+CLOSED: [2023-11-25 sam. 19:47]
+s1 & set set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
 ** TODO ft_split
 ** TODO ft_itoa
 ** TODO ft_strmapi

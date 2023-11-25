@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/25 18:14:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 00:56:35 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2974,6 +2974,275 @@ CuSuite	*ft_strjoin_get_suite()
 }
 
 /****************************/
+/*         FT_STRTRIM       */
+/****************************/
+
+void	test_ft_strtrim_basic_1(CuTest *tc)
+{
+	char	s1[] = "  zzz Hello everyone! zz";
+	char	set[] = "z ";
+	char	*res;
+
+	printf("\n########## FT_STRJOIN ##########\n");
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with basic inputs.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, "Hello everyone!", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 16, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_basic_2(CuTest *tc)
+{
+	char	s1[] = "  zzz Hello everyone!";
+	char	set[] = "z ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with basic inputs.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, "Hello everyone!", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 16, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_basic_3(CuTest *tc)
+{
+	char	s1[] = "Hello everyone! zz";
+	char	set[] = "z ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with basic inputs.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, "Hello everyone!", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 16, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_chars_middle(CuTest *tc)
+{
+	char	s1[] = "Hello zzz everyone!";
+	char	set[] = "z ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with chars of charset in the middle of the string.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+ 	CuAssertStrEquals(tc, "Hello zzz everyone!", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 20, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_no_set_in_s1(CuTest *tc)
+{
+	char	s1[] = " yyy HeLLo everyone! yy";
+	char	set[] = "bazlu";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with no char of charset in string.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, " yyy HeLLo everyone! yy", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 24, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_only_set_in_s1(CuTest *tc)
+{
+	char	s1[] = " yyy Hello everyone! yy";
+	char	set[] = " yHelovrn!";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with only chars of charset in string.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, "", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 1, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_empty_set(CuTest *tc)
+{
+	char	s1[] = " Hello everyone! ";
+	char	set[] = "";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with empty set.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+  	CuAssertStrEquals(tc, " Hello everyone! ", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 18, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_empty_s1(CuTest *tc)
+{
+	char	s1[] = "";
+	char	set[] = "abc ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH with empty string.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, "", res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 1, g_last_malloc_size);
+	CuAssert(tc, "The string returned is not a copy.", res != s1);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_malloc_fail(CuTest *tc)
+{
+	char	s1[] = " Hello everyone!   ";
+	char	set[] = " ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH when malloc fails.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_null_s1(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	set[] = " ";
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH when s1 is set to NULL.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_null_set(CuTest *tc)
+{
+	char	s1[] = "  Hello everyone!  ";
+	char	*set = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH when set is set to NULL.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+void	test_ft_strtrim_null_s1_and_set(CuTest *tc)
+{
+	char	*s1 = NULL;
+	char	*set = NULL;
+	char	*res;
+
+	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
+	SANDBOX(
+		res = ft_strtrim(s1, set);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "ft_strtrim CRASH when s1 & set are set to NULL.", !WIFSIGNALED(g_exit_code));
+	res = ft_strtrim(s1, set);
+	CuAssertStrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+CuSuite	*ft_strtrim_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strtrim_basic_1);
+	SUITE_ADD_TEST(s, test_ft_strtrim_basic_2);
+	SUITE_ADD_TEST(s, test_ft_strtrim_basic_3);
+	SUITE_ADD_TEST(s, test_ft_strtrim_chars_middle);
+	SUITE_ADD_TEST(s, test_ft_strtrim_no_set_in_s1);
+	SUITE_ADD_TEST(s, test_ft_strtrim_only_set_in_s1);
+	SUITE_ADD_TEST(s, test_ft_strtrim_empty_set);
+	SUITE_ADD_TEST(s, test_ft_strtrim_empty_s1);
+	SUITE_ADD_TEST(s, test_ft_strtrim_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_strtrim_null_s1);
+	SUITE_ADD_TEST(s, test_ft_strtrim_null_set);
+	SUITE_ADD_TEST(s, test_ft_strtrim_null_s1_and_set);
+	return (s);
+}
+
+/****************************/
 /*        RUN TESTS         */
 /****************************/
 
@@ -3007,6 +3276,7 @@ void	run_all()
 	CuSuiteAddSuite(suite, ft_strdup_get_suite());
 	CuSuiteAddSuite(suite, ft_substr_get_suite());
 	CuSuiteAddSuite(suite, ft_strjoin_get_suite());
+	CuSuiteAddSuite(suite, ft_strtrim_get_suite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
