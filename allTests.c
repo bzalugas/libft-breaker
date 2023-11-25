@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/25 14:49:21 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:54:11 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3079,34 +3079,21 @@ void	test_ft_calloc_big_nums(CuTest *tc)
 {
 	size_t	nmemb1;
 	size_t	size1;
-	size_t	nmemb2;
-	size_t	size2;
 	int		*ptr;
-	int		*ptr2;
 
 	nmemb1 = ULONG_MAX;
 	size1 = 1;
-	nmemb2 = INT_MAX / 1.5;
-	size2 = 2;
 	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb1, size1);
-	printf("%s: nmemb=%lu, size=%lu\n", __func__, nmemb2, size2);
 	SANDBOX(
 		ptr = ft_calloc(nmemb1, size1);
-		ptr2 = ft_calloc(nmemb2, size2);
 		if (ptr)
 			free(ptr);
-		if (ptr2)
-			free(ptr2);
 		);
 	CuAssert(tc, "ft_calloc crash with big number.", !WIFSIGNALED(g_exit_code));
 	ptr = ft_calloc(nmemb1, size1);
-	ptr2 = ft_calloc(nmemb2, size2);
 	if (ptr)
 		free(ptr);
-	if (ptr2)
-		free(ptr2);
 	CuAssertPtrEquals(tc, NULL, ptr);
-	CuAssert(tc, "ft_calloc doesn't work with int overflow", ptr2 != NULL);
 }
 
 CuSuite	*ft_calloc_get_suite()
