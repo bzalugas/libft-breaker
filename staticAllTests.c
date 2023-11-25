@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/25 14:54:44 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:14:43 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2475,7 +2475,6 @@ void	test_ft_calloc_big_nums(CuTest *tc)
 	size_t	nmemb1;
 	size_t	size1;
 	int		*ptr;
-	int		*ptr2;
 
 	nmemb1 = ULONG_MAX;
 	size1 = 1;

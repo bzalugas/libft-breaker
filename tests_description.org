@@ -423,97 +423,79 @@ s allocated but empty string.
 s set to NULL.
 *Behavior*: CRASH
 *Return value*: / (CRASH)
-** DONE ft_substr
-CLOSED: [2023-11-20 lun. 18:37]
+** ft_substr
 #+begin_src C
 char    *ft_substr(char const *s, unsigned int start, size_t len);
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-11-20 lun. 17:26]
+*** Basic inputs
 Basic inputs passed to the function.
 *Behavior*: copies string s from index start with length len.
 *Return value*: the substring.
-*** CODED all string
-CLOSED: [2023-11-20 lun. 17:54]
+*** all string
 start set to 0 & len set to strlen(s).
 *Behavior*: copies string s from index start with length len.
 *Return value*: the substring (same string as s).
-*** CODED Bigger len
-CLOSED: [2023-11-20 lun. 17:32]
+*** Bigger len
 Same inputs but with len > strlen(s) - start.
 *Behavior*: copies string s from index start with length = length of s from start to '\0'.
 *Return value*: the substring.
-*** CODED len zero
-CLOSED: [2023-11-20 lun. 17:34]
+*** len zero
 len set to 0.
 *Behavior*: Copies empty string (copy = len - 1, last character beeing '\0').
 *Return value*: the substring (empty string).
-*** CODED start > strlen(s)
-CLOSED: [2023-11-20 lun. 17:40]
+*** start > strlen(s)
 start set to a greater number than strlen(s).
 *Behavior*: Creates empty string.
 *Return value*: the substring (empty string).
-*** CODED start = strlen(s)
-CLOSED: [2023-11-20 lun. 17:41]
+*** start = strlen(s)
 start set to strlen(s).
 *Behavior*: Creates empty string.
 *Return value*: the substring (empty string).
-*** CODED s empty
-CLOSED: [2023-11-20 lun. 17:49]
+*** s empty
 s set to an empty string (start = 0 & len = 1)
 *Behavior*: Copies empty string.
 *Return value*: the substring (empty string).
-*** CODED NULL s
-CLOSED: [2023-11-20 lun. 17:52]
+*** NULL s
 s set to NULL.
 *Behavior*: No copy.
 *Return value*: NULL.
-*** CODED malloc fail
-CLOSED: [2023-11-20 lun. 17:54]
+*** malloc fail
 Make malloc fail.
 *Behavior*: No copy.
 *Return value*: NULL.
-** TODO ft_strjoin [8/8]
+** ft_strjoin
 #+begin_src C
 char    *ft_strjoin(char const *s1, char const *s2);
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-11-23 Thu 16:15]
+*** Basic inputs
 s1 & s2 set to differents strings.
 *Behavior*: allocation of a new string in which s1 + s2 are copied.
 *Return value*: the new string.
-*** CODED malloc fail
-CLOSED: [2023-11-23 Thu 16:17]
+*** malloc fail
 make malloc fail.
 *Behavior*: No copy.
 *Return value*: NULL.
-*** CODED empty s1
-CLOSED: [2023-11-23 Thu 16:19]
+*** empty s1
 s1 set to an empty string.
 *Behavior*: allocation of a new string in which s1 + s2 are copied (so only s2).
 *Return value*: the new string (=s2).
-*** CODED empty s2
-CLOSED: [2023-11-23 Thu 16:19]
+*** empty s2
 s2 set to an empty string.
 *Behavior*: allocation of a new string in which s1 + s2 are copied (so only s1).
 *Return value*: the new string (=s1).
-*** CODED empty s1 & s2
-CLOSED: [2023-11-23 Thu 16:20]
+*** empty s1 & s2
 s1 & s2 set to empty strings.
 *Behavior*: allocation of a new string in which s1 + s2 are copied (so '\0').
 *Return value*: the new string (='\0').
-*** CODED NULL s1
-CLOSED: [2023-11-23 Thu 16:22]
+*** NULL s1
 s1 set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL s2
-CLOSED: [2023-11-23 Thu 16:23]
+*** NULL s2
 s2 set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL s1 & s2
-CLOSED: [2023-11-23 Thu 16:24]
+*** NULL s1 & s2
 s1 & s2 set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
