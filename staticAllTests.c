@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 00:56:35 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 01:51:59 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2983,7 +2983,7 @@ void	test_ft_strtrim_basic_1(CuTest *tc)
 	char	set[] = "z ";
 	char	*res;
 
-	printf("\n########## FT_STRJOIN ##########\n");
+	printf("\n########## FT_STRTRIM ##########\n");
 	printf("%s: s1=<%s>, set=<%s>\n", __func__, s1, set);
 	SANDBOX(
 		res = ft_strtrim(s1, set);
