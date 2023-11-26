@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 08:40:13 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:29:32 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 void	test_ft_isalpha_basic(CuTest *tc)
 {
-	int		(*ft_isalpha)(int) = (int (*)(int))get_fun("ft_isalpha");
+	int		(*ft_isalpha)(int) = get_fun("ft_isalpha");
 	char	c;
 
 	printf("\n########## FT_ISALPHA ##########\n");
@@ -4096,11 +4096,13 @@ void	run_all()
 
 int	main(void)
 {
-	init_fcts();
+	void *handle = init_fcts();
 	for (int i = 0; i < 31; i++)
 		printf("%s: fun=%p, test_fun=%p\n", fcts[i].fun_name, fcts[i].fun, fcts[i].test_fun);
+	/* printf("res = %d\n", ((int (*)(int))fcts[0].fun)('8')); */
 	printf("\n\n");
 	run_all();
+	dlclose(handle);
 	/* run_test_ft_isalpha(); */
 	/* run_test_ft_isdigit(); */
 	/* run_test_ft_isalnum(); */

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 08:39:12 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:28:58 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "lftest.h"
@@ -17,7 +17,7 @@ int		g_malloc_fail;
 size_t	g_last_malloc_size;
 t_ft	fcts[31];
 
-void	init_fcts(void)
+void	*init_fcts(void)
 {
 	void	*handle = dlopen("./libft.so", RTLD_LAZY);
 	if (!handle)
@@ -61,7 +61,7 @@ void	init_fcts(void)
 	/* fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite}; */
 	/* fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite}; */
 	/* fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite}; */
-	dlclose(handle);
+	return (handle);
 }
 
 
