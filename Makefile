@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/26 07:46:27 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/26 08:23:21 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -58,10 +58,10 @@ $(LIBFT):
 # 			gcc -shared -fPIC -o $< $(MALLOC) -ldl
 
 $(NAME):	$(LIBFT) $(SRC) $(NORMAL)
-			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(LIBFT) $(INCLUDES) -o $(NAME)
+			$(CC) $(CFLAGS) $(SRC) $(NORMAL) ./libft.so $(INCLUDES) -o $(NAME)
 
 static:		$(LIBFT) $(SRC) $(STATIC)
-			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(LIBFT) $(INCLUDES) -o $(NAME)
+			$(CC) $(CFLAGS) $(SRC) $(STATIC) ./libft.so $(INCLUDES) -o $(NAME)
 
 clean:
 			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC) ./libft.so

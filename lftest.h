@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 06:01:04 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 07:33:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LFTEST_H
 # define _GNU_SOURCE
 # include "CuTest.h"
-# include "../libft/libft.h"
+/* # include "../libft/libft.h" */
 # include <stdio.h>
 # include <ctype.h>
 # include <string.h>

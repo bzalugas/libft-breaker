@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 07:50:56 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 08:26:54 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ extern size_t	g_last_malloc_size;
 
 void	*malloc(size_t size)
 {
+	static void	*(*real_malloc)(size_t) = NULL;
 	if (g_malloc_fail == 1)
 	{
 		g_last_malloc_size = 0;
 		g_malloc_fail = 0;
 		return (NULL);
 	}
-	void	*(*real_malloc)(size_t) = dlsym(RTLD_NEXT, "malloc");
+	if (!real_malloc)
+		real_malloc = dlsym(RTLD_NEXT, "malloc");
 	if (!real_malloc)
 		exit(EXIT_FAILURE);
 	g_last_malloc_size = size;

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 06:13:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 07:25:42 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,14 +237,14 @@ void	test_ft_strlen_basic(CuTest *tc)
 		res1 = strlen(s);
 		write(fd[1], &res1, sizeof(int));
 		close(fd[1]);
-	);
+		);
 	read(fd[0], &res1, sizeof(int));
 	SANDBOX(
 		close(fd[0]);
 		res2 = ft_strlen(s);
 		write(fd[1], &res2, sizeof(int));
 		close(fd[1]);
-	);
+		);
 	close(fd[1]);
 	read(fd[0], &res2, sizeof(int));
 	close(fd[0]);
@@ -430,6 +430,7 @@ void	run_test_ft_memset(void)
 
 void	test_ft_bzero_basic(CuTest *tc)
 {
+	void	(*ft_bzero)(void *, size_t) = get_fun("ft_bzero");
 	size_t	n = 20;
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
@@ -447,6 +448,7 @@ void	test_ft_bzero_basic(CuTest *tc)
 
 void	test_ft_bzero_size_zero(CuTest *tc)
 {
+	void	(*ft_bzero)(void *, size_t) = get_fun("ft_bzero");
 	size_t	n = 0;
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
@@ -464,6 +466,7 @@ void	test_ft_bzero_size_zero(CuTest *tc)
 
 void	test_ft_bzero_null(CuTest *tc)
 {
+	void	(*ft_bzero)(void *, size_t) = get_fun("ft_bzero");
 	size_t	n = BUFFSIZE;
 	char	*s1 = NULL;
 
@@ -500,6 +503,7 @@ void	run_test_ft_bzero(void)
 
 void	test_ft_memcpy_basic(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -522,6 +526,7 @@ void	test_ft_memcpy_basic(CuTest *tc)
 
 void	test_ft_memcpy_small_size(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -543,6 +548,7 @@ void	test_ft_memcpy_small_size(CuTest *tc)
 
 void	test_ft_memcpy_size_zero(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -564,6 +570,7 @@ void	test_ft_memcpy_size_zero(CuTest *tc)
 
 void	test_ft_memcpy_same_src_dst(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	src[BUFFSIZE];
 	char	*dst1 = src;
 	char	*dst2 = src;
@@ -585,6 +592,7 @@ void	test_ft_memcpy_same_src_dst(CuTest *tc)
 
 void	test_ft_memcpy_null_destination(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	n;
@@ -598,6 +606,7 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 
 void	test_ft_memcpy_null_source(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	n;
@@ -611,6 +620,7 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 
 void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 {
+	void	*(*ft_memcpy)(void *, const void *, size_t) = get_fun("ft_memcpy");
 	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	n;
@@ -640,6 +650,7 @@ CuSuite	*ft_memcpy_get_suite()
 
 void	test_ft_memmove_basic(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	void	*res;
@@ -663,6 +674,7 @@ void	test_ft_memmove_basic(CuTest *tc)
 
 void	test_ft_memmove_same_src_dst(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	src[BUFFSIZE];
 	char	*dst1 = src;
 	char	*dst2 = src;
@@ -684,6 +696,7 @@ void	test_ft_memmove_same_src_dst(CuTest *tc)
 
 void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	mem1[BUFFBSIZE];
 	char	mem2[BUFFBSIZE];
 	char	*dst1 = &mem1[0];
@@ -715,6 +728,7 @@ void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 
 void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	mem1[BUFFBSIZE];
 	char	mem2[BUFFBSIZE];
 	char	*dst1 = &mem1[5];
@@ -746,6 +760,7 @@ void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
 
 void	test_ft_memmove_small_size(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	void	*res;
@@ -767,6 +782,7 @@ void	test_ft_memmove_small_size(CuTest *tc)
 
 void	test_ft_memmove_size_zero(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	void	*res;
@@ -788,6 +804,7 @@ void	test_ft_memmove_size_zero(CuTest *tc)
 
 void	test_ft_memmove_null_dst(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	n;
@@ -801,6 +818,7 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 
 void	test_ft_memmove_null_src(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	n;
@@ -814,6 +832,7 @@ void	test_ft_memmove_null_src(CuTest *tc)
 
 void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 {
+	void	*(*ft_memmove)(void *, const void *, size_t) = get_fun("ft_memmove");
 	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	n;
@@ -845,6 +864,7 @@ CuSuite *ft_memmove_get_suite()
 
 void	test_ft_strlcpy_basic(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*txt = "TESTING STRLCPY";
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
@@ -869,6 +889,7 @@ void	test_ft_strlcpy_basic(CuTest *tc)
 
 void	test_ft_strlcpy_small_size(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*txt = "TESTING STRLCPY";
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
@@ -892,6 +913,7 @@ void	test_ft_strlcpy_small_size(CuTest *tc)
 
 void	test_ft_strlcpy_bigger_size(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*txt = "TESTING STRLCPY";
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
@@ -915,6 +937,7 @@ void	test_ft_strlcpy_bigger_size(CuTest *tc)
 
 void	test_ft_strlcpy_size_zero(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*txt = "TESTING STRLCPY";
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
@@ -938,6 +961,7 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 
 void	test_ft_strlcpy_null_dst(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	size;
@@ -952,6 +976,7 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 
 void	test_ft_strlcpy_null_src(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	size;
@@ -965,6 +990,7 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 
 void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 {
+	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
 	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	size;
@@ -995,6 +1021,7 @@ CuSuite *ft_strlcpy_get_suite()
 
 void	test_ft_strlcat_basic(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -1008,7 +1035,7 @@ void	test_ft_strlcat_basic(CuTest *tc)
 	size = strlen(dst1) + strlen(src) + 1;
 	printf("\n########## FT_STRLCAT ##########\n");
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst1, strlen(dst1), size);
+		   dst1, strlen(dst1), size);
 	res1 = strlcat(dst1, src, size);
 	SANDBOX(ft_strlcat(dst2, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1019,6 +1046,7 @@ void	test_ft_strlcat_basic(CuTest *tc)
 
 void	test_ft_strlcat_smaller_size(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -1031,7 +1059,7 @@ void	test_ft_strlcat_smaller_size(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = strlen(dst1) + strlen(src) - 3;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst1, strlen(dst1), size);
+		   dst1, strlen(dst1), size);
 	res1 = strlcat(dst1, src, size);
 	SANDBOX(ft_strlcat(dst2, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1042,6 +1070,7 @@ void	test_ft_strlcat_smaller_size(CuTest *tc)
 
 void	test_ft_strlcat_smaller_small_size(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -1054,7 +1083,7 @@ void	test_ft_strlcat_smaller_small_size(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = strlen(dst1) - 2;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst1, strlen(dst1), size);
+		   dst1, strlen(dst1), size);
 	res1 = strlcat(dst1, src, size);
 	SANDBOX(ft_strlcat(dst2, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1065,6 +1094,7 @@ void	test_ft_strlcat_smaller_small_size(CuTest *tc)
 
 void	test_ft_strlcat_bigger_size(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst[BUFFSIZE];
 	char	src[BUFFSIZE];
 	size_t	size;
@@ -1074,7 +1104,7 @@ void	test_ft_strlcat_bigger_size(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = strlen(dst) + strlen(src) + 23;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst, strlen(dst), size);
+		   dst, strlen(dst), size);
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strlcat(dst, src, size);
@@ -1084,6 +1114,7 @@ void	test_ft_strlcat_bigger_size(CuTest *tc)
 
 void	test_ft_strlcat_size_zero(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst1[BUFFSIZE];
 	char	dst2[BUFFSIZE];
 	char	src[BUFFSIZE];
@@ -1096,7 +1127,7 @@ void	test_ft_strlcat_size_zero(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = 0;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst1, strlen(dst1), size);
+		   dst1, strlen(dst1), size);
 	res1 = strlcat(dst1, src, size);
 	SANDBOX(ft_strlcat(dst2, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -1107,6 +1138,7 @@ void	test_ft_strlcat_size_zero(CuTest *tc)
 
 void	test_ft_strlcat_null_dst(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	size;
@@ -1114,13 +1146,14 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = strlen(src) + 1;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst, (size_t)0, size);
+		   dst, (size_t)0, size);
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	*dst = NULL;
 	char	src[BUFFSIZE];
 	size_t	size;
@@ -1129,7 +1162,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	strcpy(src, " everyone!");
 	size = 0;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		dst, (size_t)0, size);
+		   dst, (size_t)0, size);
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strlcat(dst, src, size);
@@ -1138,6 +1171,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 
 void	test_ft_strlcat_null_src(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	dst[BUFFSIZE];
 	char	*src = NULL;
 	size_t	size;
@@ -1145,20 +1179,21 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	strcpy(dst, "hello");
 	size = strlen(dst) + 1;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
-		dst, strlen(dst), size);
+		   dst, strlen(dst), size);
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 {
+	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
 	char	*dst = NULL;
 	char	*src = NULL;
 	size_t	size;
 
 	size = BUFFSIZE;
 	printf("%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
-		dst, (size_t)0, size);
+		   dst, (size_t)0, size);
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
@@ -1184,6 +1219,7 @@ CuSuite *ft_strlcat_get_suite()
 
 void	test_ft_toupper_all(CuTest *tc)
 {
+	int	(*ft_toupper)(int) = get_fun("ft_toupper");
 	int	c = 0;
 	int	res1;
 	int	res2;
@@ -1212,6 +1248,7 @@ CuSuite	*ft_toupper_get_suite()
 
 void	test_ft_tolower_all(CuTest *tc)
 {
+	int	(*ft_tolower)(int) = get_fun("ft_tolower");
 	int	c = 0;
 	int	res1;
 	int	res2;
@@ -1240,6 +1277,7 @@ CuSuite	*ft_tolower_get_suite()
 
 void	test_ft_strchr_basic(CuTest *tc)
 {
+	char	*(*ft_strchr)(const char *, int) = get_fun("ft_strchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1258,6 +1296,7 @@ void	test_ft_strchr_basic(CuTest *tc)
 
 void	test_ft_strchr_multiple_occur(CuTest *tc)
 {
+	char	*(*ft_strchr)(const char *, int) = get_fun("ft_strchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1275,6 +1314,7 @@ void	test_ft_strchr_multiple_occur(CuTest *tc)
 
 void	test_ft_strchr_no_c_in_s(CuTest *tc)
 {
+	char	*(*ft_strchr)(const char *, int) = get_fun("ft_strchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1292,6 +1332,7 @@ void	test_ft_strchr_no_c_in_s(CuTest *tc)
 
 void	test_ft_strchr_c_zero(CuTest *tc)
 {
+	char	*(*ft_strchr)(const char *, int) = get_fun("ft_strchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1309,6 +1350,7 @@ void	test_ft_strchr_c_zero(CuTest *tc)
 
 void	test_ft_strchr_null_s(CuTest *tc)
 {
+	char	*(*ft_strchr)(const char *, int) = get_fun("ft_strchr");
 	char	*s = NULL;
 	int		c;
 
@@ -1335,6 +1377,7 @@ CuSuite	*ft_strchr_get_suite()
 
 void	test_ft_strrchr_basic(CuTest *tc)
 {
+	char	*(*ft_strrchr)(const char *, int) = get_fun("ft_strrchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1353,6 +1396,7 @@ void	test_ft_strrchr_basic(CuTest *tc)
 
 void	test_ft_strrchr_multiple_occur(CuTest *tc)
 {
+	char	*(*ft_strrchr)(const char *, int) = get_fun("ft_strrchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1370,6 +1414,7 @@ void	test_ft_strrchr_multiple_occur(CuTest *tc)
 
 void	test_ft_strrchr_no_c_in_s(CuTest *tc)
 {
+	char	*(*ft_strrchr)(const char *, int) = get_fun("ft_strrchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1387,6 +1432,7 @@ void	test_ft_strrchr_no_c_in_s(CuTest *tc)
 
 void	test_ft_strrchr_c_zero(CuTest *tc)
 {
+	char	*(*ft_strrchr)(const char *, int) = get_fun("ft_strrchr");
 	char	s[BUFFSIZE];
 	int		c;
 	char	*res1;
@@ -1404,6 +1450,7 @@ void	test_ft_strrchr_c_zero(CuTest *tc)
 
 void	test_ft_strrchr_null_s(CuTest *tc)
 {
+	char	*(*ft_strrchr)(const char *, int) = get_fun("ft_strrchr");
 	char	*s = NULL;
 	int		c;
 
@@ -1430,6 +1477,7 @@ CuSuite	*ft_strrchr_get_suite()
 
 void	test_ft_strncmp_basic_1(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1450,6 +1498,7 @@ void	test_ft_strncmp_basic_1(CuTest *tc)
 
 void	test_ft_strncmp_basic_2_1(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1469,6 +1518,7 @@ void	test_ft_strncmp_basic_2_1(CuTest *tc)
 
 void	test_ft_strncmp_basic_2_2(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1488,6 +1538,7 @@ void	test_ft_strncmp_basic_2_2(CuTest *tc)
 
 void	test_ft_strncmp_len_s1_lt_len_s2(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1507,6 +1558,7 @@ void	test_ft_strncmp_len_s1_lt_len_s2(CuTest *tc)
 
 void	test_ft_strncmp_len_s1_gt_len_s2(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1526,6 +1578,7 @@ void	test_ft_strncmp_len_s1_gt_len_s2(CuTest *tc)
 
 void	test_ft_strncmp_smaller_n(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1545,6 +1598,7 @@ void	test_ft_strncmp_smaller_n(CuTest *tc)
 
 void	test_ft_strncmp_bigger_n(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1564,6 +1618,7 @@ void	test_ft_strncmp_bigger_n(CuTest *tc)
 
 void	test_ft_strncmp_n_zero(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1583,6 +1638,7 @@ void	test_ft_strncmp_n_zero(CuTest *tc)
 
 void	test_ft_strncmp_not_u_char(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[2];
 	char	s2[2];
 	size_t	n;
@@ -1603,6 +1659,7 @@ void	test_ft_strncmp_not_u_char(CuTest *tc)
 
 void	test_ft_strncmp_null_s1(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	*s1 = NULL;
 	char	s2[BUFFSIZE];
 	size_t	n;
@@ -1616,6 +1673,7 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 
 void	test_ft_strncmp_null_s2(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	s1[BUFFSIZE];
 	char	*s2 = NULL;
 	size_t	n;
@@ -1629,6 +1687,7 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 
 void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	*s1 = NULL;
 	char	*s2 = NULL;
 	size_t	n;
@@ -1641,6 +1700,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 
 void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 {
+	int		(*ft_strncmp)(const char *, const char *, size_t) = get_fun("ft_strncmp");
 	char	*s1 = NULL;
 	char	*s2 = NULL;
 	size_t	n;
@@ -1676,6 +1736,7 @@ CuSuite	*ft_strncmp_get_suite()
 
 void	test_ft_memchr_basic(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
 	int		c;
 	size_t	n;
@@ -1695,6 +1756,7 @@ void	test_ft_memchr_basic(CuTest *tc)
 
 void	test_ft_memchr_multiple_c(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
 	int		c;
 	size_t	n;
@@ -1713,6 +1775,7 @@ void	test_ft_memchr_multiple_c(CuTest *tc)
 
 void	test_ft_memchr_c_not_in_s(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
 	int		c;
 	size_t	n;
@@ -1731,6 +1794,7 @@ void	test_ft_memchr_c_not_in_s(CuTest *tc)
 
 void	test_ft_memchr_c_not_unsigned_char(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\2002\177\23";
 	int		c;
 	size_t	n;
@@ -1749,6 +1813,7 @@ void	test_ft_memchr_c_not_unsigned_char(CuTest *tc)
 
 void	test_ft_memchr_c_zero(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
 	int		c;
 	size_t	n;
@@ -1767,6 +1832,7 @@ void	test_ft_memchr_c_zero(CuTest *tc)
 
 void	test_ft_memchr_smaller_n(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = "\0\23\12\42\0|{:[&]}\200\177\23";
 	int		c;
 	size_t	n;
@@ -1785,6 +1851,7 @@ void	test_ft_memchr_smaller_n(CuTest *tc)
 
 void	test_ft_memchr_null_s_1(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = NULL;
 	int		c;
 	size_t	n;
@@ -1798,6 +1865,7 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 
 void	test_ft_memchr_null_s_2(CuTest *tc)
 {
+	void	*(*ft_memchr)(const void *, int, size_t) = get_fun("ft_memchr");
 	char	*s = NULL;
 	int		c;
 	size_t	n;
@@ -1829,6 +1897,7 @@ CuSuite	*ft_memchr_get_suite()
 
 void	test_ft_memcmp_basic_1(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 5;
@@ -1846,6 +1915,7 @@ void	test_ft_memcmp_basic_1(CuTest *tc)
 
 void	test_ft_memcmp_basic_2_1(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	size_t	n = 5;
@@ -1862,6 +1932,7 @@ void	test_ft_memcmp_basic_2_1(CuTest *tc)
 
 void	test_ft_memcmp_basic_2_2(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 5;
@@ -1878,6 +1949,7 @@ void	test_ft_memcmp_basic_2_2(CuTest *tc)
 
 void	test_ft_memcmp_byte_zero(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, '\0', 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, '\0', 0x04, 0x05};
 	size_t	n = 5;
@@ -1894,6 +1966,7 @@ void	test_ft_memcmp_byte_zero(CuTest *tc)
 
 void	test_ft_memcmp_zero_n(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 0;
@@ -1910,6 +1983,7 @@ void	test_ft_memcmp_zero_n(CuTest *tc)
 
 void	test_ft_memcmp_not_u_char_1(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01020304};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04};
 	size_t	n = 4;
@@ -1926,6 +2000,7 @@ void	test_ft_memcmp_not_u_char_1(CuTest *tc)
 
 void	test_ft_memcmp_not_u_char_2(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04};
 	int		arr2[] = {0x01020304};
 	size_t	n = 4;
@@ -1942,6 +2017,7 @@ void	test_ft_memcmp_not_u_char_2(CuTest *tc)
 
 void	test_ft_memcmp_null_s1(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		*arr1 = NULL;
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 5;
@@ -1953,6 +2029,7 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 
 void	test_ft_memcmp_null_s2(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	int		*arr2 = NULL;
 	size_t	n = 5;
@@ -1964,6 +2041,7 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 
 void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		*arr1 = NULL;
 	int		*arr2 = NULL;
 	size_t	n = 5;
@@ -1975,6 +2053,7 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 
 void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 {
+	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
 	int		*arr1 = NULL;
 	int		*arr2 = NULL;
 	size_t	n = 0;
@@ -2010,6 +2089,7 @@ CuSuite	*ft_memcmp_get_suite()
 
 void	test_ft_strnstr_basic(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "MON";
 	size_t	len = strlen(big);
@@ -2028,6 +2108,7 @@ void	test_ft_strnstr_basic(CuTest *tc)
 
 void	test_ft_strnstr_little_not_in_big(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "DOUBLE";
 	size_t	len = strlen(big);
@@ -2044,6 +2125,7 @@ void	test_ft_strnstr_little_not_in_big(CuTest *tc)
 
 void	test_ft_strnstr_len_of_little(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "MONSTRE (COUCOU)";
 	size_t	len = strlen(little);
@@ -2060,6 +2142,7 @@ void	test_ft_strnstr_len_of_little(CuTest *tc)
 
 void	test_ft_strnstr_smaller_len(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "COUCOU";
 	size_t	len = 16;
@@ -2076,6 +2159,7 @@ void	test_ft_strnstr_smaller_len(CuTest *tc)
 
 void	test_ft_strnstr_bigger_len(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "TRIPLES";
 	size_t	len = 160;
@@ -2092,6 +2176,7 @@ void	test_ft_strnstr_bigger_len(CuTest *tc)
 
 void	test_ft_strnstr_len_zero(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "TRIPLE";
 	size_t	len = 0;
@@ -2108,6 +2193,7 @@ void	test_ft_strnstr_len_zero(CuTest *tc)
 
 void	test_ft_strnstr_empty_big(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "";
 	char	little[] = "TRIPLE";
 	size_t	len = 16;
@@ -2124,6 +2210,7 @@ void	test_ft_strnstr_empty_big(CuTest *tc)
 
 void	test_ft_strnstr_empty_little(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	little[] = "";
 	size_t	len = strlen(big);
@@ -2140,6 +2227,7 @@ void	test_ft_strnstr_empty_little(CuTest *tc)
 
 void	test_ft_strnstr_empty_big_and_little(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "";
 	char	little[] = "";
 	size_t	len = 16;
@@ -2156,6 +2244,7 @@ void	test_ft_strnstr_empty_big_and_little(CuTest *tc)
 
 void	test_ft_strnstr_null_big_1(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	*big = NULL;
 	char	little[] = "TRIPLE";
 	size_t	len = 16;
@@ -2167,6 +2256,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 
 void	test_ft_strnstr_null_big_2(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	*big = NULL;
 	char	little[] = "TRIPLE";
 	size_t	len = 0;
@@ -2182,6 +2272,7 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 
 void	test_ft_strnstr_null_little_1(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	*little = NULL;
 	size_t	len = 16;
@@ -2193,6 +2284,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 
 void	test_ft_strnstr_null_little_2(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	big[] = "TRIPLE MONSTRE (COUCOU)";
 	char	*little = NULL;
 	size_t	len = 0;
@@ -2204,6 +2296,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 
 void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	*big = NULL;
 	char	*little = NULL;
 	size_t	len = 16;
@@ -2215,6 +2308,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 
 void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 {
+	char	*(*ft_strnstr)(const char *, const char *, size_t) = get_fun("ft_strnstr");
 	char	*big = NULL;
 	char	*little = NULL;
 	size_t	len = 0;
@@ -2251,6 +2345,7 @@ CuSuite	*ft_strnstr_get_suite()
 
 void	test_ft_atoi_basic(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "123";
 
 	printf("\n########### FT_ATOI ###########\n");
@@ -2262,6 +2357,7 @@ void	test_ft_atoi_basic(CuTest *tc)
 
 void	test_ft_atoi_negative(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "-123";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2272,6 +2368,7 @@ void	test_ft_atoi_negative(CuTest *tc)
 
 void	test_ft_atoi_positive(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "+123";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2282,6 +2379,7 @@ void	test_ft_atoi_positive(CuTest *tc)
 
 void	test_ft_atoi_multiple_signs(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "+++---+123";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2292,6 +2390,7 @@ void	test_ft_atoi_multiple_signs(CuTest *tc)
 
 void	test_ft_atoi_whitespaces_1(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = " \t\t\n -123";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2302,6 +2401,7 @@ void	test_ft_atoi_whitespaces_1(CuTest *tc)
 
 void	test_ft_atoi_whitespaces_2(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "- \t123";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2312,6 +2412,7 @@ void	test_ft_atoi_whitespaces_2(CuTest *tc)
 
 void	test_ft_atoi_whitespaces_3(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "-12\t453";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2322,6 +2423,7 @@ void	test_ft_atoi_whitespaces_3(CuTest *tc)
 
 void	test_ft_atoi_int_min(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "-2147483648";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2332,6 +2434,7 @@ void	test_ft_atoi_int_min(CuTest *tc)
 
 void	test_ft_atoi_int_max(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "2147483647";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2342,6 +2445,7 @@ void	test_ft_atoi_int_max(CuTest *tc)
 
 void	test_ft_atoi_too_big_int(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "21474836478";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2352,6 +2456,7 @@ void	test_ft_atoi_too_big_int(CuTest *tc)
 
 void	test_ft_atoi_uint(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "4294967293";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2362,6 +2467,7 @@ void	test_ft_atoi_uint(CuTest *tc)
 
 void	test_ft_atoi_empty(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	nptr[] = "";
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2372,6 +2478,7 @@ void	test_ft_atoi_empty(CuTest *tc)
 
 void	test_ft_atoi_null(CuTest *tc)
 {
+	int		(*ft_atoi)(const char *) = get_fun("ft_atoi");
 	char	*nptr = NULL;
 
 	printf("%s: nptr=%s\n", __func__, nptr);
@@ -2404,6 +2511,7 @@ CuSuite	*ft_atoi_get_suite()
 
 void	test_ft_calloc_allocation(CuTest *tc)
 {
+	void	*(*ft_calloc)(size_t, size_t) = get_fun("ft_calloc");
 	size_t	nmemb;
 	size_t	size;
 	void	*ptr;
@@ -2421,6 +2529,7 @@ void	test_ft_calloc_allocation(CuTest *tc)
 
 void	test_ft_calloc_check_size(CuTest *tc)
 {
+	void	*(*ft_calloc)(size_t, size_t) = get_fun("ft_calloc");
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
@@ -2442,6 +2551,7 @@ void	test_ft_calloc_check_size(CuTest *tc)
 
 void	test_ft_calloc_malloc_protection(CuTest *tc)
 {
+	void	*(*ft_calloc)(size_t, size_t) = get_fun("ft_calloc");
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
@@ -2464,6 +2574,7 @@ void	test_ft_calloc_malloc_protection(CuTest *tc)
 
 void	test_ft_calloc_zero(CuTest *tc)
 {
+	void	*(*ft_calloc)(size_t, size_t) = get_fun("ft_calloc");
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
@@ -2485,6 +2596,7 @@ void	test_ft_calloc_zero(CuTest *tc)
 
 void	test_ft_calloc_big_nums(CuTest *tc)
 {
+	void	*(*ft_calloc)(size_t, size_t) = get_fun("ft_calloc");
 	size_t	nmemb1;
 	size_t	size1;
 	int		*ptr;
@@ -2521,6 +2633,7 @@ CuSuite	*ft_calloc_get_suite()
 
 void	test_ft_strdup_basic(CuTest *tc)
 {
+	char	*(*ft_strdup)(const char *) = get_fun("ft_strdup");
 	char	s[] = "TRIple Mooonstre!!! COUCOU";
 	char	*res;
 
@@ -2537,6 +2650,7 @@ void	test_ft_strdup_basic(CuTest *tc)
 
 void	test_ft_strdup_malloc_fail(CuTest *tc)
 {
+	char	*(*ft_strdup)(const char *) = get_fun("ft_strdup");
 	char	s[] = "TRIple Mooonstre!!! COUCOU";
 	char	*res;
 
@@ -2557,6 +2671,7 @@ void	test_ft_strdup_malloc_fail(CuTest *tc)
 
 void	test_ft_strdup_empty_s(CuTest *tc)
 {
+	char	*(*ft_strdup)(const char *) = get_fun("ft_strdup");
 	char	s[] = "";
 	char	*res;
 
@@ -2576,6 +2691,7 @@ void	test_ft_strdup_empty_s(CuTest *tc)
 
 void	test_ft_strdup_null_s(CuTest *tc)
 {
+	char	*(*ft_strdup)(const char *) = get_fun("ft_strdup");
 	char	*s = NULL;
 	char	*res2;
 
@@ -2606,6 +2722,7 @@ CuSuite	*ft_strdup_get_suite()
 
 void	test_ft_substr_basic(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = 6;
 	size_t			len = 8;
@@ -2628,6 +2745,7 @@ void	test_ft_substr_basic(CuTest *tc)
 
 void	test_ft_substr_all_s(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = 0;
 	size_t			len = strlen(s);
@@ -2649,6 +2767,7 @@ void	test_ft_substr_all_s(CuTest *tc)
 
 void	test_ft_substr_big_len(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = 6;
 	size_t			len = 20;
@@ -2670,6 +2789,7 @@ void	test_ft_substr_big_len(CuTest *tc)
 
 void	test_ft_substr_len_zero(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = 6;
 	size_t			len = 0;
@@ -2691,6 +2811,7 @@ void	test_ft_substr_len_zero(CuTest *tc)
 
 void	test_ft_substr_start_gt_len_s(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = strlen(s) + 2;
 	size_t			len = 5;
@@ -2712,6 +2833,7 @@ void	test_ft_substr_start_gt_len_s(CuTest *tc)
 
 void	test_ft_substr_start_eq_len_s(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = strlen(s);
 	size_t			len = 5;
@@ -2733,6 +2855,7 @@ void	test_ft_substr_start_eq_len_s(CuTest *tc)
 
 void	test_ft_substr_empty_s(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "";
 	unsigned int	start = 0;
 	size_t			len = 1;
@@ -2754,6 +2877,7 @@ void	test_ft_substr_empty_s(CuTest *tc)
 
 void	test_ft_substr_NULL_s(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			*s = NULL;
 	unsigned int	start = 0;
 	size_t			len = 10;
@@ -2774,6 +2898,7 @@ void	test_ft_substr_NULL_s(CuTest *tc)
 
 void	test_ft_substr_malloc_fail(CuTest *tc)
 {
+	char	*(*ft_substr)(char const *, unsigned int, size_t) = get_fun("ft_substr");
 	char			s[] = "Hello everyone here!";
 	unsigned int	start = 0;
 	size_t			len = 5;
@@ -2815,6 +2940,7 @@ CuSuite	*ft_substr_get_suite()
 
 void	test_ft_strjoin_basic(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "Hello";
 	char	s2[] = " everyone !";
 	char	*res;
@@ -2836,6 +2962,7 @@ void	test_ft_strjoin_basic(CuTest *tc)
 
 void	test_ft_strjoin_malloc_fail(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "Hello";
 	char	s2[] = " everyone !";
 	char	*res;
@@ -2857,6 +2984,7 @@ void	test_ft_strjoin_malloc_fail(CuTest *tc)
 
 void	test_ft_strjoin_empty_s1(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "";
 	char	s2[] = " everyone !";
 	char	*res;
@@ -2877,6 +3005,7 @@ void	test_ft_strjoin_empty_s1(CuTest *tc)
 
 void	test_ft_strjoin_empty_s2(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "Hello";
 	char	s2[] = "";
 	char	*res;
@@ -2897,6 +3026,7 @@ void	test_ft_strjoin_empty_s2(CuTest *tc)
 
 void	test_ft_strjoin_empty_s1_and_s2(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "";
 	char	s2[] = "";
 	char	*res;
@@ -2917,6 +3047,7 @@ void	test_ft_strjoin_empty_s1_and_s2(CuTest *tc)
 
 void	test_ft_strjoin_null_s1(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	*s1 = NULL;
 	char	s2[] = " everyone !";
 	char	*res;
@@ -2936,6 +3067,7 @@ void	test_ft_strjoin_null_s1(CuTest *tc)
 
 void	test_ft_strjoin_null_s2(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	s1[] = "Hello";
 	char	*s2 = NULL;
 	char	*res;
@@ -2955,6 +3087,7 @@ void	test_ft_strjoin_null_s2(CuTest *tc)
 
 void	test_ft_strjoin_null_s1_and_s2(CuTest *tc)
 {
+	char	*(*ft_strjoin)(char const *, char const *) = get_fun("ft_strjoin");
 	char	*s1 = NULL;
 	char	*s2 = NULL;
 	char	*res;
@@ -2992,6 +3125,7 @@ CuSuite	*ft_strjoin_get_suite()
 
 void	test_ft_strtrim_basic_1(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "  zzz Hello everyone! zz";
 	char	set[] = "z ";
 	char	*res;
@@ -3014,6 +3148,7 @@ void	test_ft_strtrim_basic_1(CuTest *tc)
 
 void	test_ft_strtrim_basic_2(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "  zzz Hello everyone!";
 	char	set[] = "z ";
 	char	*res;
@@ -3035,6 +3170,7 @@ void	test_ft_strtrim_basic_2(CuTest *tc)
 
 void	test_ft_strtrim_basic_3(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "Hello everyone! zz";
 	char	set[] = "z ";
 	char	*res;
@@ -3056,6 +3192,7 @@ void	test_ft_strtrim_basic_3(CuTest *tc)
 
 void	test_ft_strtrim_chars_middle(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "Hello zzz everyone!";
 	char	set[] = "z ";
 	char	*res;
@@ -3077,6 +3214,7 @@ void	test_ft_strtrim_chars_middle(CuTest *tc)
 
 void	test_ft_strtrim_no_set_in_s1(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = " yyy HeLLo everyone! yy";
 	char	set[] = "bazlu";
 	char	*res;
@@ -3098,6 +3236,7 @@ void	test_ft_strtrim_no_set_in_s1(CuTest *tc)
 
 void	test_ft_strtrim_only_set_in_s1(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = " yyy Hello everyone! yy";
 	char	set[] = " yHelovrn!";
 	char	*res;
@@ -3119,6 +3258,7 @@ void	test_ft_strtrim_only_set_in_s1(CuTest *tc)
 
 void	test_ft_strtrim_empty_set(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = " Hello everyone! ";
 	char	set[] = "";
 	char	*res;
@@ -3140,6 +3280,7 @@ void	test_ft_strtrim_empty_set(CuTest *tc)
 
 void	test_ft_strtrim_empty_s1(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "";
 	char	set[] = "abc ";
 	char	*res;
@@ -3161,6 +3302,7 @@ void	test_ft_strtrim_empty_s1(CuTest *tc)
 
 void	test_ft_strtrim_malloc_fail(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = " Hello everyone!   ";
 	char	set[] = " ";
 	char	*res;
@@ -3182,6 +3324,7 @@ void	test_ft_strtrim_malloc_fail(CuTest *tc)
 
 void	test_ft_strtrim_null_s1(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	*s1 = NULL;
 	char	set[] = " ";
 	char	*res;
@@ -3201,6 +3344,7 @@ void	test_ft_strtrim_null_s1(CuTest *tc)
 
 void	test_ft_strtrim_null_set(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	s1[] = "  Hello everyone!  ";
 	char	*set = NULL;
 	char	*res;
@@ -3220,6 +3364,7 @@ void	test_ft_strtrim_null_set(CuTest *tc)
 
 void	test_ft_strtrim_null_s1_and_set(CuTest *tc)
 {
+	char	*(*ft_strtrim)(char const *, char const *) = get_fun("ft_strtrim");
 	char	*s1 = NULL;
 	char	*set = NULL;
 	char	*res;
@@ -3264,33 +3409,10 @@ void	run_all()
 	CuString	*output = CuStringNew();
 	CuSuite		*suite = CuSuiteNew();
 
-	CuSuiteAddSuite(suite, ft_isalnum_get_suite());
-	CuSuiteAddSuite(suite, ft_isalpha_get_suite());
-	CuSuiteAddSuite(suite, ft_isascii_get_suite());
-	CuSuiteAddSuite(suite, ft_isdigit_get_suite());
-	CuSuiteAddSuite(suite, ft_isprint_get_suite());
-	CuSuiteAddSuite(suite, ft_strlen_get_suite());
-	CuSuiteAddSuite(suite, ft_memset_get_suite());
-	CuSuiteAddSuite(suite, ft_bzero_get_suite());
-	CuSuiteAddSuite(suite, ft_memcpy_get_suite());
-	CuSuiteAddSuite(suite, ft_memmove_get_suite());
-	CuSuiteAddSuite(suite, ft_strlcpy_get_suite());
-	CuSuiteAddSuite(suite, ft_strlcat_get_suite());
-	CuSuiteAddSuite(suite, ft_toupper_get_suite());
-	CuSuiteAddSuite(suite, ft_tolower_get_suite());
-	CuSuiteAddSuite(suite, ft_strchr_get_suite());
-	CuSuiteAddSuite(suite, ft_strrchr_get_suite());
-	CuSuiteAddSuite(suite, ft_strncmp_get_suite());
-	CuSuiteAddSuite(suite, ft_memchr_get_suite());
-	CuSuiteAddSuite(suite, ft_memcmp_get_suite());
-	CuSuiteAddSuite(suite, ft_strnstr_get_suite());
-	CuSuiteAddSuite(suite, ft_atoi_get_suite());
-	CuSuiteAddSuite(suite, ft_calloc_get_suite());
-	CuSuiteAddSuite(suite, ft_strdup_get_suite());
-	CuSuiteAddSuite(suite, ft_substr_get_suite());
-	CuSuiteAddSuite(suite, ft_strjoin_get_suite());
-	CuSuiteAddSuite(suite, ft_strtrim_get_suite());
-
+	for (int i = 0; i < 31; i++)
+		if (fcts[i].fun_name && fcts[i].fun)
+			if (fcts[i].test_fun)
+				CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
 	CuSuiteDetails(suite, output);
@@ -3307,10 +3429,14 @@ void	run_all()
 		printf("%s%s%s",ANSI_COLOR_GREEN, &output->buffer[i], ANSI_COLOT_RESET);
 	else
 		printf("%s%s%s",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOT_RESET);
+	for (int i = 0; i < 31; i++)
+		if (fcts[i].fun_name && !fcts[i].fun)
+			printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOT_RESET);
 }
 
 int	main(void)
 {
+	init_fcts();
 	printf("\n\n");
 	run_all();
 	/* run_test_ft_isalpha(); */
