@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/26 04:21:58 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/26 07:46:27 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -48,7 +48,8 @@ run:		$(NAME)
 # 			LD_PRELOAD=./$(LMALLOC) ./$(NAME)
 
 $(LIBFT):
-			make so -C ../libft
+			make so -C $(LIBFTDIR)
+			cp $(LIBFT) ./
 
 # .c.o:
 			# $(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
@@ -63,12 +64,13 @@ static:		$(LIBFT) $(SRC) $(STATIC)
 			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(LIBFT) $(INCLUDES) -o $(NAME)
 
 clean:
-			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC)
+			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC) ./libft.so
 
 fclean:		clean
 
 force:
-			make re -C ../libft
+			make re -C $(LIBFTDIR)
+			make so -C $(LIBFTDIR)
 
 re:			clean force all
 
