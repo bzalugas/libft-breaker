@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 18:59:22 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 22:06:03 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "lftest.h"
@@ -57,7 +57,7 @@ void	*init_fcts()
 	fcts[28] = (t_ft){NULL, NULL, NULL};
 	fcts[29] = (t_ft){NULL, NULL, NULL};
 	fcts[30] = (t_ft){NULL, NULL, NULL};
-	/* fcts[26] = (t_ft){"ft_split", dlsym(handle, "ft_split"), ft_split_get_suite}; */
+	fcts[26] = (t_ft){"ft_split", dlsym(handle, "ft_split"), ft_split_get_suite};
 	/* fcts[27] = (t_ft){"ft_itoa", dlsym(handle, "ft_itoa"), ft_itoa_get_suite}; */
 	/* fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite}; */
 	/* fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite}; */

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 18:55:39 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 22:05:29 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,13 @@ CuSuite	*ft_strdup_get_suite();
 CuSuite	*ft_substr_get_suite();
 CuSuite	*ft_strjoin_get_suite();
 CuSuite	*ft_strtrim_get_suite();
+CuSuite	*ft_split_get_suite();
+CuSuite	*ft_itoa_get_suite();
+CuSuite	*ft_strmapi_get_suite();
+CuSuite	*ft_striteri_get_suite();
+CuSuite	*ft_putchar_fd_get_suite();
+CuSuite	*ft_putstr_fd_get_suite();
+CuSuite	*ft_putendl_fd_get_suite();
+CuSuite	*ft_putnbr_fd_get_suite();
 
 #endif

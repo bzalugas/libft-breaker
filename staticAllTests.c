@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 19:16:56 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 22:55:59 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3397,6 +3397,230 @@ CuSuite	*ft_strtrim_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strtrim_null_s1);
 	SUITE_ADD_TEST(s, test_ft_strtrim_null_set);
 	SUITE_ADD_TEST(s, test_ft_strtrim_null_s1_and_set);
+	return (s);
+}
+
+/****************************/
+/*          FT_SPLIT        */
+/****************************/
+
+void	test_ft_split_basic(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "hello monstre! How are you?";
+	char	c = ' ';
+	char	**res;
+	char	*expected[] = {"hello", "monstre!", "How", "are", "you?", NULL};
+	int		i;
+
+	printf("\n########### FT_SPLIT ###########\n");
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
+	for (i = 0; res[i] && i < 6; ++i)
+	{
+		CuAssertStrEquals(tc, expected[i], res[i]);
+		free(res[i]);
+		res[i] = NULL;
+	}
+	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
+	free(res);
+}
+
+void	test_ft_split_c_around(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "    hello    monstre! How are   you?    ";
+	char	c = ' ';
+	char	**res;
+	char	*expected[] = {"hello", "monstre!", "How", "are", "you?", NULL};
+	int		i;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
+	for (i = 0; res[i] && i < 6; ++i)
+	{
+		CuAssertStrEquals(tc, expected[i], res[i]);
+		free(res[i]);
+		res[i] = NULL;
+	}
+	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
+	free(res);
+}
+
+void	test_ft_split_no_c_in_s(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "hello monstre! How are you?";
+	char	c = 'z';
+	char	**res;
+	char	*expected[] = {"hello monstre! How are you?", NULL};
+	int		i;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WHEN C NOT IN S", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c not in s.", res);
+	for (i = 0; res[i] && i < 2; ++i)
+	{
+		CuAssertStrEquals(tc, expected[i], res[i]);
+		free(res[i]);
+		res[i] = NULL;
+	}
+	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
+	free(res);
+}
+
+void	test_ft_split_zero_c(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "hello monstre! How are you?";
+	char	c = '\0';
+	char	**res;
+	char	*expected[] = {"hello monstre! How are you?", NULL};
+	int		i;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WHEN C = \\0", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c = \\0.", res);
+	for (i = 0; res[i] && i < 2; ++i)
+	{
+		CuAssertStrEquals(tc, expected[i], res[i]);
+		free(res[i]);
+		res[i] = NULL;
+	}
+	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
+	free(res);
+}
+
+void	test_ft_split_empty_s(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "";
+	char	c = 'e';
+	char	**res;
+	char	*expected[] = {"", NULL};
+	int		i;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WITH EMPTY S", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with empty s.", res);
+	for (i = 0; res[i] && i < 2; ++i)
+	{
+		CuAssertStrEquals(tc, expected[i], res[i]);
+		free(res[i]);
+		res[i] = NULL;
+	}
+	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
+	free(res);
+}
+
+void	test_ft_split_malloc_fail(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "hello monstre! How are you?";
+	char	c = ' ';
+	char	**res;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WHEN MALLOC FAILS", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_split(s, c);
+	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when alloc fails.", NULL, res);
+}
+
+void	test_ft_split_null_s(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	*s = NULL;
+	char	c = ' ';
+	char	**res;
+
+	printf("%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		res = ft_split(s, c);
+		if (res)
+		{
+			for (int i = 0; res[i]; ++i)
+				free(res[i]);
+			free(res);
+		}
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WITH NULL S", !WIFSIGNALED(g_exit_code));
+	res = ft_split(s, c);
+	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when s is set to NULL.", NULL, res);
+}
+
+CuSuite	*ft_split_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_split_basic);
+	SUITE_ADD_TEST(s, test_ft_split_c_around);
+	SUITE_ADD_TEST(s, test_ft_split_no_c_in_s);
+	SUITE_ADD_TEST(s, test_ft_split_zero_c);
+	SUITE_ADD_TEST(s, test_ft_split_empty_s);
+	SUITE_ADD_TEST(s, test_ft_split_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_split_null_s);
 	return (s);
 }
 

@@ -543,27 +543,46 @@ set set to NULL.
 s1 & set set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** TODO ft_split
+** DONE ft_split
+CLOSED: [2023-11-26 dim. 22:58]
 #+begin_src C
 char    **ft_split(char const *s, char c);
 #+end_src
-*** CODE Basic inputs
+*** CODED Basic inputs
+CLOSED: [2023-11-26 dim. 22:28]
 s set to a string containing multiple times c.
 *Behavior*: s is split.
 *Return value*: array of new strings.
-*** CODE c before & after string
+*** CODED c before & after string
+CLOSED: [2023-11-26 dim. 22:31]
 s set to a string containing multiple times c plus before and after the string.
 *Behavior*: s is split.
 *Return value*: array of new strings (no empty string).
-*** CODE no c in string
+*** CODED no c in string
+CLOSED: [2023-11-26 dim. 22:34]
 s set to a string not containing c.
 *Behavior*: s is split (only one string).
 *Return value*: array of new string.
-*** CODE zero c
+*** CODED zero c
+CLOSED: [2023-11-26 dim. 22:37]
 c set to zero ('\0').
 *Behavior*: s is split (only one string).
 *Return value*: array of new string.
-*** CODE empty s
+*** CODED empty s
+CLOSED: [2023-11-26 dim. 22:44]
+s set to an empty string.
+*Behavior*: s is split (only one string).
+*Return value*: array of new string.
+*** CODED malloc fail
+CLOSED: [2023-11-26 dim. 22:50]
+Make malloc fail.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODED NULL s
+CLOSED: [2023-11-26 dim. 22:54]
+s set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
 ** TODO ft_itoa
 ** TODO ft_strmapi
 ** TODO ft_striteri
