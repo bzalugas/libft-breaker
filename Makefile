@@ -6,33 +6,36 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/21 12:52:37 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/26 04:21:58 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-LIBFT	=	../libft/libft.a
+LIBFTDIR	=	../libft
 
-NAME 	=	libftest
+LIBFT		=	$(LIBFTDIR)/libft.so
 
-SRC	 	=	CuTest.c utils.c
+NAME 		=	libftest
 
-MALLOC	=	malloc.c
+SRC	 		=	CuTest.c utils.c malloc.c
 
-LMALLOC	=	malloc.so
+MALLOC		=	malloc.c
 
-NORMAL	=	allTests.c
+LMALLOC		=	malloc.so
 
-STATIC	=	staticAllTests.c
+NORMAL		=	allTests.c
 
-OBJN 	=	CuTest.o allTests.o malloc.o utils.o
+STATIC		=	staticAllTests.c
 
-OBJS	=	CuTest.o staticAllTests.o malloc.o utils.o
+OBJN 		=	CuTest.o allTests.o malloc.o utils.o
 
-CC	 	=	cc
+OBJS		=	CuTest.o staticAllTests.o malloc.o utils.o
 
-CFLAGS	=	-Wall -Wextra -Werror -g
+CC	 		=	cc
 
-INCLUDES	=	-L../libft -lft
+CFLAGS		=	-Wall -Wextra -Werror -g
+
+# INCLUDES	=	-L../libft -lft
+INCLUDES	=
 
 ifneq ($(shell uname), Darwin)
 	INCLUDES += -lbsd
@@ -45,20 +48,19 @@ run:		$(NAME)
 # 			LD_PRELOAD=./$(LMALLOC) ./$(NAME)
 
 $(LIBFT):
-			make -C ../libft
+			make so -C ../libft
 
-.c.o:
-			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+# .c.o:
+			# $(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 # $(LMALLOC):
 # 			gcc -shared -fPIC -o $< $(MALLOC) -ldl
 
-$(NAME):	$(LIBFT) $(OBJN)
-			$(CC) $(CFLAGS) $(OBJN) -o $(NAME) $(INCLUDES)
+$(NAME):	$(LIBFT) $(SRC) $(NORMAL)
+			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(LIBFT) $(INCLUDES) -o $(NAME)
 
-static:		$(LIBFT) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES)
-			./$(NAME)
+static:		$(LIBFT) $(SRC) $(STATIC)
+			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(LIBFT) $(INCLUDES) -o $(NAME)
 
 clean:
 			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC)
