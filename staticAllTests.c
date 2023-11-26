@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 01:51:59 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 06:13:03 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 void	test_ft_isalpha_basic(CuTest *tc)
 {
+	int		(*ft_isalpha)(int) = get_fun("ft_isalpha");
 	char	c;
 
 	printf("\n########## FT_ISALPHA ##########\n");
@@ -59,6 +60,7 @@ void	run_test_ft_isalpha(void)
 
 void	test_ft_isdigit_basic(CuTest *tc)
 {
+	int		(*ft_isdigit)(int) = get_fun("ft_isdigit");
 	char	c;
 
 	printf("\n########## FT_ISDIGIT ##########\n");
@@ -98,6 +100,7 @@ void	run_test_ft_isdigit(void)
 
 void	test_ft_isalnum_basic(CuTest *tc)
 {
+	int		(*ft_isalnum)(int) = get_fun("ft_isalnum");
 	char	c;
 
 	printf("\n########## FT_ISALNUM ##########\n");
@@ -137,6 +140,7 @@ void	run_test_ft_isalnum(void)
 
 void	test_ft_isascii_basic(CuTest *tc)
 {
+	int		(*ft_isascii)(int) = get_fun("ft_isascii");
 	char	c;
 
 	printf("\n########## FT_ISASCII ##########\n");
@@ -176,6 +180,7 @@ void	run_test_ft_isascii(void)
 
 void	test_ft_isprint_basic(CuTest *tc)
 {
+	int		(*ft_isprint)(int) = get_fun("ft_isprint");
 	char	c;
 
 	printf("\n########## FT_ISPRINT ##########\n");
@@ -215,6 +220,7 @@ void	run_test_ft_isprint(void)
 
 void	test_ft_strlen_basic(CuTest *tc)
 {
+	size_t		(*ft_strlen)(char *) = get_fun("ft_strlen");
 	char	*s;
 	int		res1;
 	int		res2;
@@ -247,6 +253,7 @@ void	test_ft_strlen_basic(CuTest *tc)
 
 void	test_ft_strlen_null(CuTest *tc)
 {
+	size_t		(*ft_strlen)(char *) = get_fun("ft_strlen");
 	char		*s;
 
 	s = NULL;
@@ -282,6 +289,7 @@ void	run_test_ft_strlen(void)
 
 void	test_ft_memset_basic(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t		size = 23;
 	char		b1[BUFFSIZE];
 	char		b2[BUFFSIZE];
@@ -302,6 +310,7 @@ void	test_ft_memset_basic(CuTest *tc)
 
 void	test_ft_memset_cut_string(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t		size = 23;
 	char		b1[BUFFSIZE];
 	char		b2[BUFFSIZE];
@@ -322,6 +331,7 @@ void	test_ft_memset_cut_string(CuTest *tc)
 
 void	test_ft_memset_not_char(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
@@ -340,6 +350,7 @@ void	test_ft_memset_not_char(CuTest *tc)
 
 void	test_ft_memset_same_return(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	char	b1[BUFFSIZE];
 	char	tmp[BUFFSIZE];
@@ -360,6 +371,7 @@ void	test_ft_memset_same_return(CuTest *tc)
 
 void	test_ft_memset_size_zero(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 0;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
@@ -378,6 +390,7 @@ void	test_ft_memset_size_zero(CuTest *tc)
 
 void	test_ft_memset_null(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	char	*b = NULL;
 

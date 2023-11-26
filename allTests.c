@@ -6,14 +6,11 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 04:45:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 06:12:12 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lftest.h"
-
-fts			f;
-test_fts	test_f;
 
 /*********************************** PART 1 ***********************************/
 
@@ -23,8 +20,8 @@ test_fts	test_f;
 
 void	test_ft_isalpha_basic(CuTest *tc)
 {
+	int		(*ft_isalpha)(int) = get_fun("ft_isalpha");
 	char	c;
-	int		(*ft_isalpha)(int) = f.ft_isalpha;
 
 	printf("\n########## FT_ISALPHA ##########\n");
 	printf("ft_isalpha: Basic inputs (-128 => 127)\n");
@@ -63,6 +60,7 @@ void	run_test_ft_isalpha(void)
 
 void	test_ft_isdigit_basic(CuTest *tc)
 {
+	int		(*ft_isdigit)(int) = get_fun("ft_isdigit");
 	char	c;
 
 	printf("\n########## FT_ISDIGIT ##########\n");
@@ -102,6 +100,7 @@ void	run_test_ft_isdigit(void)
 
 void	test_ft_isalnum_basic(CuTest *tc)
 {
+	int		(*ft_isalnum)(int) = get_fun("ft_isalnum");
 	char	c;
 
 	printf("\n########## FT_ISALNUM ##########\n");
@@ -141,6 +140,7 @@ void	run_test_ft_isalnum(void)
 
 void	test_ft_isascii_basic(CuTest *tc)
 {
+	int		(*ft_isascii)(int) = get_fun("ft_isascii");
 	char	c;
 
 	printf("\n########## FT_ISASCII ##########\n");
@@ -180,6 +180,7 @@ void	run_test_ft_isascii(void)
 
 void	test_ft_isprint_basic(CuTest *tc)
 {
+	int		(*ft_isprint)(int) = get_fun("ft_isprint");
 	char	c;
 
 	printf("\n########## FT_ISPRINT ##########\n");
@@ -219,6 +220,7 @@ void	run_test_ft_isprint(void)
 
 void	test_ft_strlen_basic(CuTest *tc)
 {
+	size_t		(*ft_strlen)(char *) = get_fun("ft_strlen");
 	char	*s;
 	int		res1;
 	int		res2;
@@ -251,6 +253,7 @@ void	test_ft_strlen_basic(CuTest *tc)
 
 void	test_ft_strlen_null(CuTest *tc)
 {
+	size_t		(*ft_strlen)(char *) = get_fun("ft_strlen");
 	char		*s;
 	int			return1;
 	int			return2;
@@ -291,6 +294,7 @@ void	run_test_ft_strlen(void)
 
 void	test_ft_memset_basic(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t		size = 23;
 	char		b1[BUFFSIZE];
 	char		b2[BUFFSIZE];
@@ -310,6 +314,7 @@ void	test_ft_memset_basic(CuTest *tc)
 
 void	test_ft_memset_cut_string(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t		size = 23;
 	char		b1[BUFFSIZE];
 	char		b2[BUFFSIZE];
@@ -330,6 +335,7 @@ void	test_ft_memset_cut_string(CuTest *tc)
 
 void	test_ft_memset_not_char(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
@@ -348,6 +354,7 @@ void	test_ft_memset_not_char(CuTest *tc)
 
 void	test_ft_memset_same_return(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	char	b1[BUFFSIZE];
 	char	tmp[BUFFSIZE];
@@ -368,6 +375,7 @@ void	test_ft_memset_same_return(CuTest *tc)
 
 void	test_ft_memset_size_zero(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 0;
 	char	b1[BUFFSIZE];
 	char	b2[BUFFSIZE];
@@ -386,6 +394,7 @@ void	test_ft_memset_size_zero(CuTest *tc)
 
 void	test_ft_memset_null(CuTest *tc)
 {
+	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
 	int		st1;
 	int		st2;
@@ -3924,32 +3933,7 @@ void	run_all()
 {
 	CuString	*output = CuStringNew();
 	CuSuite		*suite = CuSuiteNew();
-	/* CuSuiteAddSuite(suite, ft_isalnum_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_isalpha_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_isascii_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_isdigit_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_isprint_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strlen_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_memset_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_bzero_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_memcpy_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_memmove_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strlcpy_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strlcat_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_toupper_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_tolower_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strchr_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strrchr_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strncmp_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_memchr_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_memcmp_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strnstr_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_atoi_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_calloc_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strdup_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_substr_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strjoin_get_suite()); */
-	/* CuSuiteAddSuite(suite, ft_strtrim_get_suite()); */
+
 	CuSuite	*(*fun)(void);
 	for (int i = 0; i < 31; i++)
 	{
@@ -3979,85 +3963,9 @@ void	run_all()
 		printf("%s%s%s",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOT_RESET);
 }
 
-void	init_functions(void)
-{
-	f = (fts){{
-			dlsym(RTLD_DEFAULT, "ft_isalpha"),
-			dlsym(RTLD_DEFAULT, "ft_isdigit"),
-			dlsym(RTLD_DEFAULT, "ft_isalnum"),
-			dlsym(RTLD_DEFAULT, "ft_isascii"),
-			dlsym(RTLD_DEFAULT, "ft_isprint"),
-			dlsym(RTLD_DEFAULT, "ft_strlen"),
-			dlsym(RTLD_DEFAULT, "ft_memset"),
-			dlsym(RTLD_DEFAULT, "ft_bzero"),
-			dlsym(RTLD_DEFAULT, "ft_memcpy"),
-			dlsym(RTLD_DEFAULT, "ft_memmove"),
-			dlsym(RTLD_DEFAULT, "ft_strlcpy"),
-			dlsym(RTLD_DEFAULT, "ft_strlcat"),
-			dlsym(RTLD_DEFAULT, "ft_toupper"),
-			dlsym(RTLD_DEFAULT, "ft_tolower"),
-			dlsym(RTLD_DEFAULT, "ft_strchr"),
-			dlsym(RTLD_DEFAULT, "ft_strrchr"),
-			dlsym(RTLD_DEFAULT, "ft_strncmp"),
-			dlsym(RTLD_DEFAULT, "ft_memchr"),
-			dlsym(RTLD_DEFAULT, "ft_memcmp"),
-			dlsym(RTLD_DEFAULT, "ft_strnstr"),
-			dlsym(RTLD_DEFAULT, "ft_atoi"),
-			dlsym(RTLD_DEFAULT, "ft_calloc"),
-			dlsym(RTLD_DEFAULT, "ft_strdup"),
-			dlsym(RTLD_DEFAULT, "ft_substr"),
-			dlsym(RTLD_DEFAULT, "ft_strjoin"),
-			dlsym(RTLD_DEFAULT, "ft_strtrim"),
-			dlsym(RTLD_DEFAULT, "ft_split"),
-			dlsym(RTLD_DEFAULT, "ft_itoa"),
-			dlsym(RTLD_DEFAULT, "ft_strmapi"),
-			dlsym(RTLD_DEFAULT, "ft_striteri"),
-			dlsym(RTLD_DEFAULT, "ft_putchar_fd")
-		}};
-
-	test_f = (test_fts){{
-			ft_isalpha_get_suite,
-			ft_isdigit_get_suite,
-			ft_isalnum_get_suite,
-			ft_isascii_get_suite,
-			ft_isprint_get_suite,
-			ft_strlen_get_suite,
-			ft_memset_get_suite,
-			ft_bzero_get_suite,
-			ft_memcpy_get_suite,
-			ft_memmove_get_suite,
-			ft_strlcpy_get_suite,
-			ft_strlcat_get_suite,
-			ft_toupper_get_suite,
-			ft_tolower_get_suite,
-			ft_strchr_get_suite,
-			ft_strrchr_get_suite,
-			ft_strncmp_get_suite,
-			ft_memchr_get_suite,
-			ft_memcmp_get_suite,
-			ft_strnstr_get_suite,
-			ft_atoi_get_suite,
-			ft_calloc_get_suite,
-			ft_strdup_get_suite,
-			ft_substr_get_suite,
-			ft_strjoin_get_suite,
-			ft_strtrim_get_suite,
-			NULL,
-			NULL,
-			NULL,
-			NULL,
-			NULL
-			/* ft_split_get_suite, */
-			/* ft_itoa_get_suite, */
-			/* ft_strmapi_get_suite, */
-			/* ft_striteri_get_suite, */
-			/* ft_putchar_fd_get_suite */
-		}};
-}
-
 int	main(void)
 {
-	init_functions();
+	init_fcts();
 	printf("\n\n");
 	run_all();
 	/* run_test_ft_isalpha(); */

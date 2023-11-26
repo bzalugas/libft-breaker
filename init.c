@@ -1,20 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 06:00:37 by bazaluga         ###   ########.fr       */
+/*   Created: 2023/11/26 05:22:20 by bazaluga          #+#    #+#             */
+/*   Updated: 2023/11/26 05:46:17 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "lftest.h"
 
-int		g_exit_code;
-pid_t	g_pid;
-int		g_malloc_fail;
-size_t	g_last_malloc_size;
 t_ft	fcts[31];
 
 void	init_fcts(void)
@@ -56,25 +53,4 @@ void	init_fcts(void)
 	/* fcts[29] = (t_ft){"ft_striteri", dlsym(RTLD_DEFAULT, "ft_striteri"), ft_striteri_get_suite()}; */
 	/* fcts[30] = (t_ft){"ft_putchar_fd", dlsym(RTLD_DEFAULT, "ft_putchar_fd"), ft_putchar_fd_get_suite()}; */
 
-}
-
-
-void	*get_fun(char *name)
-{
-	for (int i = 0; fcts[i].fun_name; i++)
-	{
-		if (!strcmp(name, fcts[i].fun_name))
-			return (fcts[i].fun);
-	}
-	return (NULL);
-}
-
-void	*get_test_fun(char *name)
-{
-	for (int i = 0; fcts[i].fun_name; i++)
-	{
-		if (!strcmp(name, fcts[i].fun_name))
-			return (fcts[i].test_fun);
-	}
-	return (NULL);
 }
