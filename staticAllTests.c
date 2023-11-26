@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 07:25:42 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:02:45 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3416,7 +3416,7 @@ void	run_all()
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
 	CuSuiteDetails(suite, output);
-	printf("\n\nlibft: ");
+	printf("\n\nlibft (static tests): ");
 	int	i;
 	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
 	{
@@ -3436,9 +3436,10 @@ void	run_all()
 
 int	main(void)
 {
-	init_fcts();
+	void *handle = init_fcts();
 	printf("\n\n");
 	run_all();
+	dlclose(handle);
 	/* run_test_ft_isalpha(); */
 	/* run_test_ft_isdigit(); */
 	/* run_test_ft_isalnum(); */

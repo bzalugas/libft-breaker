@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 17:29:32 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:32:16 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4097,9 +4097,6 @@ void	run_all()
 int	main(void)
 {
 	void *handle = init_fcts();
-	for (int i = 0; i < 31; i++)
-		printf("%s: fun=%p, test_fun=%p\n", fcts[i].fun_name, fcts[i].fun, fcts[i].test_fun);
-	/* printf("res = %d\n", ((int (*)(int))fcts[0].fun)('8')); */
 	printf("\n\n");
 	run_all();
 	dlclose(handle);

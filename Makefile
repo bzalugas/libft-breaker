@@ -6,13 +6,15 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/26 08:23:21 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/26 18:01:54 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 LIBFTDIR	=	../libft
 
-LIBFT		=	$(LIBFTDIR)/libft.so
+LIB			=	libft.so
+
+LIBFT		=	$(LIBFTDIR)/$(LIB)
 
 NAME 		=	libftest
 
@@ -26,15 +28,10 @@ NORMAL		=	allTests.c
 
 STATIC		=	staticAllTests.c
 
-OBJN 		=	CuTest.o allTests.o malloc.o utils.o
-
-OBJS		=	CuTest.o staticAllTests.o malloc.o utils.o
-
 CC	 		=	cc
 
 CFLAGS		=	-Wall -Wextra -Werror -g
 
-# INCLUDES	=	-L../libft -lft
 INCLUDES	=
 
 ifneq ($(shell uname), Darwin)
@@ -45,23 +42,21 @@ all:		$(NAME)
 
 run:		$(NAME)
 			./$(NAME)
-# 			LD_PRELOAD=./$(LMALLOC) ./$(NAME)
+
+srun:		static
+			./$(NAME)
 
 $(LIBFT):
-			make so -C $(LIBFTDIR)
+			make -C $(LIBFTDIR) so
+
+$(LIB):		$(LIBFT)
 			cp $(LIBFT) ./
 
-# .c.o:
-			# $(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+$(NAME):	$(LIB) $(SRC) $(NORMAL)
+			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(LIB) $(INCLUDES) -o $(NAME)
 
-# $(LMALLOC):
-# 			gcc -shared -fPIC -o $< $(MALLOC) -ldl
-
-$(NAME):	$(LIBFT) $(SRC) $(NORMAL)
-			$(CC) $(CFLAGS) $(SRC) $(NORMAL) ./libft.so $(INCLUDES) -o $(NAME)
-
-static:		$(LIBFT) $(SRC) $(STATIC)
-			$(CC) $(CFLAGS) $(SRC) $(STATIC) ./libft.so $(INCLUDES) -o $(NAME)
+static:		$(LIB) $(SRC) $(STATIC)
+			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(LIB) $(INCLUDES) -o $(NAME)
 
 clean:
 			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC) ./libft.so
