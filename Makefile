@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/26 18:01:54 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/26 19:15:35 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -41,10 +41,10 @@ endif
 all:		$(NAME)
 
 run:		$(NAME)
-			./$(NAME)
+			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
 
 srun:		static
-			./$(NAME)
+			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
 
 $(LIBFT):
 			make -C $(LIBFTDIR) so

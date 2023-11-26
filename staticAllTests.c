@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 18:02:45 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:16:56 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3404,20 +3404,28 @@ CuSuite	*ft_strtrim_get_suite()
 /*        RUN TESTS         */
 /****************************/
 
-void	run_all()
+void	run_all(char *particular_fun, void *fun)
 {
 	CuString	*output = CuStringNew();
 	CuSuite		*suite = CuSuiteNew();
+	int			i;
 
-	for (int i = 0; i < 31; i++)
-		if (fcts[i].fun_name && fcts[i].fun)
-			if (fcts[i].test_fun)
-				CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
+	if (particular_fun)
+		CuSuiteAddSuite(suite, ((CuSuite *(*)(void))fun)());
+	else
+	{
+		for (i = 0; i < g_n_tests_fun; i++)
+			if (fcts[i].fun_name && fcts[i].fun)
+				if (fcts[i].test_fun)
+					CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
+	}
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);
 	CuSuiteDetails(suite, output);
-	printf("\n\nlibft (static tests): ");
-	int	i;
+	if (particular_fun)
+		printf("\n\n%s: ", particular_fun);
+	else
+		printf("\n\nlibft: ");
 	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
 	{
 		if (output->buffer[i] == '.')
@@ -3428,18 +3436,32 @@ void	run_all()
 	if (!strncmp(&output->buffer[i], "\n\nOK", 3))
 		printf("%s%s%s",ANSI_COLOR_GREEN, &output->buffer[i], ANSI_COLOT_RESET);
 	else
-		printf("%s%s%s",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOT_RESET);
-	for (int i = 0; i < 31; i++)
-		if (fcts[i].fun_name && !fcts[i].fun)
-			printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOT_RESET);
+		printf("%s%s%s\n",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOT_RESET);
+	if (!particular_fun)
+		for (i = 0; i < g_n_tests_fun; i++)
+			if (fcts[i].fun_name && !fcts[i].fun)
+				printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOT_RESET);
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
-	void *handle = init_fcts();
+	char	*fun_name = NULL;
+	void	*lib;
+	void	*test_fun;
+
+	g_n_tests_fun = 31;
+	if (argc > 1)
+		fun_name = strdup(argv[1]);
+	lib = init_fcts();
 	printf("\n\n");
-	run_all();
-	dlclose(handle);
+	test_fun = get_test_fun(fun_name);
+	if (fun_name && test_fun)
+		run_all(fun_name,test_fun);
+	else if (fun_name)
+		printf("%sfunction %s not found.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOT_RESET);
+	else
+		run_all(NULL, NULL);
+	dlclose(lib);
 	/* run_test_ft_isalpha(); */
 	/* run_test_ft_isdigit(); */
 	/* run_test_ft_isalnum(); */

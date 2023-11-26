@@ -4,20 +4,22 @@
 extern size_t	g_last_malloc_size;
 extern int		g_malloc_fail;
 
+int	test_fun(int x)
+{
+	return (x * 2);
+}
+
 int	main(void)
 {
-	void	*handle = dlopen("./libft.so", RTLD_LAZY);
-	if (!handle)
-		return 1;
-	void *tmp = dlsym(handle, "ft_isalpha");
-	int	(*f)(int) = tmp;
+	char	name[] = "test_fun";
+	void	*lib = dlopen("./tmp.so", RTLD_LAZY);
+	if (!lib)
+		exit(EXIT_FAILURE);
+	int (*f)(int) = dlsym(lib, name);
 	if (f)
-	{
-		printf("HERE\n");
-		printf("res = %d\n", f('h'));
-	}
+		printf("%d\n", f(2));
 	else
-		printf("NOT HERE\n");
-	dlclose(handle);
+		printf("NOT FOUND\n");
+	dlclose(lib);
 	return (0);
 }

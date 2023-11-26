@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 17:29:10 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:55:39 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ extern pid_t	g_pid;
 extern size_t	g_last_malloc_size;
 extern int		g_malloc_fail;
 extern t_ft		fcts[31];
+extern int		g_n_tests_fun;
 
 # define FAIL_MALLOC g_malloc_fail = 1;
 
 # define SANDBOX(X) if ((g_pid = fork()) == -1){perror("Error during fork");exit(1);}if (!g_pid){X;exit(0);}wait(&g_exit_code);
 
-void	*init_fcts(void);
+void	*init_fcts();
 void	*get_fun(char *name);
 void	*get_test_fun(char *name);
 

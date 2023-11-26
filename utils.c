@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 17:28:58 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:59:22 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "lftest.h"
@@ -16,13 +16,14 @@ pid_t	g_pid;
 int		g_malloc_fail;
 size_t	g_last_malloc_size;
 t_ft	fcts[31];
+int		g_n_tests_fun;
 
-void	*init_fcts(void)
+void	*init_fcts()
 {
 	void	*handle = dlopen("./libft.so", RTLD_LAZY);
 	if (!handle)
 	{
-		/* perror("Error while loading libft.so\n"); */
+		perror("Error while loading libft.so\n");
 		exit(EXIT_FAILURE);
 	}
 	fcts[0] = (t_ft){"ft_isalpha", dlsym(handle, "ft_isalpha"), ft_isalpha_get_suite};
@@ -67,6 +68,8 @@ void	*init_fcts(void)
 
 void	*get_fun(char *name)
 {
+	if (!name)
+		return (NULL);
 	for (int i = 0; fcts[i].fun_name; i++)
 	{
 		if (!strcmp(name, fcts[i].fun_name))
@@ -77,6 +80,8 @@ void	*get_fun(char *name)
 
 void	*get_test_fun(char *name)
 {
+	if (!name)
+		return (NULL);
 	for (int i = 0; fcts[i].fun_name; i++)
 	{
 		if (!strcmp(name, fcts[i].fun_name))
