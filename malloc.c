@@ -6,11 +6,10 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 02:16:15 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/26 07:50:56 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* #define _GNU_SOURCE */
 #include "lftest.h"
 
 extern int		g_malloc_fail;
