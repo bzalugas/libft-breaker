@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/27 09:58:21 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/27 11:16:50 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -59,7 +59,7 @@ static:		$(LIB) $(SRC) $(STATIC)
 			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(INCLUDES) -o $(NAME)
 
 clean:
-			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC) ./libft.so
+			rm -f $(NAME) $(SRC:.c=.o) $(NORMAL:.c=.o) $(STATIC:.c=.o) $(LMALLOC) ./libft.so
 
 fclean:		clean
 
