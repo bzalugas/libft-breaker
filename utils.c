@@ -6,17 +6,36 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 22:06:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/27 12:49:17 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "lftest.h"
 
-int		g_exit_code;
-pid_t	g_pid;
-int		g_malloc_fail;
-size_t	g_last_malloc_size;
-t_ft	fcts[31];
-int		g_n_tests_fun;
+int			g_exit_code;
+pid_t		g_pid;
+int			g_malloc_fail;
+size_t		g_last_malloc_size;
+t_ft		fcts[31];
+int			g_n_tests_fun;
+print_buff	buff;
+
+void	add_color_buff(char c)
+{
+	buff.color = c;
+}
+
+void	printbuff()
+{
+	char	*color;
+
+	if (buff.txt[0])
+	{
+		color = buff.color == 'r' ? ANSI_COLOR_RED : ANSI_COLOR_GREEN;
+		printf("%s%s%s", color, buff.txt, ANSI_COLOR_RESET);
+		buff.txt[0] = '\0';
+		buff.color = '\0';
+	}
+}
 
 void	*init_fcts()
 {

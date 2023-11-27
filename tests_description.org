@@ -543,47 +543,60 @@ set set to NULL.
 s1 & set set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** DONE ft_split
-CLOSED: [2023-11-26 dim. 22:58]
+** ft_split
 #+begin_src C
 char    **ft_split(char const *s, char c);
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-11-26 dim. 22:28]
+*** Basic inputs
 s set to a string containing multiple times c.
 *Behavior*: s is split.
 *Return value*: array of new strings.
-*** CODED c before & after string
-CLOSED: [2023-11-26 dim. 22:31]
+*** c before & after string
 s set to a string containing multiple times c plus before and after the string.
 *Behavior*: s is split.
 *Return value*: array of new strings (no empty string).
-*** CODED no c in string
-CLOSED: [2023-11-26 dim. 22:34]
+*** no c in string
 s set to a string not containing c.
 *Behavior*: s is split (only one string).
 *Return value*: array of new string.
-*** CODED zero c
-CLOSED: [2023-11-26 dim. 22:37]
+*** zero c
 c set to zero ('\0').
 *Behavior*: s is split (only one string).
 *Return value*: array of new string.
-*** CODED empty s
-CLOSED: [2023-11-26 dim. 22:44]
+*** empty s
 s set to an empty string.
 *Behavior*: s is split (only one string).
 *Return value*: array of new string.
-*** CODED malloc fail
-CLOSED: [2023-11-26 dim. 22:50]
+*** malloc fail
 Make malloc fail.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL s
-CLOSED: [2023-11-26 dim. 22:54]
+*** NULL s
 s set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** TODO ft_itoa
+** TODO ft_itoa [0/6]
+#+begin_src C
+char    *ft_itoa(int n);
+#+end_src
+*** CODE Basic inputs
+n set to a positive number.
+*Return value*: string representing the integer.
+*** CODE Negative n
+n set to a negative number.
+*Return value*: string representing the integer.
+*** CODE Maximum int
+n set to maximum int.
+*Return value*: string representing the integer.
+*** CODE Minimum int
+n set to minimum int.
+*Return value*: string representing the integer.
+*** CODE n zero
+n set to zero.
+*Return value*: string representing the integer.
+*** CODE malloc fail
+Make malloc fail.
+*Return value*: NULL.
 ** TODO ft_strmapi
 ** TODO ft_striteri
 ** TODO ft_putchar_fd

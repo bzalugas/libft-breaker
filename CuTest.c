@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "CuTest.h"
+#include "lftest.h"
 
 /*-------------------------------------------------------------------------*
  * CuStr
@@ -287,7 +288,14 @@ void CuSuiteRun(CuSuite* testSuite)
 	{
 		CuTest* testCase = testSuite->list[i];
 		CuTestRun(testCase);
-		if (testCase->failed) { testSuite->failCount += 1; }
+		if (testCase->failed)
+		{
+			testSuite->failCount += 1;
+			buff.color = 'r';
+		}
+		else
+			buff.color = 'g';
+		printbuff();
 	}
 }
 

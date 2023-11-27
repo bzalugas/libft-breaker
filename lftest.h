@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/26 22:05:29 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/27 12:48:24 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define BUFFBSIZE 30000
 # define ANSI_COLOR_RED     "\033[31m"
 # define ANSI_COLOR_GREEN   "\033[32m"
-# define ANSI_COLOT_RESET	"\033[0m"
+# define ANSI_COLOR_RESET	"\033[0m"
 
 typedef struct	s_ft
 {
@@ -40,12 +40,19 @@ typedef struct	s_ft
 	void	*test_fun;
 }				t_ft;
 
-extern int		g_exit_code;
-extern pid_t	g_pid;
-extern size_t	g_last_malloc_size;
-extern int		g_malloc_fail;
-extern t_ft		fcts[31];
-extern int		g_n_tests_fun;
+typedef struct	print_buff
+{
+	char	color;
+	char	txt[3000];
+}				print_buff;
+
+extern int			g_exit_code;
+extern pid_t		g_pid;
+extern size_t		g_last_malloc_size;
+extern int			g_malloc_fail;
+extern t_ft			fcts[31];
+extern int			g_n_tests_fun;
+extern print_buff	buff;
 
 # define FAIL_MALLOC g_malloc_fail = 1;
 
@@ -54,6 +61,9 @@ extern int		g_n_tests_fun;
 void	*init_fcts();
 void	*get_fun(char *name);
 void	*get_test_fun(char *name);
+void	add_txt_buff(char *txt);
+void	add_color_buff(char c);
+void	printbuff();
 
 CuSuite	*ft_isalpha_get_suite();
 CuSuite	*ft_isdigit_get_suite();
