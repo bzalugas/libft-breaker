@@ -575,26 +575,33 @@ Make malloc fail.
 s set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** TODO ft_itoa [0/6]
+** DONE ft_itoa [6/6]
+CLOSED: [2023-11-27 Mon 15:08]
 #+begin_src C
 char    *ft_itoa(int n);
 #+end_src
-*** CODE Basic inputs
+*** CODED Basic inputs
+CLOSED: [2023-11-27 Mon 14:59]
 n set to a positive number.
 *Return value*: string representing the integer.
-*** CODE Negative n
+*** CODED Negative n
+CLOSED: [2023-11-27 Mon 15:01]
 n set to a negative number.
 *Return value*: string representing the integer.
-*** CODE Maximum int
+*** CODED Maximum int
+CLOSED: [2023-11-27 Mon 15:04]
 n set to maximum int.
 *Return value*: string representing the integer.
-*** CODE Minimum int
+*** CODED Minimum int
+CLOSED: [2023-11-27 Mon 15:04]
 n set to minimum int.
 *Return value*: string representing the integer.
-*** CODE n zero
+*** CODED n zero
+CLOSED: [2023-11-27 Mon 15:05]
 n set to zero.
 *Return value*: string representing the integer.
-*** CODE malloc fail
+*** CODED malloc fail
+CLOSED: [2023-11-27 Mon 15:06]
 Make malloc fail.
 *Return value*: NULL.
 ** TODO ft_strmapi
