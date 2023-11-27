@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 14:47:59 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:13:18 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3621,6 +3621,154 @@ CuSuite	*ft_split_get_suite()
 	SUITE_ADD_TEST(s, test_ft_split_empty_s);
 	SUITE_ADD_TEST(s, test_ft_split_malloc_fail);
 	SUITE_ADD_TEST(s, test_ft_split_null_s);
+	return (s);
+}
+
+/****************************/
+/*          FT_ITOA         */
+/****************************/
+
+void	test_ft_itoa_basic(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = 23;
+	char	*res;
+	size_t	malloc_size;
+
+	printf("\n########### FT_ITOA ###########\n");
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
+	res = ft_itoa(n);
+	malloc_size = g_last_malloc_size;
+	CuAssertStrEquals(tc, "23", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 3, malloc_size);
+}
+
+void	test_ft_itoa_negative(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = -23;
+	char	*res;
+	size_t	malloc_size;
+
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WITH NEGATIVE NUMBER", !WIFSIGNALED(g_exit_code));
+	res = ft_itoa(n);
+	malloc_size = g_last_malloc_size;
+	CuAssertStrEquals(tc, "-23", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 4, malloc_size);
+}
+
+void	test_ft_itoa_max_int(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = 2147483647;
+	char	*res;
+	size_t	malloc_size;
+
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WITH MAX INT", !WIFSIGNALED(g_exit_code));
+	res = ft_itoa(n);
+	malloc_size = g_last_malloc_size;
+	CuAssertStrEquals(tc, "2147483647", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 11, malloc_size);
+}
+
+void	test_ft_itoa_min_int(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = -2147483648;
+	char	*res;
+	size_t	malloc_size;
+
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WITH MIN INT", !WIFSIGNALED(g_exit_code));
+	res = ft_itoa(n);
+	malloc_size = g_last_malloc_size;
+	CuAssertStrEquals(tc, "-2147483648", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 12, malloc_size);
+}
+
+void	test_ft_itoa_zero(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = 0;
+	char	*res;
+	size_t	malloc_size;
+
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WITH N=0", !WIFSIGNALED(g_exit_code));
+	res = ft_itoa(n);
+	malloc_size = g_last_malloc_size;
+	CuAssertStrEquals(tc, "0", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 2, malloc_size);
+}
+
+void	test_ft_itoa_malloc_fail(CuTest *tc)
+{
+	char	*(*ft_itoa)(int) = get_fun("ft_itoa");
+	int		n = 23;
+	char	*res;
+
+	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_itoa(n);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_ITOA CRASH WHEN ALLOC FAILS.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_itoa(n);
+	CuAssertPtrEquals(tc, NULL, res);
+	if (res)
+		free(res);
+}
+
+CuSuite	*ft_itoa_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_itoa_basic);
+	SUITE_ADD_TEST(s, test_ft_itoa_negative);
+	SUITE_ADD_TEST(s, test_ft_itoa_max_int);
+	SUITE_ADD_TEST(s, test_ft_itoa_min_int);
+	SUITE_ADD_TEST(s, test_ft_itoa_zero);
+	SUITE_ADD_TEST(s, test_ft_itoa_malloc_fail);
 	return (s);
 }
 

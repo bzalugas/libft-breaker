@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 15:07:09 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:43:05 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4292,14 +4292,14 @@ void	test_ft_itoa_basic(CuTest *tc)
 	char	*res;
 	size_t	malloc_size;
 
-	printf("\n########### FT_SPLIT ###########\n");
+	printf("\n########### FT_ITOA ###########\n");
 	sprintf(buff.txt, "%s: n=<%d>\n", __func__, n);
 	SANDBOX(
 		res = ft_itoa(n);
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
 	res = ft_itoa(n);
 	malloc_size = g_last_malloc_size;
 	CuAssertStrEquals(tc, "23", res);
@@ -4321,7 +4321,7 @@ void	test_ft_itoa_negative(CuTest *tc)
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WITH NEGATIVE NUMBER", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WITH NEGATIVE NUMBER", !WIFSIGNALED(g_exit_code));
 	res = ft_itoa(n);
 	malloc_size = g_last_malloc_size;
 	CuAssertStrEquals(tc, "-23", res);
@@ -4343,7 +4343,7 @@ void	test_ft_itoa_max_int(CuTest *tc)
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WITH MAX INT", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WITH MAX INT", !WIFSIGNALED(g_exit_code));
 	res = ft_itoa(n);
 	malloc_size = g_last_malloc_size;
 	CuAssertStrEquals(tc, "2147483647", res);
@@ -4365,7 +4365,7 @@ void	test_ft_itoa_min_int(CuTest *tc)
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WITH MIN INT", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WITH MIN INT", !WIFSIGNALED(g_exit_code));
 	res = ft_itoa(n);
 	malloc_size = g_last_malloc_size;
 	CuAssertStrEquals(tc, "-2147483648", res);
@@ -4387,7 +4387,7 @@ void	test_ft_itoa_zero(CuTest *tc)
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WITH N=0", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WITH N=0", !WIFSIGNALED(g_exit_code));
 	res = ft_itoa(n);
 	malloc_size = g_last_malloc_size;
 	CuAssertStrEquals(tc, "0", res);
@@ -4409,9 +4409,10 @@ void	test_ft_itoa_malloc_fail(CuTest *tc)
 		if (res)
 			free(res);
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WHEN ALLOC FAILS.", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_ITOA CRASH WHEN ALLOC FAILS.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
 	res = ft_itoa(n);
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertPtrEquals(tc, NULL, res);
 	if (res)
 		free(res);
 }
