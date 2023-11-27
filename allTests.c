@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 13:22:30 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:24:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	test_ft_isdigit_basic(CuTest *tc)
 	char	c;
 
 	printf("\n########## FT_ISDIGIT ##########\n");
-	printf("ft_isdigit: Basic inputs (-128 => 127)\n");
+	sprintf(buff.txt, "ft_isdigit: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
@@ -104,7 +104,7 @@ void	test_ft_isalnum_basic(CuTest *tc)
 	char	c;
 
 	printf("\n########## FT_ISALNUM ##########\n");
-	printf("ft_isalnum: Basic inputs (-128 => 127)\n");
+	sprintf(buff.txt, "ft_isalnum: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
@@ -144,7 +144,7 @@ void	test_ft_isascii_basic(CuTest *tc)
 	char	c;
 
 	printf("\n########## FT_ISASCII ##########\n");
-	printf("ft_isascii: Normal inputs (-128 => 127)\n");
+	sprintf(buff.txt, "ft_isascii: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
@@ -184,7 +184,7 @@ void	test_ft_isprint_basic(CuTest *tc)
 	char	c;
 
 	printf("\n########## FT_ISPRINT ##########\n");
-	printf("ft_isprint: Normal inputs (-128 => 127)\n");
+	sprintf(buff.txt, "ft_isprint: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
