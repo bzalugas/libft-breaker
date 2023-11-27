@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/26 19:15:35 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/11/27 09:58:21 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -53,10 +53,10 @@ $(LIB):		$(LIBFT)
 			cp $(LIBFT) ./
 
 $(NAME):	$(LIB) $(SRC) $(NORMAL)
-			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(LIB) $(INCLUDES) -o $(NAME)
+			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(INCLUDES) -o $(NAME)
 
 static:		$(LIB) $(SRC) $(STATIC)
-			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(LIB) $(INCLUDES) -o $(NAME)
+			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(INCLUDES) -o $(NAME)
 
 clean:
 			rm -f $(NAME) $(OBJN) $(OBJS) $(LMALLOC) ./libft.so
