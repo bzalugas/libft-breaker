@@ -575,36 +575,49 @@ Make malloc fail.
 s set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-** DONE ft_itoa [6/6]
-CLOSED: [2023-11-27 Mon 15:08]
+** ft_itoa
 #+begin_src C
 char    *ft_itoa(int n);
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-11-27 Mon 14:59]
+*** Basic inputs
 n set to a positive number.
 *Return value*: string representing the integer.
-*** CODED Negative n
-CLOSED: [2023-11-27 Mon 15:01]
+*** Negative n
 n set to a negative number.
 *Return value*: string representing the integer.
-*** CODED Maximum int
-CLOSED: [2023-11-27 Mon 15:04]
+*** Maximum int
 n set to maximum int.
 *Return value*: string representing the integer.
-*** CODED Minimum int
-CLOSED: [2023-11-27 Mon 15:04]
+*** Minimum int
 n set to minimum int.
 *Return value*: string representing the integer.
-*** CODED n zero
-CLOSED: [2023-11-27 Mon 15:05]
+*** n zero
 n set to zero.
 *Return value*: string representing the integer.
-*** CODED malloc fail
-CLOSED: [2023-11-27 Mon 15:06]
+*** malloc fail
 Make malloc fail.
 *Return value*: NULL.
-** TODO ft_strmapi
+** TODO ft_strmapi [0/5]
+#+begin_src C
+char    *ft_strmapi(char const *s, char (*f)(unsigned int, char));
+#+end_src
+The test function passed to strmapi will be a rot13 function.
+*** CODE Basic inputs
+s set to a normal string, f a rot13 function.
+*Behavior*: s modified by f.
+*Return value*: the new string.
+*** CODE empty s
+s set to an empty string.
+*Behavior*: s modified by f (nothing).
+*Return value*: the new string (empty).
+*** CODE NULL s
+s set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODE NULL f
+f set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
 ** TODO ft_striteri
 ** TODO ft_putchar_fd
 ** TODO ft_putstr_fd
