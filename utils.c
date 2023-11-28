@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 15:07:48 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:49:51 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "lftest.h"
@@ -18,6 +18,7 @@ size_t		g_last_malloc_size;
 t_ft		fcts[31];
 int			g_n_tests_fun;
 print_buff	buff;
+int			g_in_fun;
 
 void	add_color_buff(char c)
 {
@@ -73,10 +74,9 @@ void	*init_fcts()
 	fcts[25] = (t_ft){"ft_strtrim", dlsym(handle, "ft_strtrim"), ft_strtrim_get_suite};
 	fcts[26] = (t_ft){"ft_split", dlsym(handle, "ft_split"), ft_split_get_suite};
 	fcts[27] = (t_ft){"ft_itoa", dlsym(handle, "ft_itoa"), ft_itoa_get_suite};
-	fcts[28] = (t_ft){NULL, NULL, NULL};
+	fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite};
 	fcts[29] = (t_ft){NULL, NULL, NULL};
 	fcts[30] = (t_ft){NULL, NULL, NULL};
-	/* fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite}; */
 	/* fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite}; */
 	/* fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite}; */
 	return (handle);

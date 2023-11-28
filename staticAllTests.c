@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 16:13:18 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:53:59 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3769,6 +3769,139 @@ CuSuite	*ft_itoa_get_suite()
 	SUITE_ADD_TEST(s, test_ft_itoa_min_int);
 	SUITE_ADD_TEST(s, test_ft_itoa_zero);
 	SUITE_ADD_TEST(s, test_ft_itoa_malloc_fail);
+	return (s);
+}
+
+/****************************/
+/*        FT_STRMAPI        */
+/****************************/
+
+static char	rot_47(unsigned int i, char c)
+{
+	(void)i;
+	g_in_fun++;
+	//(((c - 33) + 47) % 94) + 33 <==> 33 + (c + 14) % 94
+	if (c >= 33 && c <= 126)
+		return (33 + (c + 14) % 94);
+	return (c);
+}
+
+void	test_ft_strmapi_basic(CuTest *tc)
+{
+	char	*(*ft_strmapi)(char const *, char (*)(unsigned int, char)) = get_fun("ft_strmapi");
+	char	s[] = "Hello! <23> !^*_~";
+	char	*res;
+	size_t	size;
+
+	printf("\n########## FT_STRMAPI #########\n");
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47);
+	SANDBOX(
+		res = ft_strmapi(s, rot_47);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_STRMAPI CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	g_in_fun = 0;
+	res = ft_strmapi(s, rot_47);
+	size = g_last_malloc_size;
+	CuAssertIntEquals_Msg(tc, "ft_strmapi is not calling the function.", strlen(s), g_in_fun);
+	CuAssertStrEquals(tc, "w6==@P kabm P/Y0O", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", strlen(s) + 1, size);
+}
+
+void	test_ft_strmapi_empty_s(CuTest *tc)
+{
+	char	*(*ft_strmapi)(char const *, char (*)(unsigned int, char)) = get_fun("ft_strmapi");
+	char	s[] = "";
+	char	*res;
+	size_t	size;
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47);
+	SANDBOX(
+		res = ft_strmapi(s, rot_47);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_STRMAPI CRASH WITH EMPTY S.", !WIFSIGNALED(g_exit_code));
+	g_in_fun = 0;
+	res = ft_strmapi(s, rot_47);
+	size = g_last_malloc_size;
+	CuAssertIntEquals_Msg(tc, "ft_strmapi is not calling the function.", strlen(s), g_in_fun);
+	CuAssertStrEquals(tc, "", res);
+	if (res)
+		free(res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size.", strlen(s) + 1, size);
+}
+
+void	test_ft_strmapi_null_s(CuTest *tc)
+{
+	char	*(*ft_strmapi)(char const *, char (*)(unsigned int, char)) = get_fun("ft_strmapi");
+	char	*s = NULL;
+	char	*res;
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47);
+	SANDBOX(
+		res = ft_strmapi(s, rot_47);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_STRMAPI CRASH WITH NULL S.", !WIFSIGNALED(g_exit_code));
+	res = ft_strmapi(s, rot_47);
+	if (res)
+		free(res);
+	CuAssertPtrEquals_Msg(tc, "Bad return when s set to NULL.", NULL, res);
+}
+
+void	test_ft_strmapi_null_f(CuTest *tc)
+{
+	char	*(*ft_strmapi)(char const *, char (*)(unsigned int, char)) = get_fun("ft_strmapi");
+	char	s[] = "Hello! <23> !^*_~";
+	char	*res;
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, NULL);
+	SANDBOX(
+		res = ft_strmapi(s, NULL);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_STRMAPI CRASH WITH NULL F.", !WIFSIGNALED(g_exit_code));
+	res = ft_strmapi(s, NULL);
+	if (res)
+		free(res);
+	CuAssertPtrEquals_Msg(tc, "Bad return when f set to NULL.", NULL, res);
+}
+
+void	test_ft_strmapi_malloc_fail(CuTest *tc)
+{
+	char	*(*ft_strmapi)(char const *, char (*)(unsigned int, char)) = get_fun("ft_strmapi");
+	char	s[] = "Hello! <23> !^*_~";
+	char	*res;
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47);
+	SANDBOX(
+		FAIL_MALLOC;
+		res = ft_strmapi(s, rot_47);
+		if (res)
+			free(res);
+		);
+	CuAssert(tc, "FT_STRMAPI CRASH WHEN MALLOC FAILS.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
+	res = ft_strmapi(s, rot_47);
+	if (res)
+		free(res);
+	CuAssertPtrEquals_Msg(tc, "Bad return when malloc fails.", NULL, res);
+}
+
+CuSuite	*ft_strmapi_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_strmapi_basic);
+	SUITE_ADD_TEST(s, test_ft_strmapi_empty_s);
+	SUITE_ADD_TEST(s, test_ft_strmapi_null_s);
+	SUITE_ADD_TEST(s, test_ft_strmapi_null_f);
+	SUITE_ADD_TEST(s, test_ft_strmapi_malloc_fail);
 	return (s);
 }
 

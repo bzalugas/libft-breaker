@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/27 12:48:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:35:43 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define LFTEST_H
 # define _GNU_SOURCE
 # include "CuTest.h"
-/* # include "../libft/libft.h" */
 # include <stdio.h>
 # include <ctype.h>
 # include <string.h>
@@ -53,6 +52,7 @@ extern int			g_malloc_fail;
 extern t_ft			fcts[31];
 extern int			g_n_tests_fun;
 extern print_buff	buff;
+extern int			g_in_fun;
 
 # define FAIL_MALLOC g_malloc_fail = 1;
 
