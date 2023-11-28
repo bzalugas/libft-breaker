@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/28 10:52:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 13:13:05 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4559,6 +4559,41 @@ CuSuite	*ft_strmapi_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strmapi_null_s);
 	SUITE_ADD_TEST(s, test_ft_strmapi_null_f);
 	SUITE_ADD_TEST(s, test_ft_strmapi_malloc_fail);
+	return (s);
+}
+
+/****************************/
+/*        FT_STRITERI       */
+/****************************/
+
+static void rot_47_2(unsigned int i, char *c)
+{
+	(void)i;
+	g_in_fun++;
+	//(((c - 33) + 47) % 94) + 33 <==> 33 + (c + 14) % 94
+	if (*c >= 33 && *c <= 126)
+		*c = (33 + (*c + 14) % 94);
+}
+
+void	test_ft_striteri_basic(CuTest *tc)
+{
+	void	(*ft_striteri)(char const *, void (*)(unsigned int, char*)) = get_fun("ft_strmapi");
+	char	s[] = "Hello! <23> !^*_~";
+
+	printf("\n######### FT_STRITERI #########\n");
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47_2);
+	SANDBOX(ft_striteri(s, rot_47_2););
+	CuAssert(tc, "FT_STRITERI CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	g_in_fun = 0;
+	ft_striteri(s, rot_47_2);
+	CuAssertIntEquals_Msg(tc, "ft_striteri is not calling the function.", strlen(s), g_in_fun);
+	CuAssertStrEquals(tc, "w6==@P kabm P/Y0O", s);
+}
+
+CuSuite	*ft_striter_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
 	return (s);
 }
 

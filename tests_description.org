@@ -597,37 +597,52 @@ n set to zero.
 *** malloc fail
 Make malloc fail.
 *Return value*: NULL.
-** TODO ft_strmapi [5/5]
+** ft_strmapi
 #+begin_src C
 char    *ft_strmapi(char const *s, char (*f)(unsigned int, char));
 #+end_src
 The test function passed to strmapi will be a rot47 function.
-*** CODED Basic inputs
-CLOSED: [2023-11-28 Tue 10:22]
-s set to a normal string, f a rot13 function.
+*** Basic inputs
+s set to a normal string, f a rot47 function.
 *Behavior*: s modified by f.
 *Return value*: the new string.
-*** CODED empty s
-CLOSED: [2023-11-28 Tue 10:29]
+*** empty s
 s set to an empty string.
 *Behavior*: s modified by f (nothing).
 *Return value*: the new string (empty).
-*** CODED NULL s
-CLOSED: [2023-11-28 Tue 10:40]
+*** NULL s
 s set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL f
-CLOSED: [2023-11-28 Tue 10:43]
+*** NULL f
 f set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED malloc fail
-CLOSED: [2023-11-28 Tue 10:44]
+*** malloc fail
 Make malloc fail
 *Behavior*: Nothing.
 *Return value*: NULL.
 ** TODO ft_striteri
+#+begin_src C
+void    ft_striteri(char *s, void (*f)(unsigned int, char*));
+#+end_src
+The test function passed to striteri will be a rot47 function.
+*** CODE Basic inputs
+s set to a normal string, f a rot47 function.
+*Behavior*: s modified by f.
+*Return value*: the new string.
+*** CODE empty s
+s set to an empty string.
+*Behavior*: s modified by f (nothing).
+*Return value*: the new string (empty).
+*** CODE NULL s
+s set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
+*** CODE NULL f
+f set to NULL.
+*Behavior*: Nothing.
+*Return value*: NULL.
 ** TODO ft_putchar_fd
 ** TODO ft_putstr_fd
 ** TODO ft_putendl_fd
