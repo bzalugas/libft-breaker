@@ -622,31 +622,39 @@ f set to NULL.
 Make malloc fail
 *Behavior*: Nothing.
 *Return value*: NULL.
-** TODO ft_striteri
+** ft_striteri
 #+begin_src C
 void    ft_striteri(char *s, void (*f)(unsigned int, char*));
 #+end_src
 The test function passed to striteri will be a rot47 function.
-*** CODED Basic inputs
-CLOSED: [2023-11-28 Tue 19:23]
+*** Basic inputs
 s set to a normal string, f a rot47 function.
 *Behavior*: s modified by f.
-*** CODED empty s
-CLOSED: [2023-11-28 Tue 19:24]
+*** empty s
 s set to an empty string.
 *Behavior*: s modified by f (nothing).
-*** CODED NULL s
-CLOSED: [2023-11-28 Tue 19:25]
+*** NULL s
 s set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL f
-CLOSED: [2023-11-28 Tue 19:26]
+*** NULL f
 f set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_putchar_fd
+#+begin_src C
+void    ft_putchar_fd(char c, int fd);
+#+end_src
 ** TODO ft_putstr_fd
+#+begin_src C
+void    ft_putstr_fd(char *s, int fd);
+#+end_src
 ** TODO ft_putendl_fd
+#+begin_src C
+void    ft_putendl_fd(char *s, int fd);
+#+end_src
 ** TODO ft_putnbr_fd
+#+begin_src C
+void    ft_putnbr_fd(int n, int fd);
+#+end_src
 
 * Bonus part
 ** ft_lstnew
