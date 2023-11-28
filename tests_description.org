@@ -627,22 +627,22 @@ Make malloc fail
 void    ft_striteri(char *s, void (*f)(unsigned int, char*));
 #+end_src
 The test function passed to striteri will be a rot47 function.
-*** CODE Basic inputs
+*** CODED Basic inputs
+CLOSED: [2023-11-28 Tue 19:23]
 s set to a normal string, f a rot47 function.
 *Behavior*: s modified by f.
-*Return value*: the new string.
-*** CODE empty s
+*** CODED empty s
+CLOSED: [2023-11-28 Tue 19:24]
 s set to an empty string.
 *Behavior*: s modified by f (nothing).
-*Return value*: the new string (empty).
-*** CODE NULL s
+*** CODED NULL s
+CLOSED: [2023-11-28 Tue 19:25]
 s set to NULL.
 *Behavior*: Nothing.
-*Return value*: NULL.
-*** CODE NULL f
+*** CODED NULL f
+CLOSED: [2023-11-28 Tue 19:26]
 f set to NULL.
 *Behavior*: Nothing.
-*Return value*: NULL.
 ** TODO ft_putchar_fd
 ** TODO ft_putstr_fd
 ** TODO ft_putendl_fd

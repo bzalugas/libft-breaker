@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/28 15:47:16 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:50:24 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -3924,6 +3924,84 @@ CuSuite	*ft_strmapi_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strmapi_null_s);
 	SUITE_ADD_TEST(s, test_ft_strmapi_null_f);
 	SUITE_ADD_TEST(s, test_ft_strmapi_malloc_fail);
+	return (s);
+}
+
+/****************************/
+/*        FT_STRITERI       */
+/****************************/
+
+static void rot_47_2(unsigned int i, char *c)
+{
+	(void)i;
+	g_in_fun++;
+	//(((c - 33) + 47) % 94) + 33 <==> 33 + (c + 14) % 94
+	if (c && *c && *c >= 33 && *c <= 126)
+		*c = (33 + (*c + 14) % 94);
+}
+
+void	test_ft_striteri_basic(CuTest *tc)
+{
+	void	(*ft_striteri)(char const *, void (*)(unsigned int, char*)) = get_fun("ft_striteri");
+	char	s[] = "Hello! <23> !^*_~";
+
+	printf("\n######### FT_STRITERI #########\n");
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47_2);
+	SANDBOX(ft_striteri(s, rot_47_2););
+	CuAssert(tc, "FT_STRITERI CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	g_in_fun = 0;
+	g_last_malloc_size = 0;
+	ft_striteri(s, rot_47_2);
+	CuAssertIntEquals_Msg(tc, "ft_striteri is not calling the function.", strlen(s), g_in_fun);
+	CuAssertIntEquals_Msg(tc, "ft_striteri is calling malloc (WHY ?)", 0, g_last_malloc_size);
+	CuAssertStrEquals(tc, "w6==@P kabm P/Y0O", s);
+}
+
+void	test_ft_striteri_empty_s(CuTest *tc)
+{
+	void	(*ft_striteri)(char const *, void (*)(unsigned int, char*)) = get_fun("ft_striteri");
+	char	s[] = "";
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47_2);
+	SANDBOX(ft_striteri(s, rot_47_2););
+	CuAssert(tc, "FT_STRITERI CRASH WITH EMPTY S.", !WIFSIGNALED(g_exit_code));
+	g_in_fun = 0;
+	ft_striteri(s, rot_47_2);
+	CuAssertIntEquals_Msg(tc, "ft_striteri is not calling the function.", strlen(s), g_in_fun);
+	CuAssertStrEquals(tc, "", s);
+}
+
+void	test_ft_striteri_null_s(CuTest *tc)
+{
+	void	(*ft_striteri)(char const *, void (*)(unsigned int, char*)) = get_fun("ft_striteri");
+	char	*s = NULL;
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47_2);
+	SANDBOX(ft_striteri(s, rot_47_2););
+	CuAssert(tc, "FT_STRITERI CRASH WITH NULL S.", !WIFSIGNALED(g_exit_code));
+	ft_striteri(s, rot_47_2);
+	CuAssertStrEquals(tc, NULL, s);
+}
+
+void	test_ft_striteri_null_f(CuTest *tc)
+{
+	void	(*ft_striteri)(char const *, void (*)(unsigned int, char*)) = get_fun("ft_striteri");
+	char	s[] = "Hello! <23> !^*_~";
+
+	sprintf(buff.txt, "%s: s=<%s>, f=<%p>\n", __func__, s, rot_47_2);
+	SANDBOX(ft_striteri(s, NULL););
+	CuAssert(tc, "FT_STRITERI CRASH WITH NULL F.", !WIFSIGNALED(g_exit_code));
+	ft_striteri(s, NULL);
+	CuAssertStrEquals(tc, "Hello! <23> !^*_~", s);
+}
+
+CuSuite	*ft_striteri_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_striteri_basic);
+	SUITE_ADD_TEST(s, test_ft_striteri_empty_s);
+	SUITE_ADD_TEST(s, test_ft_striteri_null_s);
+	SUITE_ADD_TEST(s, test_ft_striteri_null_f);
 	return (s);
 }
 
