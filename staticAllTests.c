@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/28 10:53:59 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:47:16 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1895,9 +1895,25 @@ CuSuite	*ft_memchr_get_suite()
 /*        FT_MEMCMP         */
 /****************************/
 
+/*
+ * GNU simple memcmp implementation, used as reference to test the optimized one
+ *
+ * https://github.com/lattera/glibc/blob/master/string/test-memcmp.c
+*/
+
+static int simple_memcmp (const void *s1, const void *s2, size_t n)
+{
+	int ret = 0;
+
+	while (n-- && (ret = *(unsigned char *) s1++ - *(unsigned char *) s2++) == 0);
+	return ret;
+}
+
+
 void	test_ft_memcmp_basic_1(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 5;
@@ -1916,6 +1932,7 @@ void	test_ft_memcmp_basic_1(CuTest *tc)
 void	test_ft_memcmp_basic_2_1(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	size_t	n = 5;
@@ -1933,6 +1950,7 @@ void	test_ft_memcmp_basic_2_1(CuTest *tc)
 void	test_ft_memcmp_basic_2_2(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 5;
@@ -1950,6 +1968,7 @@ void	test_ft_memcmp_basic_2_2(CuTest *tc)
 void	test_ft_memcmp_byte_zero(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, '\0', 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, '\0', 0x04, 0x05};
 	size_t	n = 5;
@@ -1967,6 +1986,7 @@ void	test_ft_memcmp_byte_zero(CuTest *tc)
 void	test_ft_memcmp_zero_n(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04, 0x10};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04, 0x05};
 	size_t	n = 0;
@@ -1984,6 +2004,7 @@ void	test_ft_memcmp_zero_n(CuTest *tc)
 void	test_ft_memcmp_not_u_char_1(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01020304};
 	int		arr2[] = {0x01, 0x02, 0x03, 0x04};
 	size_t	n = 4;
@@ -2001,6 +2022,7 @@ void	test_ft_memcmp_not_u_char_1(CuTest *tc)
 void	test_ft_memcmp_not_u_char_2(CuTest *tc)
 {
 	int		(*ft_memcmp)(const void *, const void *, size_t) = get_fun("ft_memcmp");
+	int		(*memcmp)(const void *, const void *, size_t) = simple_memcmp;
 	int		arr1[] = {0x01, 0x02, 0x03, 0x04};
 	int		arr2[] = {0x01020304};
 	size_t	n = 4;
