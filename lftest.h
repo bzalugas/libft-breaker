@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/28 10:35:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:22:18 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ extern print_buff	buff;
 extern int			g_in_fun;
 
 # define FAIL_MALLOC g_malloc_fail = 1;
+# define END_FAIL g_malloc_fail = 0;
 
 # define SANDBOX(X) if ((g_pid = fork()) == -1){perror("Error during fork");exit(1);}if (!g_pid){X;exit(0);}wait(&g_exit_code);
 

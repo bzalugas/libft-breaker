@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/28 19:50:24 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:46:40 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2581,14 +2581,17 @@ void	test_ft_calloc_malloc_protection(CuTest *tc)
 	nmemb = 5;
 	size = sizeof(int);
 	sprintf(buff.txt, "%s: nmemb=%lu, size=%lu\n", __func__, nmemb, size);
-	FAIL_MALLOC;
 	SANDBOX(
+		FAIL_MALLOC;
 		ptr = ft_calloc(nmemb, size);
+		END_FAIL;
 		if (ptr)
 			free(ptr);
 		);
 	CuAssert(tc, "ft_calloc fails when malloc fails.", !WIFSIGNALED(g_exit_code));
+	FAIL_MALLOC;
 	ptr = ft_calloc(nmemb, size);
+	END_FAIL;
 	if (ptr)
 		free(ptr);
 	CuAssert(tc, "ft_calloc doesn't protect malloc.", ptr == NULL);
@@ -2680,12 +2683,14 @@ void	test_ft_strdup_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_strdup(s);
+		END_FAIL;
 		if(res)
 			free(res)
 		);
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_strdup(s);
+	END_FAIL;
 	CuAssertPtrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -2930,12 +2935,14 @@ void	test_ft_substr_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_substr(s, start, len);
+		END_FAIL;
 		if (res)
 			free(res);
 		);
 	CuAssert(tc, "CRASH of ft_substr.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_substr(s, start, len);
+	END_FAIL;
 	CuAssertStrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -2993,12 +3000,14 @@ void	test_ft_strjoin_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_strjoin(s1, s2);
+		END_FAIL;
 		if (res)
 			free(res);
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_strjoin(s1, s2);
+	END_FAIL;
 	CuAssertStrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -3333,12 +3342,14 @@ void	test_ft_strtrim_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_strtrim(s1, set);
+		END_FAIL;
 		if (res)
 			free(res);
 		);
 	CuAssert(tc, "ft_strtrim CRASH when malloc fails.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_strtrim(s1, set);
+	END_FAIL;
 	CuAssertStrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -3598,16 +3609,12 @@ void	test_ft_split_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_split(s, c);
-		if (res)
-		{
-			for (int i = 0; res[i]; ++i)
-				free(res[i]);
-			free(res);
-		}
+		END_FAIL;
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN MALLOC FAILS", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_split(s, c);
+	END_FAIL;
 	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when alloc fails.", NULL, res);
 }
 
@@ -3771,12 +3778,14 @@ void	test_ft_itoa_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_itoa(n);
+		END_FAIL;
 		if (res)
 			free(res);
 		);
 	CuAssert(tc, "FT_ITOA CRASH WHEN ALLOC FAILS.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_itoa(n);
+	END_FAIL;
 	CuAssertPtrEquals(tc, NULL, res);
 	if (res)
 		free(res);
@@ -3905,12 +3914,14 @@ void	test_ft_strmapi_malloc_fail(CuTest *tc)
 	SANDBOX(
 		FAIL_MALLOC;
 		res = ft_strmapi(s, rot_47);
+		END_FAIL;
 		if (res)
 			free(res);
 		);
 	CuAssert(tc, "FT_STRMAPI CRASH WHEN MALLOC FAILS.", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_strmapi(s, rot_47);
+	END_FAIL;
 	if (res)
 		free(res);
 	CuAssertPtrEquals_Msg(tc, "Bad return when malloc fails.", NULL, res);
