@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/29 11:18:15 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:50:14 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*malloc(size_t size)
 	static void	*(*real_malloc)(size_t) = NULL;
 	if (g_malloc_fail == 1)
 	{
-		g_malloc_fail = 0;
+		g_last_malloc_size = 0;
 		return (NULL);
 	}
 	if (!real_malloc)
