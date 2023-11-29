@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/29 11:26:57 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:02:28 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4270,11 +4270,31 @@ void	test_ft_split_malloc_fail(CuTest *tc)
 		res = ft_split(s, c);
 		END_FAIL;
 		);
-	CuAssert(tc, "FT_SPLIT CRASH WHEN MALLOC FAILS", !WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "FT_SPLIT CRASH WHEN FIRST MALLOC FAILS", !WIFSIGNALED(g_exit_code));
 	FAIL_MALLOC;
 	res = ft_split(s, c);
 	END_FAIL;
-	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when alloc fails.", NULL, res);
+	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when first alloc fails.", NULL, res);
+}
+
+void	test_ft_split_malloc_fail_2(CuTest *tc)
+{
+	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
+	char	s[] = "hello monstre! How are you?";
+	char	c = ' ';
+	char	**res;
+
+	sprintf(buff.txt, "%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	SANDBOX(
+		g_malloc_fail = 3;
+		res = ft_split(s, c);
+		END_FAIL;
+		);
+	CuAssert(tc, "FT_SPLIT CRASH WHEN THIRD MALLOC FAILS", !WIFSIGNALED(g_exit_code));
+	g_malloc_fail = 3;
+	res = ft_split(s, c);
+	END_FAIL;
+	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when third alloc fails.", NULL, res);
 }
 
 void	test_ft_split_null_s(CuTest *tc)
@@ -4308,6 +4328,7 @@ CuSuite	*ft_split_get_suite()
 	SUITE_ADD_TEST(s, test_ft_split_zero_c);
 	SUITE_ADD_TEST(s, test_ft_split_empty_s);
 	SUITE_ADD_TEST(s, test_ft_split_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_split_malloc_fail_2);
 	SUITE_ADD_TEST(s, test_ft_split_null_s);
 	return (s);
 }

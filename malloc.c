@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/29 11:50:14 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:00:28 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	*malloc(size_t size)
 		g_last_malloc_size = 0;
 		return (NULL);
 	}
+	else if (g_malloc_fail > 1)
+		g_malloc_fail--;
 	if (!real_malloc)
 		real_malloc = dlsym(RTLD_NEXT, "malloc");
 	if (!real_malloc)
