@@ -6,18 +6,18 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/29 11:22:18 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:59:21 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LFTEST_H
 # define LFTEST_H
-# define _GNU_SOURCE
 # include "CuTest.h"
 # include <stdio.h>
 # include <ctype.h>
 # include <string.h>
 # ifdef __linux__
+#  define _GNU_SOURCE
 #  include <bsd/string.h>
 # endif
 # include <stdlib.h>
@@ -27,7 +27,7 @@
 # include <limits.h>
 # include <dlfcn.h>
 # define BUFFSIZE 30
-# define BUFFBSIZE 30000
+# define BUFFBSIZE 3000
 # define ANSI_COLOR_RED     "\033[31m"
 # define ANSI_COLOR_GREEN   "\033[32m"
 # define ANSI_COLOR_RESET	"\033[0m"

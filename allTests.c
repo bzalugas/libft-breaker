@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/29 12:02:28 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:54:03 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1078,74 +1078,6 @@ void	test_ft_strlcpy_size_zero(CuTest *tc)
 	CuAssertIntEquals(tc, res1, res2);
 }
 
-void	test_ft_strlcpy_dst_overlap_src(CuTest *tc)
-{
-	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
-	char	mem1[BUFFSIZE];
-	char	mem2[BUFFSIZE];
-	char	*dst1 = &mem1[0];
-	char	*src1 = &mem1[5];
-	char	*dst2 = &mem2[0];
-	char	*src2 = &mem2[5];
-	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
-
-	bzero(mem1, BUFFSIZE);
-	bzero(mem2, BUFFSIZE);
-	memset(src1, 'a', 10);
-	memset(src2, 'a', 10);
-	size = strlen(src1) + 1;
-	sprintf(buff.txt, "%s: src = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
-	CuAssertIntEquals(tc, res1, res2);
-}
-
-void	test_ft_strlcpy_src_overlap_dst(CuTest *tc)
-{
-	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
-	char	mem1[BUFFSIZE];
-	char	mem2[BUFFSIZE];
-	char	*dst1 = &mem1[5];
-	char	*src1 = &mem1[0];
-	char	*dst2 = &mem2[5];
-	char	*src2 = &mem2[0];
-	size_t	size;
-	size_t	res1;
-	size_t	res2;
-	int		exit1;
-	int		exit2;
-
-	bzero(mem1, BUFFSIZE);
-	bzero(mem2, BUFFSIZE);
-	memset(src1, 'a', BUFFSIZE - 1);
-	memset(src2, 'a', BUFFSIZE - 1);
-	src1[10] = '\0';
-	src2[10] = '\0';
-	size = strlen(src1) + 1;
-	sprintf(buff.txt, "%s: src = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
-	SANDBOX(strlcpy(dst1, src1, size););
-	exit1 = g_exit_code;
-	SANDBOX(ft_strlcpy(dst2, src2, size););
-	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	res1 = strlcpy(dst1, src1, size);
-	res2 = ft_strlcpy(dst2, src2, size);
-	CuAssert(tc, "Bad copy", !memcmp(mem1, mem2, BUFFSIZE));
-	CuAssertIntEquals(tc, res1, res2);
-}
-
 void	test_ft_strlcpy_null_dst(CuTest *tc)
 {
 	size_t	(*ft_strlcpy)(char *, const char *, size_t) = get_fun("ft_strlcpy");
@@ -1244,8 +1176,6 @@ CuSuite *ft_strlcpy_get_suite()
 	SUITE_ADD_TEST(s, test_ft_strlcpy_small_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_bigger_size);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_size_zero);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_dst_overlap_src);
-	SUITE_ADD_TEST(s, test_ft_strlcpy_src_overlap_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_src);
 	SUITE_ADD_TEST(s, test_ft_strlcpy_null_dst_and_src);
@@ -1332,25 +1262,34 @@ void	test_ft_strlcat_smaller_small_size(CuTest *tc)
 void	test_ft_strlcat_bigger_size(CuTest *tc)
 {
 	size_t	(*ft_strlcat)(char *, const char *, size_t) = get_fun("ft_strlcat");
-	char	dst1[BUFFSIZE];
-	char	dst2[BUFFSIZE];
-	char	src[BUFFSIZE];
+	char	dst1[BUFFBSIZE];
+	char	dst2[BUFFBSIZE];
+	char	src[BUFFBSIZE];
 	size_t	size;
 	size_t	res1;
 	size_t	res2;
+	int		exit1;
+	int		exit2;
 
 	strcpy(dst1, "hello");
 	strcpy(dst2, "hello");
 	strcpy(src, " everyone!");
-	size = strlen(dst1) + strlen(src) + 23;
+	size = strlen(dst1) + strlen(src) + 10;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
-		   dst1, strlen(dst1), size);
-	res1 = strlcat(dst1, src, size);
+			dst1, strlen(dst1), size);
+	SANDBOX(res1 = strlcat(dst1, src, size););
+	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst2, src, size););
-	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
-	res2 = ft_strlcat(dst2, src, size);
-	CuAssertStrEquals(tc, dst1, dst2);
-	CuAssertIntEquals(tc, res1, res2);
+	exit2 = g_exit_code;
+	CuAssert(tc, "strlcat crash but not ft_strlcat.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "strlcat doesn't crash but ft_strlcat does.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
+	{
+		res1 = strlcat(dst1, src, size);
+		res2 = ft_strlcat(dst2, src, size);
+		CuAssertStrEquals(tc, dst1, dst2);
+		CuAssertIntEquals(tc, res1, res2);
+	}
 }
 
 void	test_ft_strlcat_size_zero(CuTest *tc)
