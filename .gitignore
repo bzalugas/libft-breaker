@@ -6,4 +6,6 @@
 *.so
 munit/
 libftest
+*.dSym
+*.dylib
 # tmp.c

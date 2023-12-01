@@ -1,8 +1,8 @@
 #include "lftest.h"
 #include <limits.h>
 
-extern size_t	g_last_malloc_size;
-extern int		g_malloc_fail;
+/* size_t	g_last_malloc_size; */
+/* int		g_malloc_fail; */
 
 int	test_fun(int x)
 {
@@ -11,15 +11,17 @@ int	test_fun(int x)
 
 int	main(void)
 {
-	char	name[] = "test_fun";
-	void	*lib = dlopen("./tmp.so", RTLD_LAZY);
-	if (!lib)
-		exit(EXIT_FAILURE);
-	int (*f)(int) = dlsym(lib, name);
-	if (f)
-		printf("%d\n", f(2));
-	else
-		printf("NOT FOUND\n");
-	dlclose(lib);
+	void	*(*ft_calloc)(size_t, size_t);
+	void	*handle = dlopen("libft.so", RTLD_LAZY);
+	ft_calloc = dlsym(handle, "ft_calloc");
+	free(ft_calloc(5, sizeof(char)));
+	printf("tmp malloc addr = %p\n", malloc);
+	/* printf("%lu\n", g_last_malloc_size); */
+	free(ft_calloc(8, sizeof(char)));
+	/* printf("%lu\n", g_last_malloc_size); */
+	dlclose(handle);
+	free(malloc(sizeof(int) * 2));
+	free(malloc(sizeof(int) * 3));
+	/* printf("%lu\n", g_last_malloc_size); */
 	return (0);
 }
