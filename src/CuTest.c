@@ -5,8 +5,8 @@
 #include <string.h>
 #include <math.h>
 
-#include "CuTest.h"
-#include "lftest.h"
+#include "../includes/CuTest.h"
+#include "../includes/lftest.h"
 
 /*-------------------------------------------------------------------------*
  * CuStr

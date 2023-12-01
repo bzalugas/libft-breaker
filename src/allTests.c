@@ -6,11 +6,11 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/11/30 16:54:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:15:38 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lftest.h"
+#include "../includes/lftest.h"
 
 /*********************************** PART 1 ***********************************/
 
@@ -3102,6 +3102,7 @@ void	test_ft_calloc_check_size(CuTest *tc)
 	size_t	nmemb;
 	size_t	size;
 	int		*ptr;
+	size_t	malloc_size;
 
 	nmemb = 5;
 	size = sizeof(int);
@@ -3112,8 +3113,9 @@ void	test_ft_calloc_check_size(CuTest *tc)
 		);
 	CuAssert(tc, "ft_calloc fails with basic nmemb & size.", !WIFSIGNALED(g_exit_code));
 	ptr = (int *)ft_calloc(nmemb, size);
+	malloc_size = g_last_malloc_size;
 	CuAssert(tc, "ft_calloc doesn't allocate the correct size.",
-			 g_last_malloc_size == size * nmemb);
+			 malloc_size == size * nmemb);
 	free(ptr);
 }
 
@@ -3208,19 +3210,17 @@ void	test_ft_strdup_basic(CuTest *tc)
 	char	s[] = "TRIple Mooonstre!!! COUCOU";
 	char	*res1;
 	char	*res2;
-	size_t	size1;
-	size_t	size2;
+	size_t	size;
 
 	printf("\n########### FT_STRDUP ##########\n");
 	sprintf(buff.txt, "%s: s = <%s>\n", __func__, s);
 	SANDBOX(res2 = ft_strdup(s);free(res2));
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res1 = strdup(s);
-	size1 = g_last_malloc_size;
 	res2 = ft_strdup(s);
-	size2 = g_last_malloc_size;
+	size = g_last_malloc_size;
 	CuAssertStrEquals(tc, res1, res2);
-	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", 27, size);
 	if (res1)
 		free(res1);
 	if (res2)
@@ -3260,8 +3260,7 @@ void	test_ft_strdup_empty_s(CuTest *tc)
 	char	s[] = "";
 	char	*res1;
 	char	*res2;
-	size_t	size1;
-	size_t	size2;
+	size_t	size;
 
 	sprintf(buff.txt, "%s: s = <%s>\n", __func__, s);
 	SANDBOX(
@@ -3271,11 +3270,10 @@ void	test_ft_strdup_empty_s(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res1 = strdup(s);
-	size1 = g_last_malloc_size;
 	res2 = ft_strdup(s);
-	size2 = g_last_malloc_size;
+	size = g_last_malloc_size;
 	CuAssertStrEquals(tc, res1, res2);
-	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
+	CuAssertIntEquals_Msg(tc, "Incorrect malloc size", 1, size);
 	if (res1)
 		free(res1);
 	if (res2)
@@ -3288,8 +3286,6 @@ void	test_ft_strdup_null_s(CuTest *tc)
 	char	*s = NULL;
 	char	*res1;
 	char	*res2;
-	size_t	size1;
-	size_t	size2;
 	int		exit1;
 	int		exit2;
 
@@ -3310,19 +3306,6 @@ void	test_ft_strdup_null_s(CuTest *tc)
 															  && !WIFSIGNALED(exit2)));
 	CuAssert(tc, "ft_strdup crash when it shouldn't.", !(!WIFSIGNALED(exit1)
 														 && WIFSIGNALED(exit2)));
-	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
-	{
-		res1 = strdup(s);
-		size1 = g_last_malloc_size;
-		res2 = ft_strdup(s);
-		size2 = g_last_malloc_size;
-		CuAssertStrEquals(tc, res1, res2);
-		CuAssertIntEquals_Msg(tc, "Incorrect malloc size", size1, size2);
-		if (res1)
-			free(res1);
-		if (res2)
-			free(res2);
-	}
 }
 
 CuSuite	*ft_strdup_get_suite()

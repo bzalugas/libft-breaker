@@ -8,4 +8,5 @@ munit/
 libftest
 *.dSym
 *.dylib
+libft
 # tmp.c

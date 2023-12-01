@@ -6,36 +6,44 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/11/27 11:16:50 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/01 19:27:44 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 LIBFTDIR	=	../libft
 
-LIB			=	libft.so
+LIB			=	obj/libft.so
 
 LIBFT		=	$(LIBFTDIR)/$(LIB)
 
 NAME 		=	libftest
 
-SRC	 		=	CuTest.c utils.c malloc.c
+SRC	 		=	src/CuTest.c src/utils.c
 
-MALLOC		=	malloc.c
+MALLOC		=	src/malloc.c
 
-LMALLOC		=	malloc.so
+LMALLOC		=	obj/libmalloc.dylib
 
-NORMAL		=	allTests.c
+NORMAL		=	src/allTests.c
 
-STATIC		=	staticAllTests.c
+STATIC		=	src/staticAllTests.c
 
 CC	 		=	cc
 
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror
+
+LIBFLAGS	=
 
 INCLUDES	=
 
+MACOS		=
+
 ifneq ($(shell uname), Darwin)
 	INCLUDES += -lbsd
+	LIBFLAGS += -nostartfiles -fPIC -ldl
+else
+	LIBFLAGS += -dynamiclib
+	MACOS = 1
 endif
 
 all:		$(NAME)
@@ -46,27 +54,36 @@ run:		$(NAME)
 srun:		static
 			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
 
-$(LIBFT):
+ifdef MACOS
+$(LIB):		$(LMALLOC)
+			rm -rf ./libft/*
+			mkdir -p libft
+			cp -r $(LIBFTDIR)/* ./libft
+			cp $(LMALLOC) ./libft
+			make -C ./libft so
+			cp ./libft/libft.so ./
+else
+$(LIB):
+			rm -rf ./obj/*
+			mkdir -p ./obj
 			make -C $(LIBFTDIR) so
+			cp $(LIBFT) ./obj
+endif
 
-$(LIB):		$(LIBFT)
-			cp $(LIBFT) ./
+$(LMALLOC):	$(MALLOC)
+			$(CC) $(LIBFLAGS) -o $@ $(MALLOC) $(SRC) $(NORMAL) src/globals.c
 
-$(NAME):	$(LIB) $(SRC) $(NORMAL)
-			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(INCLUDES) -o $(NAME)
+$(NAME):	$(LMALLOC) $(LIB) $(SRC) $(NORMAL)
+			$(CC) $(CFLAGS) $(SRC) $(NORMAL) $(INCLUDES) -o $(NAME) -Lobj -lmalloc
 
-static:		$(LIB) $(SRC) $(STATIC)
-			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(INCLUDES) -o $(NAME)
+static:		$(LMALLOC) $(LIB) $(SRC) $(STATIC)
+			$(CC) $(CFLAGS) $(SRC) $(STATIC) $(INCLUDES) -o $(NAME) -Lobj -lmalloc
 
 clean:
-			rm -f $(NAME) $(SRC:.c=.o) $(NORMAL:.c=.o) $(STATIC:.c=.o) $(LMALLOC) ./libft.so
+			rm -f $(NAME) $(SRC:.c=.o) $(NORMAL:.c=.o) $(STATIC:.c=.o) $(LMALLOC) $(LIB) $(LMALLOC)
 
 fclean:		clean
 
-force:
-			make re -C $(LIBFTDIR)
-			make so -C $(LIBFTDIR)
+re:			fclean all
 
-re:			clean force all
-
-.PHONY:		all clean $(LIBFT) force fclean static run
+.PHONY:		all clean $(LIBFT) force fclean static run srun static
