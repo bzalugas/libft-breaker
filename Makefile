@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/03 00:49:27 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/03 00:52:22 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,6 +18,8 @@ LIBFTDIR	=	../libft
 LIBFT		=	$(LIBFTDIR)/libft.so
 
 LIBFTSO		=	obj/libft.so
+
+LIBFTRULE	=	breaker
 
 NAME 		=	run-breaker
 
@@ -69,7 +71,7 @@ $(LIBFTSO):	$(LIBFTDIR)
 			rm -rf libft/*
 			mkdir -p libft
 			cp $(LIBFTDIR)/* ./libft
-			make -C libft/ so
+			make -C libft/ $(LIBFTRULE)
 			mv libft/libft.so $(LIBFTSO)
 
 

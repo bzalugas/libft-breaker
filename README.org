@@ -10,21 +10,24 @@ If you run the tests on ubuntu machine (with same version as 42), you can use no
 I also created a "static" version, that doesn't compare normal libc's function with yours in special cases, like passing NULL, because the behaviors can be different regarding the OS. To use it, run ~make srun~.
 
 * Installation
-The default structure is:
+*You will need to add the following rule in your libft's Makefile to create a shared library (.so). If you don't plan to use the tester with macos, you can copy only the first rule.*
+#+begin_src makefile
+ifneq ($(shell uname), Darwin)
+breaker:
+			$(cc) -nostartfiles -shared -fPIC -ldl $(CFLAGS) -o libft.so $(SRC)
+else
+breaker:
+			$(CC) -dynamiclib $(CFLAGS) -o libft.so $(SRC) -L../obj -lmalloc
+endif
+#+end_src
+
+The default structure for the folders is:
 #+begin_example
 .
 |- libft/
 |- tester-libft/
 #+end_example
 You can change this by changing the ~$(LIBFTDIR)~ variable in Makefile.
-
-*You will need to add a rule in your libft's Makefile to create a shared library (.so).*
-Here is an example :
-#+begin_src makefile
-so:
-		$(CC) -nostartfiles -fPIC -c $(CFLAGS) $(SRC)
-		cc -nostartfiles -shared -o libft.so $(OBJ) -ldl
-#+end_src
 
 * Usage
 Just run ~make run~ and the Makefile will build your libft & launch the tests.
