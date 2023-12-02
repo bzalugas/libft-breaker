@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/01 18:04:49 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 00:36:46 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
@@ -40,10 +40,10 @@ void	printbuff()
 
 void	*init_fcts()
 {
-	void	*handle = dlopen("./libft.so", RTLD_LAZY);
+	void	*handle = dlopen("obj/libft.so", RTLD_LAZY);
 	if (!handle)
 	{
-		perror("Error while loading libft.so\n");
+		perror("Error while loading libft.so");
 		exit(EXIT_FAILURE);
 	}
 	fcts[0] = (t_ft){"ft_isalpha", dlsym(handle, "ft_isalpha"), ft_isalpha_get_suite};

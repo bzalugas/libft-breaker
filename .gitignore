@@ -1,12 +1,12 @@
 .DS_Store
+*.DSYM
 *~
 *.out
 *.a
 *.o
 *.so
-munit/
-libftest
+run-breaker
 *.dSym
 *.dylib
 libft
-# tmp.c
+tmp.c
