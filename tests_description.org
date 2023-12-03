@@ -640,17 +640,21 @@ void    ft_putchar_fd(char c, int fd);
 CLOSED: [2023-12-03 Sun 18:03]
 fd set to a pipe fd (stdout & stderr closed) and c to a regular char.
 *Behavior*: writes c to fd.
-** TODO ft_putstr_fd
+** DONE ft_putstr_fd
+CLOSED: [2023-12-03 Sun 18:31]
 #+begin_src C
 void    ft_putstr_fd(char *s, int fd);
 #+end_src
-*** CODE Basic
+*** CODED Basic
+CLOSED: [2023-12-03 Sun 18:06]
 fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
 *Behavior*: writes string s to fd.
-*** CODE empty s
+*** CODED empty s
+CLOSED: [2023-12-03 Sun 18:09]
 fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 *Behavior*: writes (empty) s to fd.
-*** CODE NULL s
+*** CODED NULL s
+CLOSED: [2023-12-03 Sun 18:12]
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
 ** TODO ft_putendl_fd

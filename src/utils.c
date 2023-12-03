@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 17:59:39 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 18:14:33 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
@@ -88,6 +88,7 @@ void	*init_fcts()
 		perror("Error while loading libft.so");
 		exit(EXIT_FAILURE);
 	}
+	g_n_tests_fun = 34;
 	fcts[0] = (t_ft){"ft_isalpha", dlsym(handle, "ft_isalpha"), ft_isalpha_get_suite};
 	fcts[1] = (t_ft){"ft_isdigit", dlsym(handle, "ft_isdigit"), ft_isdigit_get_suite};
 	fcts[2] = (t_ft){"ft_isalnum", dlsym(handle, "ft_isalnum"), ft_isalnum_get_suite};
@@ -119,7 +120,7 @@ void	*init_fcts()
 	fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite};
 	fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite};
 	fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite};
-	/* fcts[31] = (t_ft){"ft_putstr_fd", dlsym(handle, "ft_putstr_fd"), ft_putstr_fd_get_suite}; */
+	fcts[31] = (t_ft){"ft_putstr_fd", dlsym(handle, "ft_putstr_fd"), ft_putstr_fd_get_suite};
 	/* fcts[32] = (t_ft){"ft_putdendl_fd", dlsym(handle, "ft_putdendl_fd"), ft_putdendl_fd_get_suite}; */
 	/* fcts[33] = (t_ft){"ft_putnbr_fd", dlsym(handle, "ft_putnbr_fd"), ft_putnbr_fd_get_suite}; */
 	return (handle);

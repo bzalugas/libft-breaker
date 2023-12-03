@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 18:01:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 18:32:08 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4069,6 +4069,91 @@ CuSuite	*ft_putchar_fd_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
 	SUITE_ADD_TEST(s, test_ft_putchar_fd_basic);
+	return (s);
+}
+
+/****************************/
+/*        FT_PUTSTR_FD      */
+/****************************/
+
+void	test_ft_putstr_fd_basic(CuTest *tc)
+{
+	void	(*ft_putstr_fd)(char*,int) = get_fun("ft_putchar_fd");
+	char	s[] = "Hello everyone!";
+	int		fd;
+
+	printf("\n######### FT_PUTSTR_FD ########\n");
+	OPEN_PIPE;
+	fd = fds[1];
+	sprintf(buff.txt, "%s: s=<%s>, fd=<%d>\n", __func__, s, fd);
+	CLOSE_OUTPUTS;
+	SANDBOX(
+		ft_putstr_fd(s, fd);
+		CLOSE_PIPE;
+		);
+	CuAssert(tc, "FT_PUTSTR CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	OPEN_PIPE;
+	fd = fds[1];
+	ft_putstr_fd(s, fd);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putstr_fd doesn't write s in fd", "Hello everyone!", pipe_buff);
+}
+
+void	test_ft_putstr_fd_empty_s(CuTest *tc)
+{
+	void	(*ft_putstr_fd)(char*,int) = get_fun("ft_putchar_fd");
+	char	s[] = "";
+	int		fd;
+
+	OPEN_PIPE;
+	fd = fds[1];
+	sprintf(buff.txt, "%s: s=<%s>, fd=<%d>\n", __func__, s, fd);
+	CLOSE_OUTPUTS;
+	SANDBOX(
+		ft_putstr_fd(s, fd);
+		CLOSE_PIPE;
+		);
+	CuAssert(tc, "FT_PUTSTR CRASH WITH EMPTY S.", !WIFSIGNALED(g_exit_code));
+	OPEN_PIPE;
+	fd = fds[1];
+	pipe_buff[0] = 'z';
+	ft_putstr_fd(s, fd);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putstr_fd doesn't write s in fd", "", pipe_buff);
+}
+
+void	test_ft_putstr_fd_null_s(CuTest *tc)
+{
+	void	(*ft_putstr_fd)(char*,int) = get_fun("ft_putchar_fd");
+	char	*s = NULL;
+	int		fd;
+
+	OPEN_PIPE;
+	fd = fds[1];
+	sprintf(buff.txt, "%s: s=<%s>, fd=<%d>\n", __func__, s, fd);
+	CLOSE_OUTPUTS;
+	SANDBOX(
+		ft_putstr_fd(s, fd);
+		CLOSE_PIPE;
+		);
+	CuAssert(tc, "FT_PUTSTR CRASH WITH NULL S.", !WIFSIGNALED(g_exit_code));
+	OPEN_PIPE;
+	fd = fds[1];
+	write(fd, "z", 1);
+	ft_putstr_fd(s, fd);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putstr_fd writes to fd with NULL s.", "z", pipe_buff);
+}
+
+CuSuite	*ft_putstr_fd_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_putstr_fd_basic);
+	SUITE_ADD_TEST(s, test_ft_putstr_fd_empty_s);
+	SUITE_ADD_TEST(s, test_ft_putstr_fd_null_s);
 	return (s);
 }
 
