@@ -631,76 +631,59 @@ s set to NULL.
 *** NULL f
 f set to NULL.
 *Behavior*: Nothing.
-** DONE ft_putchar_fd
-CLOSED: [2023-12-03 Sun 18:03]
+** ft_putchar_fd
 #+begin_src C
 void    ft_putchar_fd(char c, int fd);
 #+end_src
-*** CODED Basic
-CLOSED: [2023-12-03 Sun 18:03]
+*** Basic
 fd set to a pipe fd (stdout & stderr closed) and c to a regular char.
 *Behavior*: writes c to fd.
-** DONE ft_putstr_fd
-CLOSED: [2023-12-03 Sun 18:31]
+** ft_putstr_fd
 #+begin_src C
 void    ft_putstr_fd(char *s, int fd);
 #+end_src
-*** CODED Basic
-CLOSED: [2023-12-03 Sun 18:06]
+*** Basic
 fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
 *Behavior*: writes string s to fd.
-*** CODED empty s
-CLOSED: [2023-12-03 Sun 18:09]
+*** empty s
 fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 *Behavior*: writes (empty) s to fd.
-*** CODED NULL s
-CLOSED: [2023-12-03 Sun 18:12]
+*** NULL s
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
-** DONE ft_putendl_fd
-CLOSED: [2023-12-03 Sun 20:05]
+** ft_putendl_fd
 #+begin_src C
 void    ft_putendl_fd(char *s, int fd);
 #+end_src
-*** CODED Basic
-CLOSED: [2023-12-03 Sun 20:01]
+*** Basic
 fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
 *Behavior*: writes string s (with '\n') to fd.
-*** CODED multiple newlines
-CLOSED: [2023-12-03 Sun 20:01]
+*** multiple newlines
 fd set to a pipe fd (stdout & stderr closed) and s to a string terminated by multiple newlines.
 *Behavior*: writes string s (with '\n') to fd.
-*** CODED empty s
-CLOSED: [2023-12-03 Sun 20:01]
+*** empty s
 fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 *Behavior*: writes s (only '\n') to fd.
-*** CODED NULL s
-CLOSED: [2023-12-03 Sun 20:01]
+*** NULL s
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
-** DONE ft_putnbr_fd
-CLOSED: [2023-12-03 Sun 20:37]
+** ft_putnbr_fd
 #+begin_src C
 void    ft_putnbr_fd(int n, int fd);
 #+end_src
-*** CODED Basic
-CLOSED: [2023-12-03 Sun 20:18]
+*** Basic
 fd set to a pipe fd (stdout & stderr closed) and n to positive number.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODED negative n
-CLOSED: [2023-12-03 Sun 20:19]
+*** negative n
 fd set to a pipe fd (stdout & stderr closed) and n to negative number.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODED int min
-CLOSED: [2023-12-03 Sun 20:20]
+*** int min
 fd set to a pipe fd (stdout & stderr closed) and n to minimum integer.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODED int max
-CLOSED: [2023-12-03 Sun 20:21]
+*** int max
 fd set to a pipe fd (stdout & stderr closed) and n to maximum integer.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODED n zero
-CLOSED: [2023-12-03 Sun 20:21]
+*** n zero
 fd set to a pipe fd (stdout & stderr closed) and n to zero.
 *Behavior*: converts n to a string and then writes it to fd.
 
