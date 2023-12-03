@@ -10,7 +10,7 @@ If you run the tests on ubuntu machine (with same version as 42), you can use no
 I also created a "static" version, that doesn't compare normal libc's function with yours in special cases, like passing NULL, because the behaviors can be different regarding the OS. To use it, run ~make srun~.
 
 * Installation
-*You will need to add the following rule in your libft's Makefile to create a shared library (.so). If you don't plan to use the tester with macos, you can copy only the first rule.*
+*You will need to add the following rule (replacing corresponding variables names by yours) in your libft's Makefile to create a shared library (.so). If you don't plan to use the tester with macos, you can copy only the first rule.*
 #+begin_src makefile
 ifneq ($(shell uname), Darwin)
 breaker:
