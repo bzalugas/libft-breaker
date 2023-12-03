@@ -635,6 +635,9 @@ f set to NULL.
 #+begin_src C
 void    ft_putchar_fd(char c, int fd);
 #+end_src
+*** CODE Basic
+fd set to a pipe fd (stdout & stderr closed) and c to a regular char.
+*Behavior*: writes c to fd.
 ** TODO ft_putstr_fd
 #+begin_src C
 void    ft_putstr_fd(char *s, int fd);
