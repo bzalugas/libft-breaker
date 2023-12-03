@@ -6,10 +6,9 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/03 00:52:22 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/03 01:01:16 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
-
 
 ################################### VARIABLES ##################################
 
@@ -67,13 +66,18 @@ $(LMALLOC):	$(MALLOC)
 			mkdir -p obj
 			$(CC) $(LIBFLAGS) -o $@ $<
 
+ifdef MACOS
 $(LIBFTSO):	$(LIBFTDIR)
 			rm -rf libft/*
 			mkdir -p libft
 			cp $(LIBFTDIR)/* ./libft
 			make -C libft/ $(LIBFTRULE)
 			mv libft/libft.so $(LIBFTSO)
-
+else
+$(LIBFTSO):	$(LIBFTDIR)
+			make -C $(LIBFTDIR) $(LIBFTRULE)
+			cp $(LIBFT) $(LIBFTSO)
+endif
 
 $(LIBFTDIR):
 			@echo $(ANSI_COLOR_RED)\
