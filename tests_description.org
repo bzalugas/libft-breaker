@@ -678,23 +678,29 @@ fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 CLOSED: [2023-12-03 Sun 20:01]
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
-** TODO ft_putnbr_fd
+** DONE ft_putnbr_fd
+CLOSED: [2023-12-03 Sun 20:37]
 #+begin_src C
 void    ft_putnbr_fd(int n, int fd);
 #+end_src
-*** CODE Basic
+*** CODED Basic
+CLOSED: [2023-12-03 Sun 20:18]
 fd set to a pipe fd (stdout & stderr closed) and n to positive number.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODE negative n
+*** CODED negative n
+CLOSED: [2023-12-03 Sun 20:19]
 fd set to a pipe fd (stdout & stderr closed) and n to negative number.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODE int min
+*** CODED int min
+CLOSED: [2023-12-03 Sun 20:20]
 fd set to a pipe fd (stdout & stderr closed) and n to minimum integer.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODE int max
+*** CODED int max
+CLOSED: [2023-12-03 Sun 20:21]
 fd set to a pipe fd (stdout & stderr closed) and n to maximum integer.
 *Behavior*: converts n to a string and then writes it to fd.
-*** CODE n zero
+*** CODED n zero
+CLOSED: [2023-12-03 Sun 20:21]
 fd set to a pipe fd (stdout & stderr closed) and n to zero.
 *Behavior*: converts n to a string and then writes it to fd.
 

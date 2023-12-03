@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 20:05:16 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 20:31:57 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4838,6 +4838,137 @@ CuSuite	*ft_putendl_fd_get_suite()
 	SUITE_ADD_TEST(s, test_ft_putendl_fd_multiple_nl);
 	SUITE_ADD_TEST(s, test_ft_putendl_fd_empty_s);
 	SUITE_ADD_TEST(s, test_ft_putendl_fd_null_s);
+	return (s);
+}
+
+/****************************/
+/*        FT_PUTNBR_FD      */
+/****************************/
+
+void	test_ft_putnbr_fd_basic(CuTest *tc)
+{
+	void	(*ft_putnbr_fd)(int,int) = get_fun("ft_putnbr_fd");
+	int		n = 23456;
+
+	printf("\n######### FT_PUTNBR_FD ########\n");
+	sprintf(buff.txt, "%s: n=<%d>, fd=<allocated by pipe>\n", __func__, n);
+	SANDBOX(
+		CLOSE_OUTPUTS;
+		OPEN_PIPE;
+		ft_putnbr_fd(n, fds[1]);
+		CLOSE_PIPE;
+		OPEN_OUTPUTS;
+		);
+	CuAssert(tc, "FT_PUTNBR_FD CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	CLOSE_OUTPUTS;
+	OPEN_PIPE;
+	bzero(pipe_buff, BUFFSIZE);
+	ft_putnbr_fd(n, fds[1]);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putnbr doesn't write n to fd.", "23456", pipe_buff);
+}
+
+void	test_ft_putnbr_fd_negative(CuTest *tc)
+{
+	void	(*ft_putnbr_fd)(int,int) = get_fun("ft_putnbr_fd");
+	int		n = -23456;
+
+	sprintf(buff.txt, "%s: n=<%d>, fd=<allocated by pipe>\n", __func__, n);
+	SANDBOX(
+		CLOSE_OUTPUTS;
+		OPEN_PIPE;
+		ft_putnbr_fd(n, fds[1]);
+		CLOSE_PIPE;
+		OPEN_OUTPUTS;
+		);
+	CuAssert(tc, "FT_PUTNBR_FD CRASH WITH NEGATIVE N.", !WIFSIGNALED(g_exit_code));
+	CLOSE_OUTPUTS;
+	OPEN_PIPE;
+	bzero(pipe_buff, BUFFSIZE);
+	ft_putnbr_fd(n, fds[1]);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putnbr doesn't write n to fd.", "-23456", pipe_buff);
+}
+
+void	test_ft_putnbr_fd_int_min(CuTest *tc)
+{
+	void	(*ft_putnbr_fd)(int,int) = get_fun("ft_putnbr_fd");
+	int		n = -2147483648;
+
+	sprintf(buff.txt, "%s: n=<%d>, fd=<allocated by pipe>\n", __func__, n);
+	SANDBOX(
+		CLOSE_OUTPUTS;
+		OPEN_PIPE;
+		ft_putnbr_fd(n, fds[1]);
+		CLOSE_PIPE;
+		OPEN_OUTPUTS;
+		);
+	CuAssert(tc, "FT_PUTNBR_FD CRASH WITH INT MIN.", !WIFSIGNALED(g_exit_code));
+	CLOSE_OUTPUTS;
+	OPEN_PIPE;
+	bzero(pipe_buff, BUFFSIZE);
+	ft_putnbr_fd(n, fds[1]);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putnbr doesn't write n to fd.", "-2147483648", pipe_buff);
+}
+
+void	test_ft_putnbr_fd_int_max(CuTest *tc)
+{
+	void	(*ft_putnbr_fd)(int,int) = get_fun("ft_putnbr_fd");
+	int		n = 2147483647;
+
+	sprintf(buff.txt, "%s: n=<%d>, fd=<allocated by pipe>\n", __func__, n);
+	SANDBOX(
+		CLOSE_OUTPUTS;
+		OPEN_PIPE;
+		ft_putnbr_fd(n, fds[1]);
+		CLOSE_PIPE;
+		OPEN_OUTPUTS;
+		);
+	CuAssert(tc, "FT_PUTNBR_FD CRASH WITH INT MAX.", !WIFSIGNALED(g_exit_code));
+	CLOSE_OUTPUTS;
+	OPEN_PIPE;
+	bzero(pipe_buff, BUFFSIZE);
+	ft_putnbr_fd(n, fds[1]);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putnbr doesn't write n to fd.", "2147483647", pipe_buff);
+}
+
+void	test_ft_putnbr_fd_zero(CuTest *tc)
+{
+	void	(*ft_putnbr_fd)(int,int) = get_fun("ft_putnbr_fd");
+	int		n = 0;
+
+	sprintf(buff.txt, "%s: n=<%d>, fd=<allocated by pipe>\n", __func__, n);
+	SANDBOX(
+		CLOSE_OUTPUTS;
+		OPEN_PIPE;
+		ft_putnbr_fd(n, fds[1]);
+		CLOSE_PIPE;
+		OPEN_OUTPUTS;
+		);
+	CuAssert(tc, "FT_PUTNBR_FD CRASH WITH ZERO.", !WIFSIGNALED(g_exit_code));
+	CLOSE_OUTPUTS;
+	OPEN_PIPE;
+	bzero(pipe_buff, BUFFSIZE);
+	ft_putnbr_fd(n, fds[1]);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putnbr doesn't write n to fd.", "0", pipe_buff);
+}
+
+CuSuite	*ft_putnbr_fd_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_putnbr_fd_basic);
+	SUITE_ADD_TEST(s, test_ft_putnbr_fd_negative);
+	SUITE_ADD_TEST(s, test_ft_putnbr_fd_int_min);
+	SUITE_ADD_TEST(s, test_ft_putnbr_fd_int_max);
+	SUITE_ADD_TEST(s, test_ft_putnbr_fd_zero);
 	return (s);
 }
 
