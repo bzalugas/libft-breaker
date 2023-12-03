@@ -657,20 +657,25 @@ fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 CLOSED: [2023-12-03 Sun 18:12]
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
-** TODO ft_putendl_fd
+** DONE ft_putendl_fd
+CLOSED: [2023-12-03 Sun 20:05]
 #+begin_src C
 void    ft_putendl_fd(char *s, int fd);
 #+end_src
-*** CODE Basic
+*** CODED Basic
+CLOSED: [2023-12-03 Sun 20:01]
 fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
 *Behavior*: writes string s (with '\n') to fd.
-*** CODE multiple newlines
+*** CODED multiple newlines
+CLOSED: [2023-12-03 Sun 20:01]
 fd set to a pipe fd (stdout & stderr closed) and s to a string terminated by multiple newlines.
 *Behavior*: writes string s (with '\n') to fd.
-*** CODE empty s
+*** CODED empty s
+CLOSED: [2023-12-03 Sun 20:01]
 fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
 *Behavior*: writes s (only '\n') to fd.
-*** CODE NULL s
+*** CODED NULL s
+CLOSED: [2023-12-03 Sun 20:01]
 fd set to a pipe fd (stdout & stderr closed) and s to NULL.
 *Behavior*: Nothing.
 ** TODO ft_putnbr_fd

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 18:14:33 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 20:04:49 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
@@ -53,7 +53,6 @@ void	manage_pipes(int to_open, int to_close)
 	}
 	else if (to_close)
 	{
-		/* write(fds[1], "\0", 1); */
 		close(fds[1]);
 		fds[1] = -1;
 		read(fds[0], &pipe_buff, BUFFSIZE);
@@ -121,7 +120,7 @@ void	*init_fcts()
 	fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite};
 	fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite};
 	fcts[31] = (t_ft){"ft_putstr_fd", dlsym(handle, "ft_putstr_fd"), ft_putstr_fd_get_suite};
-	/* fcts[32] = (t_ft){"ft_putdendl_fd", dlsym(handle, "ft_putdendl_fd"), ft_putdendl_fd_get_suite}; */
+	fcts[32] = (t_ft){"ft_putendl_fd", dlsym(handle, "ft_putendl_fd"), ft_putendl_fd_get_suite};
 	/* fcts[33] = (t_ft){"ft_putnbr_fd", dlsym(handle, "ft_putnbr_fd"), ft_putnbr_fd_get_suite}; */
 	return (handle);
 }
