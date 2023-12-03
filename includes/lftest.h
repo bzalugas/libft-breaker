@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 01:17:13 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 01:24:28 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <dlfcn.h>
 # define BUFFSIZE 30
 # define BUFFBSIZE 2048
-# define BUFFBBSIZE 4096
+# define BUFFBBSIZE 8192
 # define ANSI_COLOR_RED     "\033[31m"
 # define ANSI_COLOR_GREEN   "\033[32m"
 # define ANSI_COLOR_RESET	"\033[0m"

@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/03 01:01:16 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/03 02:20:31 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,9 +36,10 @@ CFLAGS		=	-Wall -Wextra -Werror
 
 ifeq ($(shell uname), Darwin)
 	MACOS = 1
+	LIBINCLUDES = -Lobj -lmalloc
 	LIBFLAGS = -dynamiclib
 else
-	CFLAGS += -lbsd
+	LIBINCLUDES = $(LMALLOC) -lbsd
 	LIBFLAGS = -shared -nostartfiles -fPIC -ldl
 endif
 
@@ -51,10 +52,10 @@ ANSI_COLOR_RESET	=	"\033[0m"
 all:		$(NAME)
 
 $(NAME):	$(LMALLOC) $(LIBFTSO) $(SRCN)
-			$(CC) $(CFLAGS) -o $@ $(SRCN) -Lobj -lmalloc
+			$(CC) $(CFLAGS) -o $@ $(SRCN) $(LIBINCLUDES)
 
 static:		$(LMALLOC) $(LIBFTSO) $(SRCS)
-			$(CC) $(CFLAGS) -o $(NAME) $(SRCS) -Lobj -lmalloc
+			$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBINCLUDES)
 
 run:		$(NAME)
 			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
