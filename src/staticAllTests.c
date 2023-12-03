@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/01 17:01:17 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 18:01:23 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4034,6 +4034,41 @@ CuSuite	*ft_striteri_get_suite()
 	SUITE_ADD_TEST(s, test_ft_striteri_empty_s);
 	SUITE_ADD_TEST(s, test_ft_striteri_null_s);
 	SUITE_ADD_TEST(s, test_ft_striteri_null_f);
+	return (s);
+}
+
+/****************************/
+/*       FT_PUTCHAR_FD      */
+/****************************/
+
+void	test_ft_putchar_fd_basic(CuTest *tc)
+{
+	void	(*ft_putchar_fd)(char,int) = get_fun("ft_putchar_fd");
+	char	c = 'z';
+	int		fd;
+
+	printf("\n######## FT_PUTCHAR_FD ########\n");
+	OPEN_PIPE;
+	fd = fds[1];
+	sprintf(buff.txt, "%s: c=<%c>, fd=<%d>\n", __func__, c, fd);
+	CLOSE_OUTPUTS;
+	SANDBOX(
+		ft_putchar_fd(c, fd);
+		CLOSE_PIPE;
+		);
+	CuAssert(tc, "FT_PUTCHAR CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
+	OPEN_PIPE;
+	fd = fds[1];
+	ft_putchar_fd(c, fd);
+	CLOSE_PIPE;
+	OPEN_OUTPUTS;
+	CuAssertStrEquals_Msg(tc, "ft_putchar_fd doesn't write c in fd", "z", pipe_buff);
+}
+
+CuSuite	*ft_putchar_fd_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_putchar_fd_basic);
 	return (s);
 }
 

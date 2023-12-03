@@ -6,19 +6,61 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 00:36:46 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:59:39 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
 
 int			g_exit_code;
 pid_t		g_pid;
-/* int			g_malloc_fail; */
-/* size_t		g_last_malloc_size; */
-t_ft		fcts[31];
+t_ft		fcts[34];
 int			g_n_tests_fun;
 print_buff	buff;
 int			g_in_fun;
+int			fds[2];
+char		pipe_buff[BUFFSIZE];
+
+void	manage_outputs(int to_close)
+{
+	static int	stdout = -1;
+	static int	stderr = -1;
+
+	if (to_close)
+	{
+		stdout = dup(STDOUT_FILENO);
+		stderr = dup(STDERR_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
+	}
+	else if (stdout != -1 && stderr != -1)
+	{
+		dup2(stdout, STDOUT_FILENO);
+		dup2(stderr, STDERR_FILENO);
+		close(stdout);
+		close(stderr);
+	}
+}
+
+void	manage_pipes(int to_open, int to_close)
+{
+	if (to_open)
+	{
+		if (pipe(fds) == -1)
+		{
+			perror("Pipe error.");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (to_close)
+	{
+		/* write(fds[1], "\0", 1); */
+		close(fds[1]);
+		fds[1] = -1;
+		read(fds[0], &pipe_buff, BUFFSIZE);
+		close(fds[0]);
+		fds[0] = -1;
+	}
+}
 
 void	add_color_buff(char c)
 {
@@ -76,8 +118,10 @@ void	*init_fcts()
 	fcts[27] = (t_ft){"ft_itoa", dlsym(handle, "ft_itoa"), ft_itoa_get_suite};
 	fcts[28] = (t_ft){"ft_strmapi", dlsym(handle, "ft_strmapi"), ft_strmapi_get_suite};
 	fcts[29] = (t_ft){"ft_striteri", dlsym(handle, "ft_striteri"), ft_striteri_get_suite};
-	fcts[30] = (t_ft){NULL, NULL, NULL};
-	/* fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite}; */
+	fcts[30] = (t_ft){"ft_putchar_fd", dlsym(handle, "ft_putchar_fd"), ft_putchar_fd_get_suite};
+	/* fcts[31] = (t_ft){"ft_putstr_fd", dlsym(handle, "ft_putstr_fd"), ft_putstr_fd_get_suite}; */
+	/* fcts[32] = (t_ft){"ft_putdendl_fd", dlsym(handle, "ft_putdendl_fd"), ft_putdendl_fd_get_suite}; */
+	/* fcts[33] = (t_ft){"ft_putnbr_fd", dlsym(handle, "ft_putnbr_fd"), ft_putnbr_fd_get_suite}; */
 	return (handle);
 }
 

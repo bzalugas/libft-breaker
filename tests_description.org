@@ -631,25 +631,63 @@ s set to NULL.
 *** NULL f
 f set to NULL.
 *Behavior*: Nothing.
-** TODO ft_putchar_fd
+** DONE ft_putchar_fd
+CLOSED: [2023-12-03 Sun 18:03]
 #+begin_src C
 void    ft_putchar_fd(char c, int fd);
 #+end_src
-*** CODE Basic
+*** CODED Basic
+CLOSED: [2023-12-03 Sun 18:03]
 fd set to a pipe fd (stdout & stderr closed) and c to a regular char.
 *Behavior*: writes c to fd.
 ** TODO ft_putstr_fd
 #+begin_src C
 void    ft_putstr_fd(char *s, int fd);
 #+end_src
+*** CODE Basic
+fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
+*Behavior*: writes string s to fd.
+*** CODE empty s
+fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
+*Behavior*: writes (empty) s to fd.
+*** CODE NULL s
+fd set to a pipe fd (stdout & stderr closed) and s to NULL.
+*Behavior*: Nothing.
 ** TODO ft_putendl_fd
 #+begin_src C
 void    ft_putendl_fd(char *s, int fd);
 #+end_src
+*** CODE Basic
+fd set to a pipe fd (stdout & stderr closed) and s to a regular string.
+*Behavior*: writes string s (with '\n') to fd.
+*** CODE multiple newlines
+fd set to a pipe fd (stdout & stderr closed) and s to a string terminated by multiple newlines.
+*Behavior*: writes string s (with '\n') to fd.
+*** CODE empty s
+fd set to a pipe fd (stdout & stderr closed) and s to an empty string.
+*Behavior*: writes s (only '\n') to fd.
+*** CODE NULL s
+fd set to a pipe fd (stdout & stderr closed) and s to NULL.
+*Behavior*: Nothing.
 ** TODO ft_putnbr_fd
 #+begin_src C
 void    ft_putnbr_fd(int n, int fd);
 #+end_src
+*** CODE Basic
+fd set to a pipe fd (stdout & stderr closed) and n to positive number.
+*Behavior*: converts n to a string and then writes it to fd.
+*** CODE negative n
+fd set to a pipe fd (stdout & stderr closed) and n to negative number.
+*Behavior*: converts n to a string and then writes it to fd.
+*** CODE int min
+fd set to a pipe fd (stdout & stderr closed) and n to minimum integer.
+*Behavior*: converts n to a string and then writes it to fd.
+*** CODE int max
+fd set to a pipe fd (stdout & stderr closed) and n to maximum integer.
+*Behavior*: converts n to a string and then writes it to fd.
+*** CODE n zero
+fd set to a pipe fd (stdout & stderr closed) and n to zero.
+*Behavior*: converts n to a string and then writes it to fd.
 
 * Bonus part
 ** ft_lstnew
