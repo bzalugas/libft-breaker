@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 16:54:04 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:55:20 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,21 @@ typedef struct	print_buff
 	char	color;
 	char	txt[BUFFBBSIZE];
 }				print_buff;
+
+typedef struct	s_malloc t_malloc;
+struct	s_malloc
+{
+	unsigned long	addr;
+	size_t			size;
+	t_malloc		*next;
+};
+
+typedef struct	s_leaks_tracer t_leaks_tracer;
+struct	s_leaks_tracer
+{
+	t_malloc	*first_malloc;
+	int			count;
+};
 
 /****************************** GLOBAL VARIABLES ******************************/
 
