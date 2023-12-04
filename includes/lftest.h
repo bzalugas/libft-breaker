@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 17:49:22 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:54 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define ANSI_COLOR_GREEN   "\033[32m"
 # define ANSI_COLOR_RESET	"\033[0m"
 
+/********************************** STRUCTS ***********************************/
+
 typedef struct	s_ft
 {
 	char	*fun_name;
@@ -46,6 +48,8 @@ typedef struct	print_buff
 	char	txt[BUFFBBSIZE];
 }				print_buff;
 
+/****************************** GLOBAL VARIABLES ******************************/
+
 extern int			g_exit_code;
 extern pid_t		g_pid;
 extern size_t		g_last_malloc_size;
@@ -57,6 +61,8 @@ extern int			g_in_fun;
 extern int			fds[2];
 extern char			pipe_buff[BUFFSIZE];
 
+/*********************************** MACROS ***********************************/
+
 # define FAIL_MALLOC g_malloc_fail = 1;
 # define END_FAIL g_malloc_fail = 0;
 
@@ -65,7 +71,18 @@ extern char			pipe_buff[BUFFSIZE];
 # define OPEN_PIPE manage_pipes(1, 0);
 # define CLOSE_PIPE manage_pipes(0, 1);
 
-# define SANDBOX(X) if ((g_pid = fork()) == -1){perror("Error during fork");exit(1);}if (!g_pid){X;exit(0);}wait(&g_exit_code);
+# define SANDBOX(X)								\
+	if ((g_pid = fork()) == -1){				\
+		perror("Error during fork");			\
+		exit(1);								\
+	}											\
+	if (!g_pid){								\
+		X;										\
+		exit(0);								\
+	}											\
+	wait(&g_exit_code);
+
+/****************************** UTILS FUNCTIONS *******************************/
 
 void	*init_fcts();
 void	*get_fun(char *name);
@@ -75,6 +92,8 @@ void	add_color_buff(char c);
 void	printbuff();
 void	manage_outputs(int to_close);
 void	manage_pipes(int get_read, int get_write);
+
+/****************************** TESTS FUNCTIONS *******************************/
 
 CuSuite	*ft_isalpha_get_suite();
 CuSuite	*ft_isdigit_get_suite();
