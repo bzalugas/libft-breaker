@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 20:31:57 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:09:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	test_ft_isalpha_basic(CuTest *tc)
 
 CuSuite	*ft_isalpha_get_suite()
 {
+	printf("HERE\n");
 	CuSuite	*suite = CuSuiteNew();
 	SUITE_ADD_TEST(suite, test_ft_isalpha_basic);
 	return (suite);
@@ -302,6 +303,8 @@ void	test_ft_memset_basic(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
+	b2[BUFFSIZE - 1] = 0;
 	printf("\n########### FT_MEMSET ##########\n");
 	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
 	memset(b1, 'z', size);
@@ -322,6 +325,8 @@ void	test_ft_memset_cut_string(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
+	b2[BUFFSIZE - 1] = 0;
 	b1[5] = '\0';
 	b2[5] = '\0';
 	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
@@ -343,6 +348,8 @@ void	test_ft_memset_not_char(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
+	b2[BUFFSIZE - 1] = 0;
 	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, '\200', size);
 	memset(b1, '\200', size);
 	SANDBOX(res = ft_memset(b2, '\200', size););
@@ -362,10 +369,12 @@ void	test_ft_memset_same_return(CuTest *tc)
 	void	*res2 = (void*)0x23;
 
 	memset(b1, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
 	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
 	res1 = memset(b1, 'z', size);
 	strncpy(tmp, b1, BUFFSIZE);
 	memset(b1, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
 	SANDBOX(res2 = ft_memset(b1, 'z', size););
 	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
 	res2 = ft_memset(b1, 'z', size);
@@ -383,6 +392,8 @@ void	test_ft_memset_size_zero(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	memset(b2, 'b', BUFFSIZE);
+	b1[BUFFSIZE - 1] = 0;
+	b2[BUFFSIZE - 1] = 0;
 	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
 	memset(b1, 'z', size);
 	SANDBOX(res = ft_memset(b2, 'z', size););
@@ -447,6 +458,8 @@ void	test_ft_bzero_basic(CuTest *tc)
 
 	memset(s1, 'A', BUFFSIZE);
 	memset(s2, 'A', BUFFSIZE);
+	s1[BUFFSIZE - 1] = 0;
+	s2[BUFFSIZE - 1] = 0;
 	printf("\n########### FT_BZERO ###########\n");
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
 	bzero(s1, n);
@@ -465,6 +478,8 @@ void	test_ft_bzero_size_zero(CuTest *tc)
 
 	memset(s1, 'A', BUFFSIZE);
 	memset(s2, 'A', BUFFSIZE);
+	s1[BUFFSIZE - 1] = 0;
+	s2[BUFFSIZE - 1] = 0;
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
 	SANDBOX(ft_bzero(s2, n););
 	CuAssert(tc, "ft_bzero crash when it shouldn't", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
@@ -4986,7 +5001,7 @@ void	run_all(char *particular_fun, void *fun)
 		CuSuiteAddSuite(suite, ((CuSuite *(*)(void))fun)());
 	else
 	{
-		for (i = 0; i < g_n_tests_fun; i++)
+		for (i = 0; i < N_TESTS_FUN; i++)
 			if (fcts[i].fun_name && fcts[i].fun)
 				if (fcts[i].test_fun)
 					CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
@@ -5010,9 +5025,11 @@ void	run_all(char *particular_fun, void *fun)
 	else
 		printf("%s%s%s\n",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOR_RESET);
 	if (!particular_fun)
-		for (i = 0; i < g_n_tests_fun; i++)
+		for (i = 0; i < N_TESTS_FUN; i++)
 			if (fcts[i].fun_name && !fcts[i].fun)
 				printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOR_RESET);
+	CuStringDelete(output);
+	CuSuiteDelete(suite);
 }
 
 int	main(int argc, char *argv[])

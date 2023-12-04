@@ -6,15 +6,14 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/03 20:22:19 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:53:19 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
 
 int			g_exit_code;
 pid_t		g_pid;
-t_ft		fcts[34];
-int			g_n_tests_fun;
+t_ft		fcts[N_TESTS_FUN];
 print_buff	buff;
 int			g_in_fun;
 int			fds[2];
@@ -87,7 +86,6 @@ void	*init_fcts()
 		perror("Error while loading libft.so");
 		exit(EXIT_FAILURE);
 	}
-	g_n_tests_fun = 34;
 	fcts[0] = (t_ft){"ft_isalpha", dlsym(handle, "ft_isalpha"), ft_isalpha_get_suite};
 	fcts[1] = (t_ft){"ft_isdigit", dlsym(handle, "ft_isdigit"), ft_isdigit_get_suite};
 	fcts[2] = (t_ft){"ft_isalnum", dlsym(handle, "ft_isalnum"), ft_isalnum_get_suite};

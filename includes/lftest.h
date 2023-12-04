@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 14:17:54 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:54:04 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define ANSI_COLOR_RED     "\033[31m"
 # define ANSI_COLOR_GREEN   "\033[32m"
 # define ANSI_COLOR_RESET	"\033[0m"
+# define N_TESTS_FUN 34
 
 /********************************** STRUCTS ***********************************/
 
@@ -55,7 +56,6 @@ extern pid_t		g_pid;
 extern size_t		g_last_malloc_size;
 extern int			g_malloc_fail;
 extern t_ft			fcts[34];
-extern int			g_n_tests_fun;
 extern print_buff	buff;
 extern int			g_in_fun;
 extern int			fds[2];
