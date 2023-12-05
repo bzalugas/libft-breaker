@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 18:03:43 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:46:53 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_malloc	*malloc_new(unsigned long addr, size_t size)
 	if (!g_real_malloc)
 	{
 		FAIL_MALLOC;
-		malloc(0);
+		free(malloc(0));
 	}
 	new = (t_malloc *)g_real_malloc(sizeof(t_malloc));
 	if (!new)
@@ -108,6 +108,11 @@ void	leaks_tracer_reset(t_leaks_tracer lst)
 		tmp = lst.first_malloc;
 		lst.count--;
 	}
+}
+
+char	*leaks_tracer_text(t_leaks_tracer lst)
+{
+// Create text for summary of leaks (nb and total size)
 }
 
 void	*malloc(size_t size)
