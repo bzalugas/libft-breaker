@@ -688,12 +688,39 @@ fd set to a pipe fd (stdout & stderr closed) and n to zero.
 *Behavior*: converts n to a string and then writes it to fd.
 
 * Bonus part
-** ft_lstnew
-** ft_lstadd_front
-** ft_lstsize
-** ft_lstlast
-** ft_lastadd_back
-** ft_lstdelone
-** ft_lstclear
-** ft_lstiter
-** ft_lstmap
+** TODO ft_lstnew
+#+begin_src C
+t_list  *ft_lstnew(void *content);
+#+end_src
+** TODO ft_lstadd_front
+#+begin_src C
+void    ft_lstadd_front(t_list **lst, t_list *new);
+#+end_src
+** TODO ft_lstsize
+#+begin_src C
+int ft_lstsize(t_list *lst);
+#+end_src
+** TODO ft_lstlast
+#+begin_src C
+t_list  *ft_lstlast(t_list *lst);
+#+end_src
+** TODO ft_lastadd_back
+#+begin_src C
+void    ft_lstadd_back(t_list **lst, t_list *new);
+#+end_src
+** TODO ft_lstdelone
+#+begin_src C
+void    ft_lstdelone(t_list *lst, void (*del)(void *));
+#+end_src
+** TODO ft_lstclear
+#+begin_src C
+void    ft_lstclear(t_list **lst, void (*del)(void *));
+#+end_src
+** TODO ft_lstiter
+#+begin_src C
+void    ft_lstiter(t_list *lst, void (*f)(void *));
+#+end_src
+** TODO ft_lstmap
+#+begin_src C
+t_lst   *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+#+end_src
