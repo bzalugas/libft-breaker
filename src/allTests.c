@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/06 02:51:06 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/06 11:29:31 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4276,7 +4276,7 @@ void	test_ft_split_null_s(CuTest *tc)
 	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when s is set to NULL.", NULL, res);
-	LEAKS_TRACER_STOP;
+	LEAKS_TRACER_RESULT;
 	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 

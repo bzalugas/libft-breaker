@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/06 02:49:47 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/06 11:18:00 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,6 @@ void		get_real_malloc()
 			g_real_malloc = dlsym(RTLD_NEXT, "malloc");
 		if (!g_real_malloc)
 			exit(EXIT_FAILURE);
-	}
-}
-
-void		leaks_tracer_update(t_leaks_tracer *leaks_trace)
-{
-	t_malloc	*tmp;
-
-	tmp = leaks_trace->first_malloc;
-	leaks_trace->count = 0;
-	while (tmp)
-	{
-		leaks_trace->count++;
-		tmp = tmp->next;
 	}
 }
 
