@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 17:09:44 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:51:06 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4054,9 +4054,10 @@ void	test_ft_split_basic(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
-	for (i = 0; res[i] && i < 6; ++i)
+	for (i = 0; res[i] && i < 5; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);
 		free(res[i]);
@@ -4064,6 +4065,8 @@ void	test_ft_split_basic(CuTest *tc)
 	}
 	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
 	free(res);
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_c_around(CuTest *tc)
@@ -4086,6 +4089,7 @@ void	test_ft_split_c_around(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
 	for (i = 0; res[i] && i < 6; ++i)
@@ -4096,6 +4100,8 @@ void	test_ft_split_c_around(CuTest *tc)
 	}
 	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
 	free(res);
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_no_c_in_s(CuTest *tc)
@@ -4118,6 +4124,7 @@ void	test_ft_split_no_c_in_s(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN C NOT IN S", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c not in s.", res);
 	for (i = 0; res[i] && i < 2; ++i)
@@ -4128,6 +4135,8 @@ void	test_ft_split_no_c_in_s(CuTest *tc)
 	}
 	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
 	free(res);
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_zero_c(CuTest *tc)
@@ -4150,6 +4159,7 @@ void	test_ft_split_zero_c(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN C = \\0", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c = \\0.", res);
 	for (i = 0; res[i] && i < 2; ++i)
@@ -4160,6 +4170,8 @@ void	test_ft_split_zero_c(CuTest *tc)
 	}
 	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
 	free(res);
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_empty_s(CuTest *tc)
@@ -4182,6 +4194,7 @@ void	test_ft_split_empty_s(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WITH EMPTY S", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with empty s.", res);
 	for (i = 0; res[i] && i < 2; ++i)
@@ -4192,6 +4205,8 @@ void	test_ft_split_empty_s(CuTest *tc)
 	}
 	CuAssert(tc, "Bad number of strings.", res[i] == NULL);
 	free(res);
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_malloc_fail(CuTest *tc)
@@ -4208,10 +4223,13 @@ void	test_ft_split_malloc_fail(CuTest *tc)
 		END_FAIL;
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN FIRST MALLOC FAILS", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	FAIL_MALLOC;
 	res = ft_split(s, c);
 	END_FAIL;
+	LEAKS_TRACER_RESULT;
 	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when first alloc fails.", NULL, res);
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_malloc_fail_2(CuTest *tc)
@@ -4228,10 +4246,13 @@ void	test_ft_split_malloc_fail_2(CuTest *tc)
 		END_FAIL;
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN THIRD MALLOC FAILS", !WIFSIGNALED(g_exit_code));
-	g_malloc_fail = 3;
+	LEAKS_TRACER_START;
+	g_malloc_fail = 4;
 	res = ft_split(s, c);
 	END_FAIL;
+	LEAKS_TRACER_RESULT;
 	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when third alloc fails.", NULL, res);
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 void	test_ft_split_null_s(CuTest *tc)
@@ -4252,8 +4273,11 @@ void	test_ft_split_null_s(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WITH NULL S", !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrEquals_Msg(tc, "ft_split doesn't return NULL when s is set to NULL.", NULL, res);
+	LEAKS_TRACER_STOP;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
 }
 
 CuSuite	*ft_split_get_suite()

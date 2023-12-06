@@ -6,116 +6,183 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/05 15:46:53 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:49:47 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lftest.h"
 
 void			*(*g_real_malloc)(size_t) = NULL;
+void			(*g_real_free)(void*) = NULL;
 int				g_malloc_fail;
 size_t			g_last_malloc_size;
 t_leaks_tracer	g_leaks;
+char			*g_leaks_text;
 
-void	update_leaks_tracer(t_leaks_tracer leaks_trace)
+void		get_real_malloc()
+{
+	if (!g_real_malloc)
+	{
+		g_real_malloc = dlsym(RTLD_NEXT, "malloc");
+		while (g_real_malloc && g_real_malloc == malloc)
+			g_real_malloc = dlsym(RTLD_NEXT, "malloc");
+		if (!g_real_malloc)
+			exit(EXIT_FAILURE);
+	}
+}
+
+void		leaks_tracer_update(t_leaks_tracer *leaks_trace)
 {
 	t_malloc	*tmp;
 
-	tmp = leaks_trace.first_malloc;
-	leaks_trace.count = 0;
+	tmp = leaks_trace->first_malloc;
+	leaks_trace->count = 0;
 	while (tmp)
 	{
-		leaks_trace.count++;
+		leaks_trace->count++;
 		tmp = tmp->next;
 	}
 }
 
-t_malloc	*malloc_new(unsigned long addr, size_t size)
+t_malloc	*malloc_new(unsigned long addr, size_t size, size_t rank)
 {
 	t_malloc	*new;
 
-	if (!g_real_malloc)
-	{
-		FAIL_MALLOC;
-		free(malloc(0));
-	}
+	get_real_malloc();
 	new = (t_malloc *)g_real_malloc(sizeof(t_malloc));
 	if (!new)
 		return (NULL);
 	new->addr = addr;
 	new->size = size;
+	new->rank = rank;
 	new->next = NULL;
 	return (new);
 }
 
-void	leaks_tracer_insert(t_leaks_tracer lst, t_malloc *new)
+char		*malloc_get_text(t_malloc *m)
+{
+	char	*text;
+
+	get_real_malloc();
+	if (!(text = (char *)g_real_malloc(sizeof(char) * 128)))
+		return NULL;
+	sprintf(text, "%lu bytes at address 0x%lx (malloc number %lu)",
+		m->size, m->addr, m->rank);
+	return (text);
+}
+
+void		leaks_tracer_insert_malloc(t_leaks_tracer *lst, t_malloc *new)
 {
 	t_malloc	*tmp;
 
-	if (!lst.first_malloc)
-		lst.first_malloc = new;
+	if (!lst->in_use) return;
+	if (!lst->first_malloc)
+	{
+		lst->first_malloc = new;
+		lst->first_malloc->rank = 1;
+	}
 	else
 	{
-		tmp = new;
+		tmp = lst->first_malloc;
 		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
+		tmp->next->rank = tmp->rank + 1;
 	}
-	lst.count++;
+	lst->count++;
 }
 
-void	leaks_tracer_delete(t_leaks_tracer lst, unsigned int addr)
+void		leaks_tracer_delete_malloc(t_leaks_tracer *lst, unsigned long addr)
 {
 	t_malloc	*tmp;
 	t_malloc	*to_free;
 
-	tmp = lst.first_malloc;
+	if (!lst->in_use) return;
+	if (!g_real_free) free(NULL);
+	tmp = lst->first_malloc;
 	if (tmp && tmp->addr == addr)
 	{
-		lst.first_malloc = tmp->next;
+		lst->first_malloc = tmp->next;
 		tmp->next = NULL;
-		free(tmp);
+		g_real_free(tmp);
 	}
 	else
 	{
 		while (tmp)
 		{
-			if (tmp->next->addr == addr)
+			if (tmp->next && tmp->next->addr == addr)
 			{
 				to_free = tmp->next;
 				tmp->next = tmp->next->next;
 				to_free->next = NULL;
-				free(to_free);
+				g_real_free(to_free);
 				tmp = NULL;
 			}
 			if (tmp)
 				tmp = tmp->next;
 		}
 	}
-	lst.count--;
+	lst->count--;
 }
 
-void	leaks_tracer_reset(t_leaks_tracer lst)
+void		leaks_tracer_reset(t_leaks_tracer *lst)
 {
 	t_malloc	*tmp;
 
-	tmp = lst.first_malloc;
-	while (lst.count > 0 && tmp)
+	if (!g_real_free) free(NULL);
+	tmp = lst->first_malloc;
+	while (lst->count > 0 && tmp)
 	{
-		lst.first_malloc = lst.first_malloc->next;
+		lst->first_malloc = lst->first_malloc->next;
 		tmp->next = NULL;
-		free(tmp);
-		tmp = lst.first_malloc;
-		lst.count--;
+		g_real_free(tmp);
+		tmp = lst->first_malloc;
+		lst->count--;
 	}
+	lst->first_malloc = NULL;
+	lst->count = 0;
+	lst->in_use = 0;
 }
 
-char	*leaks_tracer_text(t_leaks_tracer lst)
+void		leaks_tracer_start(t_leaks_tracer *lst)
 {
-// Create text for summary of leaks (nb and total size)
+	lst->in_use = 1;
 }
 
-void	*malloc(size_t size)
+void		leaks_tracer_stop(t_leaks_tracer *lst)
+{
+	lst->in_use = 0;
+}
+
+char		*leaks_tracer_text(t_leaks_tracer *lst)
+{
+	char		*text;
+	t_malloc	*m;
+	size_t		i;
+	char		*s;
+	int			count;
+
+	if (lst->count <= 0) return (leaks_tracer_reset(lst), NULL);
+	if (!g_real_free) free(NULL);
+	char		*intro = lst->count == 1 ? "Your function has a leak:\n"
+										: "Your function has leaks:\n";
+	if (!(text = (char *)calloc(lst->count * 128 + strlen(intro), sizeof(char))))
+		return (NULL);
+	sprintf(text, "%s", intro);
+	count = 1;
+	m = lst->first_malloc;
+	while (m)
+	{
+		i = strlen(text);
+		s = malloc_get_text(m);
+		sprintf(text + i, "\t\t\t\t%d) %s\n", count, s);
+		g_real_free(s);
+		m = m->next;
+	}
+	return (text);
+}
+
+void		*malloc(size_t size)
 {
 	if (!g_real_malloc)
 		g_real_malloc = dlsym(RTLD_NEXT, "malloc");
@@ -130,11 +197,16 @@ void	*malloc(size_t size)
 		g_malloc_fail--;
 	g_last_malloc_size = size;
 	void	*ptr = g_real_malloc(size);
-	leaks_tracer_insert(g_leaks, malloc_new((unsigned long)ptr, size));
+	leaks_tracer_insert_malloc(&g_leaks, malloc_new((unsigned long)ptr, size, 0));
 	return (ptr);
 }
 
-/* void	free(void *ptr) */
-/* { */
-/* 	leaks_tracer_delete(g_leaks, ) */
-/* } */
+void		free(void *ptr)
+{
+	if (!g_real_free)
+		g_real_free = dlsym(RTLD_NEXT, "free");
+	if (!g_real_free)
+		exit(EXIT_FAILURE);
+	leaks_tracer_delete_malloc(&g_leaks, (unsigned long)ptr);
+	g_real_free(ptr);
+}

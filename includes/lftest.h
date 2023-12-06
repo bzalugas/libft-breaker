@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 17:55:20 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:32:26 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ struct	s_malloc
 {
 	unsigned long	addr;
 	size_t			size;
+	size_t			rank;
 	t_malloc		*next;
 };
 
@@ -62,30 +63,46 @@ struct	s_leaks_tracer
 {
 	t_malloc	*first_malloc;
 	int			count;
+	int			in_use;
 };
 
 /****************************** GLOBAL VARIABLES ******************************/
 
-extern int			g_exit_code;
-extern pid_t		g_pid;
-extern size_t		g_last_malloc_size;
-extern int			g_malloc_fail;
-extern t_ft			fcts[34];
-extern print_buff	buff;
-extern int			g_in_fun;
-extern int			fds[2];
-extern char			pipe_buff[BUFFSIZE];
+extern int				g_exit_code;
+extern pid_t			g_pid;
+extern int				g_malloc_fail;
+extern size_t			g_last_malloc_size;
+extern t_leaks_tracer	g_leaks;
+extern char				*g_leaks_text;
+extern t_ft				fcts[34];
+extern print_buff		buff;
+extern int				g_in_fun;
+extern int				fds[2];
+extern char				pipe_buff[BUFFSIZE];
 
 /*********************************** MACROS ***********************************/
 
+/* Testing mallocs */
 # define FAIL_MALLOC g_malloc_fail = 1;
 # define END_FAIL g_malloc_fail = 0;
-
+# define LEAKS_TRACER_START if (g_leaks_text) {	\
+		free(g_leaks_text);						\
+		g_leaks_text = NULL;}					\
+	leaks_tracer_reset(&g_leaks);				\
+	leaks_tracer_start(&g_leaks);
+# define LEAKS_TRACER_STOP leaks_tracer_stop(&g_leaks);
+# define LEAKS_TRACER_RESULT LEAKS_TRACER_STOP;						\
+	g_leaks_text = leaks_tracer_text(&g_leaks);						\
+	/* *s = leaks_tracer_text(&g_leaks);*/							\
+	/*g_leaks_text = *s;*/											\
+	leaks_tracer_reset(&g_leaks);
+# define LEAKS_OK g_leaks_text == NULL
+/* Getting fds & protecting stdout + stderr */
 # define CLOSE_OUTPUTS manage_outputs(1);
 # define OPEN_OUTPUTS manage_outputs(0);
 # define OPEN_PIPE manage_pipes(1, 0);
 # define CLOSE_PIPE manage_pipes(0, 1);
-
+/* Preventing tester from crashs */
 # define SANDBOX(X)								\
 	if ((g_pid = fork()) == -1){				\
 		perror("Error during fork");			\
@@ -96,6 +113,13 @@ extern char			pipe_buff[BUFFSIZE];
 		exit(0);								\
 	}											\
 	wait(&g_exit_code);
+
+/*********************** MALLOCS, FREE & LEAKS FUNCTIONS **********************/
+
+void	leaks_tracer_start(t_leaks_tracer *lst);
+void	leaks_tracer_stop(t_leaks_tracer *lst);
+char	*leaks_tracer_text(t_leaks_tracer *lst);
+void	leaks_tracer_reset(t_leaks_tracer *lst);
 
 /****************************** UTILS FUNCTIONS *******************************/
 
