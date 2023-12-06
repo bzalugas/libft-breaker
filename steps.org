@@ -1,8 +1,0 @@
-#+title: Steps for leak_checker
-
-* For precise leak checker (identify source of mallocs to display if there is leaks.)
-1. Create script (with sed) to add preprocessor wrapper for malloc to mymalloc
-2. Do compilation like before (with libmalloc.so / -lmalloc)
-
-* Simplier leak checker (with same wrapper but modified)
-1. Just do the code with the linked list (output will not be precise)
