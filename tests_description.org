@@ -692,35 +692,112 @@ fd set to a pipe fd (stdout & stderr closed) and n to zero.
 #+begin_src C
 t_list  *ft_lstnew(void *content);
 #+end_src
+*** CODE Basic input
+content set to a basic string.
+*Behavior*: A node containing the string as content is allocated.
+*Return value*: The new node.
+*** CODE NULL content
+content set to NULL.
+*Behavior*: A node containing NULL as content is allocated.
+*Return value*: The new node.
+*** CODE malloc fail
+Make malloc fail.
+*Behavior*: Tries to allocate memory.
+*Return value*: NULL.
 ** TODO ft_lstadd_front
 #+begin_src C
 void    ft_lstadd_front(t_list **lst, t_list *new);
 #+end_src
+*** CODE Basic input
+Creation of 2 nodes then call of the function.
+*Behavior*: The lst param becomes new, with next set to old lst.
+*** CODE NULL lst
+lst set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL new
+new set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL lst & new
+lst & new set to NULL.
+*Behavior*: Nothing.
 ** TODO ft_lstsize
 #+begin_src C
 int ft_lstsize(t_list *lst);
 #+end_src
+*** CODE Basic input
+lst set to a list of multiple nodes.
+*Return value*: The size of lst.
+*** CODE NULL lst
+lst set to NULL.
+*Return value*: Zero.
 ** TODO ft_lstlast
 #+begin_src C
 t_list  *ft_lstlast(t_list *lst);
 #+end_src
+*** CODE Basic input
+lst set to a list of multiple nodes.
+*Return value*: The last node of the list.
+*** CODE NULL lst
+lst set to NULL.
+*Return value*: NULL.
 ** TODO ft_lastadd_back
 #+begin_src C
 void    ft_lstadd_back(t_list **lst, t_list *new);
 #+end_src
+*** CODE Basic input
+Creation of 2 nodes then call of the function.
+*Behavior*: The next element of lst is set to new.
+*** CODE NULL lst
+lst set to NULL.
+*Behavior*: lst set to new.
+*** CODE NULL new
+new set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL lst & new
+lst & new set to NULL.
+*Behavior*: Nothing.
 ** TODO ft_lstdelone
 #+begin_src C
 void    ft_lstdelone(t_list *lst, void (*del)(void *));
 #+end_src
+*** CODE Basic inputs
+lst set to a node containing an 2D array of ints, del to appropriate function to free the content.
+*Behavior*: the content is freed using del and then the node is freed.
+*** CODE NULL lst
+lst set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL del
+del set to NULL.
+*Behavior*: Nothing.
 ** TODO ft_lstclear
 #+begin_src C
 void    ft_lstclear(t_list **lst, void (*del)(void *));
 #+end_src
+*** CODE Basic inputs
+lst set to a list of multiple nodes of 2D arrays of int, del to appropriate function to free the content.
+*Behavior*: every node is freed after the content. The lst is then set to NULL.
+*** CODE NULL lst
+lst set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL del
+del set to NULL.
+*Behavior*: Nothing.
 ** TODO ft_lstiter
 #+begin_src C
 void    ft_lstiter(t_list *lst, void (*f)(void *));
 #+end_src
+*** CODE Basic inputs
+lst set to a list of multiple nodes containing a string, f to a rot47 function.
+*Behavior*: Iterates on lst and applies f on the content of each node.
+*** CODE NULL lst
+lst set to NULL.
+*Behavior*: Nothing.
+*** CODE NULL f
+f set to NULL.
+*Behavior*: Nothing.
 ** TODO ft_lstmap
 #+begin_src C
 t_lst   *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 #+end_src
+*** CODE Basic inputs
+lst set to a list of multiple nodes containing a string,
