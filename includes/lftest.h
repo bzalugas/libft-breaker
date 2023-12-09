@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 05:30:16 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 06:58:31 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define ANSI_COLOR_RED     "\033[31m"
 # define ANSI_COLOR_GREEN   "\033[32m"
 # define ANSI_COLOR_RESET	"\033[0m"
-# define N_TESTS_FUN 34
+# define N_TESTS_FUN 43
 
 /********************************** STRUCTS ***********************************/
 
@@ -74,7 +74,7 @@ extern int				g_malloc_fail;
 extern size_t			g_last_malloc_size;
 extern t_leaks_tracer	g_leaks;
 extern char				*g_leaks_text;
-extern t_ft				fcts[34];
+extern t_ft				fcts[N_TESTS_FUN];
 extern print_buff		buff;
 extern int				g_in_fun;
 extern int				fds[2];
@@ -135,6 +135,7 @@ void	manage_pipes(int get_read, int get_write);
 
 /****************************** TESTS FUNCTIONS *******************************/
 
+/* PART 1 */
 CuSuite	*ft_isalpha_get_suite();
 CuSuite	*ft_isdigit_get_suite();
 CuSuite	*ft_isalnum_get_suite();
@@ -158,6 +159,8 @@ CuSuite	*ft_strnstr_get_suite();
 CuSuite	*ft_atoi_get_suite();
 CuSuite	*ft_calloc_get_suite();
 CuSuite	*ft_strdup_get_suite();
+
+/* PART 2 */
 CuSuite	*ft_substr_get_suite();
 CuSuite	*ft_strjoin_get_suite();
 CuSuite	*ft_strtrim_get_suite();
@@ -169,5 +172,16 @@ CuSuite	*ft_putchar_fd_get_suite();
 CuSuite	*ft_putstr_fd_get_suite();
 CuSuite	*ft_putendl_fd_get_suite();
 CuSuite	*ft_putnbr_fd_get_suite();
+
+/* BONUS PART */
+CuSuite	*ft_lstnew_get_suite();
+CuSuite	*ft_lstadd_front_get_suite();
+CuSuite	*ft_lstsize_get_suite();
+CuSuite	*ft_lstlast_get_suite();
+CuSuite	*ft_lstadd_back_get_suite();
+CuSuite	*ft_lstdelone_get_suite();
+CuSuite	*ft_lstclear_get_suite();
+CuSuite	*ft_lstiter_get_suite();
+CuSuite	*ft_lstmap_get_suite();
 
 #endif

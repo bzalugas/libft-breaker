@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/04 16:53:19 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 07:01:09 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
@@ -86,6 +86,8 @@ void	*init_fcts()
 		perror("Error while loading libft.so");
 		exit(EXIT_FAILURE);
 	}
+
+	/* PART 1 */
 	fcts[0] = (t_ft){"ft_isalpha", dlsym(handle, "ft_isalpha"), ft_isalpha_get_suite};
 	fcts[1] = (t_ft){"ft_isdigit", dlsym(handle, "ft_isdigit"), ft_isdigit_get_suite};
 	fcts[2] = (t_ft){"ft_isalnum", dlsym(handle, "ft_isalnum"), ft_isalnum_get_suite};
@@ -109,6 +111,8 @@ void	*init_fcts()
 	fcts[20] = (t_ft){"ft_atoi", dlsym(handle, "ft_atoi"), ft_atoi_get_suite};
 	fcts[21] = (t_ft){"ft_calloc", dlsym(handle, "ft_calloc"), ft_calloc_get_suite};
 	fcts[22] = (t_ft){"ft_strdup", dlsym(handle, "ft_strdup"), ft_strdup_get_suite};
+
+	/* PART 2 */
 	fcts[23] = (t_ft){"ft_substr", dlsym(handle, "ft_substr"), ft_substr_get_suite};
 	fcts[24] = (t_ft){"ft_strjoin", dlsym(handle, "ft_strjoin"), ft_strjoin_get_suite};
 	fcts[25] = (t_ft){"ft_strtrim", dlsym(handle, "ft_strtrim"), ft_strtrim_get_suite};
@@ -120,6 +124,18 @@ void	*init_fcts()
 	fcts[31] = (t_ft){"ft_putstr_fd", dlsym(handle, "ft_putstr_fd"), ft_putstr_fd_get_suite};
 	fcts[32] = (t_ft){"ft_putendl_fd", dlsym(handle, "ft_putendl_fd"), ft_putendl_fd_get_suite};
 	fcts[33] = (t_ft){"ft_putnbr_fd", dlsym(handle, "ft_putnbr_fd"), ft_putnbr_fd_get_suite};
+
+	/* BONUS PART */
+	fcts[34] = (t_ft){"ft_lstnew", dlsym(handle, "ft_lstnew"), ft_lstnew_get_suite};
+	fcts[35] = (t_ft){"ft_lstadd_front", dlsym(handle, "ft_lstadd_front"), ft_lstadd_front_get_suite};
+	fcts[36] = (t_ft){"ft_lstsize", dlsym(handle, "ft_lstsize"), ft_lstsize_get_suite};
+	fcts[37] = (t_ft){"ft_lstlast", dlsym(handle, "ft_lstlast"), ft_lstlast_get_suite};
+	fcts[38] = (t_ft){"ft_lstadd_back", dlsym(handle, "ft_lstadd_back"), ft_lstadd_back_get_suite};
+	fcts[39] = (t_ft){"ft_lstdelone", dlsym(handle, "ft_lstdelone"), ft_lstdelone_get_suite};
+	fcts[40] = (t_ft){"ft_lstclear", dlsym(handle, "ft_lstclear"), ft_lstclear_get_suite};
+	fcts[41] = (t_ft){"ft_lstiter", dlsym(handle, "ft_lstiter"), ft_lstiter_get_suite};
+	fcts[42] = (t_ft){"ft_lstmap", dlsym(handle, "ft_lstmap"), ft_lstmap_get_suite};
+
 	return (handle);
 }
 
