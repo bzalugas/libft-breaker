@@ -5049,7 +5049,6 @@ void	one_test_ft_lstnew(CuTest *tc, char *testcase, void *content, int fail_mall
 	char	text[BUFFBSIZE];
 	size_t	m_size;
 
-	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
 	SANDBOX(
 		if (fail_malloc)
 			FAIL_MALLOC;
@@ -5093,13 +5092,16 @@ void	test_ft_lstnew_basic(CuTest *tc)
 
 	printf("\n########### FT_LSTNEW #########\n");
 	content = strdup("Hope your bonuses work!");
+	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
 	one_test_ft_lstnew(tc, "Basic input", content, 0);
 	free(content);
 }
 
 void	test_ft_lstnew_null_content(CuTest *tc)
 {
-	one_test_ft_lstnew(tc, "NULL content", NULL, 0);
+	char	*s = NULL;
+	sprintf(buff.txt, "%s: content=<%s>\n", __func__, s);
+	one_test_ft_lstnew(tc, "NULL content", s, 0);
 }
 
 void	test_ft_lstnew_malloc_fail(CuTest *tc)
@@ -5107,6 +5109,7 @@ void	test_ft_lstnew_malloc_fail(CuTest *tc)
 	void	*content;
 
 	content = strdup("Hope your bonuses work!");
+	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
 	one_test_ft_lstnew(tc, "malloc fail", content, 1);
 	free(content);
 }
