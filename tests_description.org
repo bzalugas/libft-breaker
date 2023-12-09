@@ -708,20 +708,29 @@ CLOSED: [2023-12-09 Sat 07:37]
 Make malloc fail.
 *Behavior*: Tries to allocate memory.
 *Return value*: NULL.
-** TODO ft_lstadd_front
+** DONE ft_lstadd_front
+CLOSED: [2023-12-09 Sat 16:47]
 #+begin_src C
 void    ft_lstadd_front(t_list **lst, t_list *new);
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-12-09 Sat 13:53]
 Creation of 2 nodes then call of the function.
 *Behavior*: The lst param becomes new, with next set to old lst.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-09 Sat 13:56]
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL new
+*** CODED lst containing NULL
+CLOSED: [2023-12-09 Sat 13:59]
+lst pointing to a NULL address.
+*Behavior*: pointer of lst set to new.
+*** CODED NULL new
+CLOSED: [2023-12-09 Sat 14:01]
 new set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL lst & new
+*** CODED NULL lst & new
+CLOSED: [2023-12-09 Sat 14:07]
 lst & new set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_lstsize

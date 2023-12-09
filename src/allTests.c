@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 07:59:19 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:40:08 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5127,10 +5127,119 @@ CuSuite	*ft_lstnew_get_suite()
 /*      FT_LSTADD_FRONT     */
 /****************************/
 
+t_list	*lstnew(void *content)
+{
+	t_list	*new;
+
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	return (new);
+}
+
+void	one_test_ft_lstadd_front(CuTest *tc, char *testcase, t_list **lst, t_list *new, t_list **ex)
+{
+	void	(*ft_lstadd_front)(t_list**,t_list*) = get_fun("ft_lstadd_front");
+	char	text[BUFFBSIZE];
+	t_list	*tmp1;
+	t_list	*tmp2;
+
+	sprintf(text, "FT_LSTADD_FRONT CRASH WITH %s", testcase);
+	SANDBOX(ft_lstadd_front(lst, new););
+	CuAssert(tc, text, !WIFSIGNALED(g_exit_code));
+	ft_lstadd_front(lst, new);
+	sprintf(text, "ft_lstadd_front doesn't behave well with %s", testcase);
+	if (!lst || !ex)
+		CuAssert(tc, text, lst == ex);
+	else
+	{
+		tmp1 = *lst;
+		tmp2 = *ex;
+		CuAssert(tc, text, (!tmp1 && !tmp2) || (tmp1 && tmp2));
+		while (tmp1 && tmp2)
+		{
+			CuAssert(tc, text, tmp1->content == tmp2->content);
+			tmp1 = tmp1->next;
+			tmp2 = tmp2->next;
+		}
+	}
+}
+
+void	test_ft_lstadd_front_basic(CuTest *tc)
+{
+	t_list	*lst;
+	t_list	*savelst;
+	t_list	*new;
+	t_list	*savenew;
+	char	*s1 = strdup("Hope you pass this test");
+	char	*s2 = strdup("I'm the new node");
+	t_list	*lstex;
+
+	printf("\n######## FT_LSTADD_FRONT ######\n");
+	sprintf(buff.txt, "%s: two nodes passed\n", __func__);
+	lst = lstnew(s1);
+	savelst = lst;
+	new = lstnew(s2);
+	savenew = new;
+	lstex = lstnew(s2);
+	lstex->next = lstnew(s1);
+	one_test_ft_lstadd_front(tc, "Basic inputs", &lst, new, &lstex);
+	free(s1);
+	free(s2);
+	free(savenew);
+	free(savelst);
+	free(lstex->next);
+	free(lstex);
+}
+
+void	test_ft_lstadd_front_null_lst(CuTest *tc)
+{
+	t_list	**lst = NULL;
+	t_list	*new = lstnew(strdup("hello"));
+
+	sprintf(buff.txt, "%s: NULL lst\n", __func__);
+	one_test_ft_lstadd_front(tc, "Null lst", lst, new, NULL);
+	free(new);
+}
+
+void	test_ft_lstadd_front_null_pointer_lst(CuTest *tc)
+{
+	t_list	*lst = NULL;
+	t_list	*new = lstnew(strdup("hello"));
+	t_list	*ex = new;
+
+	sprintf(buff.txt, "%s: NULL *lst\n", __func__);
+	one_test_ft_lstadd_front(tc, "Null pointer lst", &lst, new, &ex);
+	free(new);
+}
+
+void	test_ft_lstadd_front_null_new(CuTest *tc)
+{
+	t_list	*lst = lstnew(strdup("hello"));
+	t_list	*new = NULL;
+	t_list	*ex = lst;
+
+	sprintf(buff.txt, "%s: NULL new\n", __func__);
+	one_test_ft_lstadd_front(tc, "Null new", &lst, new, &ex);
+	free(lst);
+}
+
+void	test_ft_lstadd_front_null_lst_and_new(CuTest *tc)
+{
+	sprintf(buff.txt, "%s: NULL lst & new\n", __func__);
+	one_test_ft_lstadd_front(tc, "Null lst & new", NULL, NULL, NULL);
+}
+
 CuSuite	*ft_lstadd_front_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstadd_front_basic);
+	SUITE_ADD_TEST(s, test_ft_lstadd_front_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstadd_front_null_pointer_lst);
+	SUITE_ADD_TEST(s, test_ft_lstadd_front_null_new);
+	SUITE_ADD_TEST(s, test_ft_lstadd_front_null_lst_and_new);
 	return (s);
 }
 
