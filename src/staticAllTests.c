@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 16:46:41 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:02:39 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4665,10 +4665,46 @@ CuSuite	*ft_lstadd_front_get_suite()
 /*         FT_LSTSIZE       */
 /****************************/
 
+void	test_ft_lstsize_basic(CuTest *tc)
+{
+	int		(*ft_lstsize)(t_list*) = get_fun("ft_lstsize");
+	t_list	*lst = lstnew(strdup("node 1"));
+	int		res;
+
+	printf("\n########## FT_LSTSIZE #########\n");
+	sprintf(buff.txt, "%s: lst of 3 nodes passed.\n", __func__);
+	if (!lst)
+		return ;
+	lst->next = lstnew(strdup("node 2"));
+	if (!lst->next)
+		return ;
+	lst->next->next = lstnew(strdup("node 3"));
+	if (!lst->next->next)
+		return ;
+	SANDBOX(res = ft_lstsize(lst););
+	CuAssert(tc, "FT_LSTSIZE CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
+	res = ft_lstsize(lst);
+	CuAssertIntEquals_Msg(tc, "Wrong size returned", 3, res);
+}
+
+void	test_ft_lstsize_null_lst(CuTest *tc)
+{
+	int		(*ft_lstsize)(t_list*) = get_fun("ft_lstsize");
+	t_list	*lst = NULL;
+	int		res;
+
+	sprintf(buff.txt, "%s: NULL passed.\n", __func__);
+	SANDBOX(res = ft_lstsize(lst););
+	CuAssert(tc, "FT_LSTSIZE CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
+	res = ft_lstsize(lst);
+	CuAssertIntEquals_Msg(tc, "Wrong size returned", 0, res);
+}
+
 CuSuite	*ft_lstsize_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstsize_basic);
+	SUITE_ADD_TEST(s, test_ft_lstsize_null_lst);
 	return (s);
 }
 

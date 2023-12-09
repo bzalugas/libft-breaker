@@ -733,14 +733,17 @@ new set to NULL.
 CLOSED: [2023-12-09 Sat 14:07]
 lst & new set to NULL.
 *Behavior*: Nothing.
-** TODO ft_lstsize
+** DONE ft_lstsize
+CLOSED: [2023-12-09 Sat 17:08]
 #+begin_src C
 int ft_lstsize(t_list *lst);
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-12-09 Sat 16:59]
 lst set to a list of multiple nodes.
 *Return value*: The size of lst.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-09 Sat 16:59]
 lst set to NULL.
 *Return value*: Zero.
 ** TODO ft_lstlast
