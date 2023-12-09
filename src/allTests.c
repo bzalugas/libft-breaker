@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 06:42:30 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 07:59:19 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5038,7 +5038,175 @@ CuSuite	*ft_putnbr_fd_get_suite()
 
 /********************************* BONUS PART *********************************/
 
+/****************************/
+/*          FT_LSTNEW       */
+/****************************/
 
+void	one_test_ft_lstnew(CuTest *tc, char *testcase, void *content, int fail_malloc)
+{
+	t_list	*(*ft_lstnew)(void*) = get_fun("ft_lstnew");
+	t_list	*res;
+	char	text[BUFFBSIZE];
+	size_t	m_size;
+
+	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
+	SANDBOX(
+		if (fail_malloc)
+			FAIL_MALLOC;
+		res = ft_lstnew(content);
+		if (fail_malloc)
+			END_FAIL;
+		if (res)
+			free(res);
+		);
+	sprintf(text, "FT_LSTNEW CRASH WITH %s", testcase);
+	CuAssert(tc, text, !WIFSIGNALED(g_exit_code));
+	if (fail_malloc)
+		FAIL_MALLOC;
+	res = ft_lstnew(content);
+	if (fail_malloc)
+		END_FAIL;
+	m_size = g_last_malloc_size;
+	if (!fail_malloc)
+	{
+		sprintf(text, "ft_lstnew returns NULL with %s", testcase);
+		CuAssertPtrNotNullMsg(tc, text, res);
+		sprintf(text, "Wrong allocation size with %s", testcase);
+		CuAssert(tc, text, m_size == sizeof(t_list));
+		sprintf(text, "The new node doesn't contain right content with %s", testcase);
+		CuAssert(tc, text, res->content == content);
+		sprintf(text, "The next of new not is not set to NULL with %s", testcase);
+		CuAssert(tc, text, res->next == NULL);
+	}
+	else
+	{
+		sprintf(text, "ft_lstnew doesn't returns NULL with %s", testcase);
+		CuAssertPtrEquals_Msg(tc, text, NULL, res);
+	}
+	if (res)
+		free(res);
+}
+
+void	test_ft_lstnew_basic(CuTest *tc)
+{
+	void	*content;
+
+	printf("\n########### FT_LSTNEW #########\n");
+	content = strdup("Hope your bonuses work!");
+	one_test_ft_lstnew(tc, "Basic input", content, 0);
+	free(content);
+}
+
+void	test_ft_lstnew_null_content(CuTest *tc)
+{
+	one_test_ft_lstnew(tc, "NULL content", NULL, 0);
+}
+
+void	test_ft_lstnew_malloc_fail(CuTest *tc)
+{
+	void	*content;
+
+	content = strdup("Hope your bonuses work!");
+	one_test_ft_lstnew(tc, "malloc fail", content, 1);
+	free(content);
+}
+
+CuSuite	*ft_lstnew_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+	SUITE_ADD_TEST(s, test_ft_lstnew_basic);
+	SUITE_ADD_TEST(s, test_ft_lstnew_null_content);
+	SUITE_ADD_TEST(s, test_ft_lstnew_malloc_fail);
+	return (s);
+}
+
+/****************************/
+/*      FT_LSTADD_FRONT     */
+/****************************/
+
+CuSuite	*ft_lstadd_front_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*         FT_LSTSIZE       */
+/****************************/
+
+CuSuite	*ft_lstsize_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*         FT_LSTLAST       */
+/****************************/
+
+CuSuite	*ft_lstlast_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*      FT_LSTADD_BACK      */
+/****************************/
+
+CuSuite	*ft_lstadd_back_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*        FT_LSTDELONE      */
+/****************************/
+
+CuSuite	*ft_lstdelone_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*        FT_LSTCLEAR       */
+/****************************/
+
+CuSuite	*ft_lstclear_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*         FT_LSTITER       */
+/****************************/
+
+CuSuite	*ft_lstiter_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
+
+/****************************/
+/*         FT_LSTMAP        */
+/****************************/
+
+CuSuite	*ft_lstmap_get_suite()
+{
+	CuSuite	*s = CuSuiteNew();
+
+	return (s);
+}
 
 /****************************/
 /*        RUN TESTS         */

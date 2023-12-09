@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 06:58:31 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 07:09:02 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,11 @@ CuSuite	*ft_putendl_fd_get_suite();
 CuSuite	*ft_putnbr_fd_get_suite();
 
 /* BONUS PART */
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}	t_list;
 CuSuite	*ft_lstnew_get_suite();
 CuSuite	*ft_lstadd_front_get_suite();
 CuSuite	*ft_lstsize_get_suite();

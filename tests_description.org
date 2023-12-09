@@ -688,19 +688,23 @@ fd set to a pipe fd (stdout & stderr closed) and n to zero.
 *Behavior*: converts n to a string and then writes it to fd.
 
 * Bonus part
-** TODO ft_lstnew
+** DONE ft_lstnew
+CLOSED: [2023-12-09 Sat 08:00]
 #+begin_src C
 t_list  *ft_lstnew(void *content);
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-12-09 Sat 07:37]
 content set to a basic string.
 *Behavior*: A node containing the string as content is allocated.
 *Return value*: The new node.
-*** CODE NULL content
+*** CODED NULL content
+CLOSED: [2023-12-09 Sat 07:37]
 content set to NULL.
 *Behavior*: A node containing NULL as content is allocated.
 *Return value*: The new node.
-*** CODE malloc fail
+*** CODED malloc fail
+CLOSED: [2023-12-09 Sat 07:37]
 Make malloc fail.
 *Behavior*: Tries to allocate memory.
 *Return value*: NULL.
