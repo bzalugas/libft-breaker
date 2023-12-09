@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/06 11:31:26 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 06:32:23 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ void	test_ft_memset_basic(CuTest *tc)
 	b1[BUFFSIZE - 1] = 0;
 	b2[BUFFSIZE - 1] = 0;
 	printf("\n########### FT_MEMSET ##########\n");
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b2, 'A', size);
 	memset(b1, 'z', size);
 	SANDBOX(ft_memset(b2, 'z', size););
 	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
@@ -324,7 +324,7 @@ void	test_ft_memset_cut_string(CuTest *tc)
 	b2[BUFFSIZE - 1] = 0;
 	b1[5] = '\0';
 	b2[5] = '\0';
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, 'A', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b2, 'A', size);
 	memset(b1, 'A', size);
 	SANDBOX(res = ft_memset(b2, 'A', size););
 	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
@@ -345,7 +345,7 @@ void	test_ft_memset_not_char(CuTest *tc)
 	memset(b2, 'b', BUFFSIZE);
 	b1[BUFFSIZE - 1] = 0;
 	b2[BUFFSIZE - 1] = 0;
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b2, '\200', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b2, '\200', size);
 	memset(b1, '\200', size);
 	SANDBOX(res = ft_memset(b2, '\200', size););
 	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
@@ -365,7 +365,7 @@ void	test_ft_memset_same_return(CuTest *tc)
 
 	memset(b1, 'b', BUFFSIZE);
 	b1[BUFFSIZE - 1] = 0;
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b1, 'z', size);
 	res1 = memset(b1, 'z', size);
 	strncpy(tmp, b1, BUFFSIZE);
 	memset(b1, 'b', BUFFSIZE);
@@ -389,7 +389,7 @@ void	test_ft_memset_size_zero(CuTest *tc)
 	memset(b2, 'b', BUFFSIZE);
 	b1[BUFFSIZE - 1] = 0;
 	b2[BUFFSIZE - 1] = 0;
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b1, 'z', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b2, 'z', size);
 	memset(b1, 'z', size);
 	SANDBOX(res = ft_memset(b2, 'z', size););
 	CuAssert(tc, "ft_memset crash when it souldn't.", !(WIFSIGNALED(g_exit_code) && WCOREDUMP(g_exit_code)));
@@ -404,7 +404,7 @@ void	test_ft_memset_null(CuTest *tc)
 	size_t	size = 23;
 	char	*b = NULL;
 
-	sprintf(buff.txt, "%s: s = %s, c = %d, n = %lu\n", __func__,b, 'z', size);
+	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b, 'z', size);
 	SANDBOX(ft_memset(b, 'z', size););
 	CuAssert(tc, "ft_memset doesn't crash when it should.", WIFSIGNALED(g_exit_code));
 }
@@ -1454,7 +1454,7 @@ void	test_ft_strrchr_c_zero(CuTest *tc)
 
 	strcpy(s, "Hello everyone!");
 	c = '\0';
-	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	sprintf(buff.txt, "%s: s = %s, c = %d(\\0)\n", __func__, s, c);
 	res1 = strrchr(s, c);
 	SANDBOX(ft_strrchr(s, c););
 	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
@@ -3451,6 +3451,26 @@ CuSuite	*ft_strtrim_get_suite()
 /*          FT_SPLIT        */
 /****************************/
 
+static void	check_split_malloc_sizes(CuTest *tc, char *ex[], char *act[])
+{
+	size_t	ex_size;
+	size_t	act_size;
+	int		i;
+	char	txt[50];
+
+	for (i = 0; ex[i]; i++) ;
+	ex_size = (i + 1) * sizeof(char *);
+	act_size = leaks_tracer_find_by_addr(&g_leaks, act)->size;
+	CuAssertIntEquals_Msg(tc, "Wrong allocated size for array of strings.", ex_size, act_size);
+	for (i = 0; act[i]; i++)
+	{
+		sprintf(txt, "Wrong allocated size for string of rank %d", i);
+		ex_size = strlen(ex[i]) + 1;
+		act_size = leaks_tracer_find_by_addr(&g_leaks, act[i])->size;
+		CuAssertIntEquals_Msg(tc, txt, ex_size, act_size);
+	}
+}
+
 void	test_ft_split_basic(CuTest *tc)
 {
 	char	**(*ft_split)(char const *, char) = get_fun("ft_split");
@@ -3475,6 +3495,7 @@ void	test_ft_split_basic(CuTest *tc)
 	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
+	check_split_malloc_sizes(tc, expected, res);
 	for (i = 0; res[i] && i < 6; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);
@@ -3510,6 +3531,7 @@ void	test_ft_split_c_around(CuTest *tc)
 	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with basic inputs.", res);
+	check_split_malloc_sizes(tc, expected, res);
 	for (i = 0; res[i] && i < 6; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);
@@ -3542,9 +3564,10 @@ void	test_ft_split_no_c_in_s(CuTest *tc)
 		}
 		);
 	CuAssert(tc, "FT_SPLIT CRASH WHEN C NOT IN S", !WIFSIGNALED(g_exit_code));
-	LEAKS_TRACER_RESULT;
+	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c not in s.", res);
+	check_split_malloc_sizes(tc, expected, res);
 	for (i = 0; res[i] && i < 2; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);
@@ -3566,7 +3589,7 @@ void	test_ft_split_zero_c(CuTest *tc)
 	char	*expected[] = {"hello monstre! How are you?", NULL};
 	int		i;
 
-	sprintf(buff.txt, "%s: s=<%s>, c=<%c>\n", __func__, s, c);
+	sprintf(buff.txt, "%s: s=<%s>, c=<\\0>\n", __func__, s);
 	SANDBOX(
 		res = ft_split(s, c);
 		if (res)
@@ -3580,6 +3603,7 @@ void	test_ft_split_zero_c(CuTest *tc)
 	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL when c = \\0.", res);
+	check_split_malloc_sizes(tc, expected, res);
 	for (i = 0; res[i] && i < 2; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);
@@ -3598,7 +3622,7 @@ void	test_ft_split_empty_s(CuTest *tc)
 	char	s[] = "";
 	char	c = 'e';
 	char	**res;
-	char	*expected[] = {"", NULL};
+	char	*expected[] = {NULL};
 	int		i;
 
 	sprintf(buff.txt, "%s: s=<%s>, c=<%c>\n", __func__, s, c);
@@ -3615,6 +3639,7 @@ void	test_ft_split_empty_s(CuTest *tc)
 	LEAKS_TRACER_START;
 	res = ft_split(s, c);
 	CuAssertPtrNotNullMsg(tc, "ft_split returns NULL with empty s.", res);
+	check_split_malloc_sizes(tc, expected, res);
 	for (i = 0; res[i] && i < 2; ++i)
 	{
 		CuAssertStrEquals(tc, expected[i], res[i]);

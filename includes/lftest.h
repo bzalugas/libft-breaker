@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/06 11:17:33 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 05:30:16 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,13 @@ extern char				pipe_buff[BUFFSIZE];
 	g_leaks_text = leaks_tracer_text(&g_leaks);						\
 	leaks_tracer_reset(&g_leaks);
 # define LEAKS_OK g_leaks_text == NULL
+
 /* Getting fds & protecting stdout + stderr */
 # define CLOSE_OUTPUTS manage_outputs(1);
 # define OPEN_OUTPUTS manage_outputs(0);
 # define OPEN_PIPE manage_pipes(1, 0);
 # define CLOSE_PIPE manage_pipes(0, 1);
+
 /* Preventing tester from crashs */
 # define SANDBOX(X)								\
 	if ((g_pid = fork()) == -1){				\
@@ -114,10 +116,11 @@ extern char				pipe_buff[BUFFSIZE];
 
 /*********************** MALLOCS, FREE & LEAKS FUNCTIONS **********************/
 
-void	leaks_tracer_start(t_leaks_tracer *lst);
-void	leaks_tracer_stop(t_leaks_tracer *lst);
-char	*leaks_tracer_text(t_leaks_tracer *lst);
-void	leaks_tracer_reset(t_leaks_tracer *lst);
+void		leaks_tracer_start(t_leaks_tracer *lst);
+void		leaks_tracer_stop(t_leaks_tracer *lst);
+char		*leaks_tracer_text(t_leaks_tracer *lst);
+void		leaks_tracer_reset(t_leaks_tracer *lst);
+t_malloc	*leaks_tracer_find_by_addr(t_leaks_tracer *lst, void *addr);
 
 /****************************** UTILS FUNCTIONS *******************************/
 

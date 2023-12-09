@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/06 11:18:00 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 05:30:13 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,20 @@ char		*leaks_tracer_text(t_leaks_tracer *lst)
 		m = m->next;
 	}
 	return (text);
+}
+
+t_malloc	*leaks_tracer_find_by_addr(t_leaks_tracer *lst, void *addr)
+{
+	t_malloc	*res;
+
+	res = lst->first_malloc;
+	while (res)
+	{
+		if (res->addr == (unsigned long)addr)
+			return (res);
+		res = res->next;
+	}
+	return (NULL);
 }
 
 void		*malloc(size_t size)
