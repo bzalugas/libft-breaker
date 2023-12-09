@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 17:01:33 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:28:20 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5250,22 +5250,25 @@ CuSuite	*ft_lstadd_front_get_suite()
 void	test_ft_lstsize_basic(CuTest *tc)
 {
 	int		(*ft_lstsize)(t_list*) = get_fun("ft_lstsize");
-	t_list	*lst = lstnew(strdup("node 1"));
+	t_list	*lst = lstnew(NULL);
 	int		res;
 
 	printf("\n########## FT_LSTSIZE #########\n");
-	sprintf(buff.txt, "%s: lst of 3 nodes passed.\n", __func__);
+	sprintf(buff.txt, "%s: list of 3 nodes passed.\n", __func__);
 	if (!lst)
 		return ;
-	lst->next = lstnew(strdup("node 2"));
+	lst->next = lstnew(NULL);
 	if (!lst->next)
 		return ;
-	lst->next->next = lstnew(strdup("node 3"));
+	lst->next->next = lstnew(NULL);
 	if (!lst->next->next)
 		return ;
 	SANDBOX(res = ft_lstsize(lst););
 	CuAssert(tc, "FT_LSTSIZE CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
 	res = ft_lstsize(lst);
+	free(lst->next->next);
+	free(lst->next);
+	free(lst);
 	CuAssertIntEquals_Msg(tc, "Wrong size returned", 3, res);
 }
 
@@ -5294,10 +5297,51 @@ CuSuite	*ft_lstsize_get_suite()
 /*         FT_LSTLAST       */
 /****************************/
 
+void	test_ft_lstlast_basic(CuTest *tc)
+{
+	t_list	*(*ft_lstlast)(t_list*) = get_fun("ft_lstlast");
+	t_list	*lst = lstnew(NULL);
+	t_list	*res;
+	t_list	*ex;
+
+	printf("\n########## FT_LSTLAST #########\n");
+	sprintf(buff.txt, "%s: list of 3 nodes passed.\n", __func__);
+	if (!lst)
+		return ;
+	lst->next = lstnew(NULL);
+	if (!lst->next)
+		return ;
+	lst->next->next = lstnew(NULL);
+	if (!lst->next->next)
+		return ;
+	SANDBOX(res = ft_lstlast(lst););
+	CuAssert(tc, "FT_LSTLAST CRASH WITH BASIC INPUT", !WIFSIGNALED(g_exit_code));
+	res = ft_lstlast(lst);
+	ex = lst->next->next;
+	free(lst->next->next);
+	free(lst->next);
+	free(lst);
+	CuAssert(tc, "ft_lstlast doesn't return the right node", res == ex);
+}
+
+void	test_ft_lstlast_null_lst(CuTest *tc)
+{
+	t_list	*(*ft_lstlast)(t_list*) = get_fun("ft_lstlast");
+	t_list	*lst = NULL;
+	t_list	*res;
+
+	sprintf(buff.txt, "%s: NULL passed.\n", __func__);
+	SANDBOX(res = ft_lstlast(lst););
+	CuAssert(tc, "FT_LSTLAST CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
+	res = ft_lstlast(lst);
+	CuAssert(tc, "ft_lstlast doesn't return NULL with NULL param", res == NULL);
+}
+
 CuSuite	*ft_lstlast_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstlast_basic);
+	SUITE_ADD_TEST(s, test_ft_lstlast_null_lst);
 	return (s);
 }
 
@@ -5305,12 +5349,143 @@ CuSuite	*ft_lstlast_get_suite()
 /*      FT_LSTADD_BACK      */
 /****************************/
 
+void	one_test_ft_lstadd_back(CuTest *tc, char *testcase, t_list **lst, t_list *new, t_list **ex)
+{
+	void	(*ft_lstadd_back)(t_list**,t_list*) = get_fun("ft_lstadd_back");
+	char	text[BUFFBSIZE];
+	t_list	*tmp1;
+	t_list	*tmp2;
+
+	sprintf(text, "FT_LSTADD_BACK CRASH WITH %s", testcase);
+	SANDBOX(ft_lstadd_back(lst, new););
+	CuAssert(tc, text, !WIFSIGNALED(g_exit_code));
+	ft_lstadd_back(lst, new);
+	sprintf(text, "ft_lstadd_back doesn't behave well with %s", testcase);
+	if (!lst || !ex)
+		CuAssert(tc, text, lst == ex);
+	else
+	{
+		tmp1 = *lst;
+		tmp2 = *ex;
+		CuAssert(tc, text, (!tmp1 && !tmp2) || (tmp1 && tmp2));
+		while (tmp1 && tmp2)
+		{
+			CuAssert(tc, text, tmp1->content == tmp2->content);
+			tmp1 = tmp1->next;
+			tmp2 = tmp2->next;
+		}
+	}
+}
+
+void	test_ft_lstadd_back_basic(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*lst;
+	t_list	*next;
+	t_list	*new;
+	t_list	*ex;
+
+
+	printf("\n######## FT_LSTADD_BACK #######\n");
+	sprintf(buff.txt, "%s: list of 2 nodes + new node passed.\n", __func__);
+	s1 = strdup("first");
+	s2 = strdup("second");
+	s3 = strdup("third");
+	lst = lstnew(s1);
+	next = lstnew(s2);
+	new = lstnew(s3);
+	ex = lstnew(s1);
+	if (!lst || !next || !new || !ex)
+		exit(EXIT_FAILURE);
+	ex->next = lstnew(s2);
+	lst->next = lstnew(s2);
+	if (!ex->next || !lst->next)
+		exit(EXIT_FAILURE);
+	ex->next->next = lstnew(s3);
+	if (!ex->next->next)
+		exit(EXIT_FAILURE);
+	t_list	*saves[] = {lst, lst->next, new};
+	one_test_ft_lstadd_back(tc, "basic inputs", &lst, new, &ex);
+	for (int i = 0; i < 3; i++)
+		free(saves[i]);
+	free(ex->next->next);
+	free(ex->next);
+	free(ex);
+}
+
+void	test_ft_lstadd_back_null_lst(CuTest *tc)
+{
+	t_list	*new;
+
+	if (!(new = lstnew(strdup("coucou"))))
+		exit(EXIT_FAILURE);
+	sprintf(buff.txt, "%s: NULL lst + new node passed.\n", __func__);
+	one_test_ft_lstadd_back(tc, "NULL lst", NULL, new, NULL);
+}
+
+void	test_ft_lstadd_back_null_pointer_lst(CuTest *tc)
+{
+	char	*s1;
+	t_list	*lst;
+	t_list	*new;
+	t_list	*ex;
+
+
+	sprintf(buff.txt, "%s: list pointing to NULL + new node passed.\n", __func__);
+	s1 = strdup("first");
+	lst = NULL;
+	new = lstnew(s1);
+	ex = lstnew(s1);
+	if (!new || !ex)
+		exit(EXIT_FAILURE);
+	t_list	*save = new;
+	one_test_ft_lstadd_back(tc, "lst pointing to NULL", &lst, new, &ex);
+	free(save);
+	free(ex);
+}
+
+void	test_ft_lstadd_back_null_new(CuTest *tc)
+{
+	char	*s1;
+	t_list	*lst;
+	t_list	*new;
+	t_list	*ex;
+
+
+	sprintf(buff.txt, "%s: list of 1 node + NULL passed.\n", __func__);
+	s1 = strdup("first");
+	lst = lstnew(s1);
+	new = NULL;
+	ex = lstnew(s1);
+	if (!lst || !ex)
+		exit(EXIT_FAILURE);
+	t_list	*save = lst;
+	one_test_ft_lstadd_back(tc, "NULL new", &lst, new, &ex);
+	free(save);
+	free(ex);
+}
+
+void	test_ft_lstadd_back_null_lst_and_new(CuTest *tc)
+{
+	t_list	*lst = NULL;
+	t_list	*new = NULL;
+	t_list	*ex = NULL;
+
+
+	sprintf(buff.txt, "%s: NULL lst & NULL new passed.\n", __func__);
+	one_test_ft_lstadd_back(tc, "NULL new", &lst, new, &ex);
+}
+
 CuSuite	*ft_lstadd_back_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
-	return (s);
-}
+	SUITE_ADD_TEST(s, test_ft_lstadd_back_basic);
+	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_pointer_lst);
+	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_new);
+	}
 
 /****************************/
 /*        FT_LSTDELONE      */

@@ -746,30 +746,42 @@ lst set to a list of multiple nodes.
 CLOSED: [2023-12-09 Sat 16:59]
 lst set to NULL.
 *Return value*: Zero.
-** TODO ft_lstlast
+** DONE ft_lstlast
+CLOSED: [2023-12-09 Sat 20:32]
 #+begin_src C
 t_list  *ft_lstlast(t_list *lst);
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-12-09 Sat 20:21]
 lst set to a list of multiple nodes.
 *Return value*: The last node of the list.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-09 Sat 20:24]
 lst set to NULL.
 *Return value*: NULL.
-** TODO ft_lastadd_back
+** DONE ft_lastadd_back
+CLOSED: [2023-12-09 Sat 21:28]
 #+begin_src C
 void    ft_lstadd_back(t_list **lst, t_list *new);
 #+end_src
-*** CODE Basic input
+*** CODED Basic input
+CLOSED: [2023-12-09 Sat 21:06]
 Creation of 2 nodes then call of the function.
 *Behavior*: The next element of lst is set to new.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-09 Sat 21:14]
 lst set to NULL.
 *Behavior*: lst set to new.
-*** CODE NULL new
+*** CODED NULL pointer lst
+CLOSED: [2023-12-09 Sat 21:14]
+lst points to NULL.
+*Behavior*: lst set to new.
+*** CODED NULL new
+CLOSED: [2023-12-09 Sat 21:15]
 new set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL lst & new
+*** CODED NULL lst & new
+CLOSED: [2023-12-09 Sat 21:17]
 lst & new set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_lstdelone
