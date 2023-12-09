@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 06:32:23 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/09 06:40:46 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4045,9 +4045,9 @@ void	test_ft_striteri_basic(CuTest *tc)
 	SANDBOX(ft_striteri(s, rot_47_2););
 	CuAssert(tc, "FT_STRITERI CRASH WITH BASIC INPUTS.", !WIFSIGNALED(g_exit_code));
 	g_in_fun = 0;
-	g_last_malloc_size = 0;
 	ft_striteri(s, rot_47_2);
 	CuAssertIntEquals_Msg(tc, "ft_striteri is not calling the function.", strlen(s), g_in_fun);
+	g_last_malloc_size = 0;
 	CuAssertIntEquals_Msg(tc, "ft_striteri is calling malloc (WHY ?)", 0, g_last_malloc_size);
 	CuAssertStrEquals(tc, "w6==@P kabm P/Y0O", s);
 }
