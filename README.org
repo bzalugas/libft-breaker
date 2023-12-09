@@ -14,10 +14,10 @@ I also created a "static" version, that doesn't compare normal libc's function w
 #+begin_src makefile
 ifneq ($(shell uname), Darwin)
 breaker:
-			$(CC) -nostartfiles -shared -fPIC -ldl $(CFLAGS) -o libft.so $(SRC)
+			$(CC) -nostartfiles -shared -fPIC -ldl $(CFLAGS) -o libft.so $(SRC) $(SRCBONUS)
 else
 breaker:
-			$(CC) -dynamiclib $(CFLAGS) -o libft.so $(SRC) -L../obj -lmalloc
+			$(CC) -dynamiclib $(CFLAGS) -o libft.so $(SRC) $(SRCBONUS) -L../obj -lmalloc
 endif
 #+end_src
 
