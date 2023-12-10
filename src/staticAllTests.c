@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 21:43:03 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:28:21 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4906,13 +4906,13 @@ CuSuite	*ft_lstadd_back_get_suite()
 /****************************/
 /*        FT_LSTDELONE      */
 /****************************/
-int		g_del_called;
+int		g_fct_called;
 
 void	del(void *content)
 {
 	int	**arr;
 
-	g_del_called++;
+	g_fct_called++;
 	arr = (int **)content;
 	free(arr[0]);
 	arr[0] = NULL;
@@ -4939,10 +4939,10 @@ void	test_ft_lstdelone_basic(CuTest *tc)
 		exit(EXIT_FAILURE);
 	SANDBOX(ft_lstdelone(lst, del););
 	CuAssert(tc, "FT_LSTDELONE CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
-	g_del_called = 0;
+	g_fct_called = 0;
 	g_free_called = 0;
 	ft_lstdelone(lst, del);
-	CuAssert(tc, "ft_lstdelone doesn't call the del function", g_del_called == 1);
+	CuAssert(tc, "ft_lstdelone doesn't call the del function", g_fct_called == 1);
 	CuAssert(tc, "ft_lstdelone doesn't call free after calling del", g_free_called == 4);
 }
 
@@ -5020,14 +5020,14 @@ void	test_ft_lstclear_basic(CuTest *tc)
 	if (!(lst->next = lstnew(arr2)))
 		exit(EXIT_FAILURE);
 	sprintf(buff.txt, "%s: lst set to list of nodes of 2D int arrays, del to appropriate function.\n", __func__);
-	g_del_called = 0;
+	g_fct_called = 0;
 	g_free_called = 0;
 	SANDBOX(ft_lstclear(&lst, del););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
-	g_del_called = 0;
+	g_fct_called = 0;
 	g_free_called = 0;
 	ft_lstclear(&lst, del);
-	CuAssert(tc, "ft_lstclear doesn't call enough del", g_del_called == 2);
+	CuAssert(tc, "ft_lstclear doesn't call enough del", g_fct_called == 2);
 	CuAssert(tc, "ft_lstclear doesn't call enough free after del", g_free_called == 8);
 	CuAssert(tc, "ft_lstclear doesn't set lst to NULL pointer.", lst == NULL);
 }
@@ -5039,11 +5039,11 @@ void	test_ft_lstclear_null_lst(CuTest *tc)
 	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
 	SANDBOX(ft_lstclear(NULL, del););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
-	g_del_called = 0;
+	g_fct_called = 0;
 	g_free_called = 0;
 	ft_lstclear(NULL, del);
-	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_del_called == 0);
-	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_del_called == 0);
+	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_fct_called == 0);
+	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_fct_called == 0);
 }
 
 void	test_ft_lstclear_null_pointer_lst(CuTest *tc)
@@ -5054,11 +5054,11 @@ void	test_ft_lstclear_null_pointer_lst(CuTest *tc)
 	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
 	SANDBOX(ft_lstclear(&lst, del););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH LST POINTING TO NULL", !WIFSIGNALED(g_exit_code));
-	g_del_called = 0;
+	g_fct_called = 0;
 	g_free_called = 0;
 	ft_lstclear(&lst, del);
-	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_del_called == 0);
-	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_del_called == 0);
+	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_fct_called == 0);
+	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_free_called == 0);
 }
 
 void	test_ft_lstclear_null_del(CuTest *tc)
@@ -5117,10 +5117,100 @@ CuSuite	*ft_lstclear_get_suite()
 /*         FT_LSTITER       */
 /****************************/
 
+static void	rot47_str(void *s)
+{
+	char	*str = (char *)s;
+
+	g_fct_called++;
+	while (str && *str)
+	{
+		if (*str >= 33 && *str <= 126)
+			*str = (33 + (*str + 14) % 94);
+		str++;
+	}
+}
+
+void	test_ft_lstiter_basic(CuTest *tc)
+{
+	void	(*ft_lstiter)(t_list*, void(*)(void*)) = get_fun("ft_lstiter");
+	char	*s1;
+	char	*s2;
+	char	ex1[] = "s@ J@F <?@H (C@?8 (2J r@CC:82?n";
+	char	ex2[] = "*@F D9@F=5 :?G6DE:82E6P";
+	t_list	*node1;
+	t_list	*node2;
+	t_list	*lst;
+
+	printf("\n########## FT_LSTITER #########\n");
+	sprintf(buff.txt, "%s: lst set to a basic list, f to a rot47 function.\n", __func__);
+	s1 = strdup("Do you know Wrong Way Corrigan?");
+	s2 = strdup("You should investigate!");
+	if (!s1 || !s2 || !(node1 = lstnew(s1)) || !(node2 = lstnew(s2)))
+		exit(EXIT_FAILURE);
+	lst = node1;
+	lst->next = node2;
+	SANDBOX(ft_lstiter(lst, rot47_str););
+	CuAssert(tc, "FT_LSTITER CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	g_fct_called = 0;
+	ft_lstiter(lst, rot47_str);
+	CuAssert(tc, "ft_lstiter doesn't call enough f", g_fct_called == 2);
+	CuAssert(tc, "ft_lstiter doesn't call f on first node", !strcmp(ex1, s1));
+	CuAssert(tc, "ft_lstiter doesn't call f on second node", !strcmp(ex2, s2));
+	CuAssert(tc, "ft_lstiter changes order of nodes", lst == node1 && lst->next == node2);
+	free(s1);
+	free(s2);
+	free(node1);
+	free(node2);
+}
+
+void	test_ft_lstiter_null_lst(CuTest *tc)
+{
+	void	(*ft_lstiter)(t_list*, void(*)(void*)) = get_fun("ft_lstiter");
+	t_list	*lst = NULL;
+
+	sprintf(buff.txt, "%s: lst set to null, f to a rot47 function.\n", __func__);
+	SANDBOX(ft_lstiter(lst, rot47_str););
+	CuAssert(tc, "FT_LSTITER CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
+	g_fct_called = 0;
+	ft_lstiter(lst, rot47_str);
+	CuAssert(tc, "ft_lstiter calls f when lst is NULL (WHY?)", g_fct_called == 0);
+}
+
+void	test_ft_lstiter_null_f(CuTest *tc)
+{
+	void	(*ft_lstiter)(t_list*, void(*)(void*)) = get_fun("ft_lstiter");
+	char	*s1;
+	char	*s2;
+	char	ex1[] = "Do you know Wrong Way Corrigan?";
+	char	ex2[] = "You should investigate!";
+	t_list	*node1;
+	t_list	*node2;
+	t_list	*lst;
+
+	sprintf(buff.txt, "%s: lst set to a basic list, f to null.\n", __func__);
+	s1 = strdup("Do you know Wrong Way Corrigan?");
+	s2 = strdup("You should investigate!");
+	if (!s1 || !s2 || !(node1 = lstnew(s1)) || !(node2 = lstnew(s2)))
+		exit(EXIT_FAILURE);
+	lst = node1;
+	lst->next = node2;
+	SANDBOX(ft_lstiter(lst, NULL););
+	CuAssert(tc, "FT_LSTITER CRASH WITH NULL F", !WIFSIGNALED(g_exit_code));
+	ft_lstiter(lst, NULL);
+	CuAssert(tc, "ft_lstiter changes something with null f", !strcmp(ex1, s1) && !strcmp(ex2, s2));
+	CuAssert(tc, "ft_lstiter changes order of nodes", lst == node1 && lst->next == node2);
+	free(s1);
+	free(s2);
+	free(node1);
+	free(node2);
+}
+
 CuSuite	*ft_lstiter_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstiter_basic);
+	SUITE_ADD_TEST(s, test_ft_lstiter_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstiter_null_f);
 	return (s);
 }
 

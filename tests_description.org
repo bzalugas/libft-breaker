@@ -826,13 +826,16 @@ del set to NULL.
 #+begin_src C
 void    ft_lstiter(t_list *lst, void (*f)(void *));
 #+end_src
-*** CODE Basic inputs
+*** CODED Basic inputs
+CLOSED: [2023-12-10 Sun 23:14]
 lst set to a list of multiple nodes containing a string, f to a rot47 function.
 *Behavior*: Iterates on lst and applies f on the content of each node.
-*** CODE NULL lst
+*** FINISHED NULL lst
+CLOSED: [2023-12-10 Sun 23:20]
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL f
+*** CODED NULL f
+CLOSED: [2023-12-10 Sun 23:24]
 f set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_lstmap
