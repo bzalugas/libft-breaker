@@ -5279,7 +5279,9 @@ int	main(int argc, char *argv[])
 	lib = init_fcts();
 	printf("\n\n");
 	test_fun = get_test_fun(fun_name);
-	if (fun_name && test_fun)
+	if (fun_name && test_fun && !get_fun(fun_name))
+		printf("%sfunction %s missing.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
+	else if (fun_name && test_fun)
 		run_all(fun_name,test_fun);
 	else if (fun_name)
 		printf("%sfunction %s not found.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
