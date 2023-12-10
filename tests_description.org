@@ -822,7 +822,8 @@ lst set to pointer to NULL.
 CLOSED: [2023-12-10 Sun 20:39]
 del set to NULL.
 *Behavior*: Nothing.
-** TODO ft_lstiter
+** DONE ft_lstiter
+CLOSED: [2023-12-10 Sun 23:29]
 #+begin_src C
 void    ft_lstiter(t_list *lst, void (*f)(void *));
 #+end_src
@@ -830,7 +831,7 @@ void    ft_lstiter(t_list *lst, void (*f)(void *));
 CLOSED: [2023-12-10 Sun 23:14]
 lst set to a list of multiple nodes containing a string, f to a rot47 function.
 *Behavior*: Iterates on lst and applies f on the content of each node.
-*** FINISHED NULL lst
+*** DONE NULL lst
 CLOSED: [2023-12-10 Sun 23:20]
 lst set to NULL.
 *Behavior*: Nothing.
