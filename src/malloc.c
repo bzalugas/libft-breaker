@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:25:25 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 05:30:13 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:56:22 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int				g_malloc_fail;
 size_t			g_last_malloc_size;
 t_leaks_tracer	g_leaks;
 char			*g_leaks_text;
+int				g_free_called;
 
 void		get_real_malloc()
 {
@@ -204,6 +205,7 @@ void		*malloc(size_t size)
 
 void		free(void *ptr)
 {
+	g_free_called++;
 	if (!g_real_free)
 		g_real_free = dlsym(RTLD_NEXT, "free");
 	if (!g_real_free)

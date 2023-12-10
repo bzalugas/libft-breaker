@@ -784,17 +784,21 @@ new set to NULL.
 CLOSED: [2023-12-09 Sat 21:17]
 lst & new set to NULL.
 *Behavior*: Nothing.
-** TODO ft_lstdelone
+** DONE ft_lstdelone
+CLOSED: [2023-12-10 Sun 20:08]
 #+begin_src C
 void    ft_lstdelone(t_list *lst, void (*del)(void *));
 #+end_src
-*** CODE Basic inputs
-lst set to a node containing an 2D array of ints, del to appropriate function to free the content.
+*** CODED Basic inputs
+CLOSED: [2023-12-10 Sun 19:59]
+lst set to a node containing a 2D array of ints, del to appropriate function to free the content.
 *Behavior*: the content is freed using del and then the node is freed.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-10 Sun 20:01]
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL del
+*** CODED NULL del
+CLOSED: [2023-12-10 Sun 20:02]
 del set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_lstclear

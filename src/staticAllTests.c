@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 21:27:51 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:07:36 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -4900,16 +4900,90 @@ CuSuite	*ft_lstadd_back_get_suite()
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_lst);
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_pointer_lst);
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_new);
-	}
+	return (s);
+}
 
 /****************************/
 /*        FT_LSTDELONE      */
 /****************************/
+int		g_del_called;
+
+void	del(void *content)
+{
+	int	**arr;
+
+	g_del_called++;
+	arr = (int **)content;
+	free(arr[0]);
+	arr[0] = NULL;
+	free(arr[1]);
+	arr[1] = NULL;
+	free(arr);
+}
+
+void	test_ft_lstdelone_basic(CuTest *tc)
+{
+	void	(*ft_lstdelone)(t_list*, void(*)(void*)) = get_fun("ft_lstdelone");
+	t_list	*lst;
+	int		**arr;
+
+	printf("\n######### FT_LSTDELONE ########\n");
+	sprintf(buff.txt, "%s: lst set to a node containing 2D array of int, del corresponding function.\n", __func__);
+	if (!(arr = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(lst = lstnew(arr)))
+		exit(EXIT_FAILURE);
+	SANDBOX(ft_lstdelone(lst, del););
+	CuAssert(tc, "FT_LSTDELONE CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	g_del_called = 0;
+	g_free_called = 0;
+	ft_lstdelone(lst, del);
+	CuAssert(tc, "ft_lstdelone doesn't call the del function", g_del_called == 1);
+	CuAssert(tc, "ft_lstdelone doesn't call free after calling del", g_free_called == 4);
+}
+
+void	test_ft_lstdelone_null_lst(CuTest *tc)
+{
+	void	(*ft_lstdelone)(t_list*, void(*)(void*)) = get_fun("ft_lstdelone");
+	t_list	*lst = NULL;
+
+	sprintf(buff.txt, "%s: lst set to NULL, del to a delete function.\n", __func__);
+	SANDBOX(ft_lstdelone(lst, del););
+	CuAssert(tc, "FT_LSTDELONE CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
+}
+
+void	test_ft_lstdelone_null_del(CuTest *tc)
+{
+	void	(*ft_lstdelone)(t_list*, void(*)(void*)) = get_fun("ft_lstdelone");
+	t_list	*lst;
+	int		**arr;
+
+	sprintf(buff.txt, "%s: lst set to a node containing 2D array of int, del to NULL.\n", __func__);
+	if (!(arr = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(lst = lstnew(arr)))
+		exit(EXIT_FAILURE);
+	SANDBOX(ft_lstdelone(lst, NULL););
+	CuAssert(tc, "FT_LSTDELONE CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	g_free_called = 0;
+	ft_lstdelone(lst, del);
+	CuAssert(tc, "ft_lstdelone doesn't call free when del is NULL", g_free_called == 4);
+}
 
 CuSuite	*ft_lstdelone_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstdelone_basic);
+	SUITE_ADD_TEST(s, test_ft_lstdelone_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstdelone_null_del);
 	return (s);
 }
 

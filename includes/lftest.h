@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 07:09:02 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:56:41 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ extern print_buff		buff;
 extern int				g_in_fun;
 extern int				fds[2];
 extern char				pipe_buff[BUFFSIZE];
+extern int				g_free_called;
 
 /*********************************** MACROS ***********************************/
 
