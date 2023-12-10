@@ -801,17 +801,25 @@ lst set to NULL.
 CLOSED: [2023-12-10 Sun 20:02]
 del set to NULL.
 *Behavior*: Nothing.
-** TODO ft_lstclear
+** DONE ft_lstclear
+CLOSED: [2023-12-10 Sun 21:44]
 #+begin_src C
 void    ft_lstclear(t_list **lst, void (*del)(void *));
 #+end_src
-*** CODE Basic inputs
+*** CODED Basic inputs
+CLOSED: [2023-12-10 Sun 20:33]
 lst set to a list of multiple nodes of 2D arrays of int, del to appropriate function to free the content.
 *Behavior*: every node is freed after the content. The lst is then set to NULL.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-10 Sun 20:39]
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODE NULL del
+*** CODED NULL pointer lst
+CLOSED: [2023-12-10 Sun 21:44]
+lst set to pointer to NULL.
+*Behavior*: Nothing.
+*** CODED NULL del
+CLOSED: [2023-12-10 Sun 20:39]
 del set to NULL.
 *Behavior*: Nothing.
 ** TODO ft_lstiter

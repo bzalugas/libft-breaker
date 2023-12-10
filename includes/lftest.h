@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 19:56:41 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:18:51 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,11 @@ extern int				g_free_called;
 # define SANDBOX(X)								\
 	if ((g_pid = fork()) == -1){				\
 		perror("Error during fork");			\
-		exit(1);								\
+		exit(EXIT_FAILURE);						\
 	}											\
 	if (!g_pid){								\
 		X;										\
-		exit(0);								\
+		exit(EXIT_SUCCESS);						\
 	}											\
 	wait(&g_exit_code);
 

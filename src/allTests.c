@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 20:15:37 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:43:34 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5579,10 +5579,122 @@ CuSuite	*ft_lstdelone_get_suite()
 /*        FT_LSTCLEAR       */
 /****************************/
 
+void	test_ft_lstclear_basic(CuTest *tc)
+{
+	void	(*ft_lstclear)(t_list**, void(*)(void*)) = get_fun("ft_lstclear");
+	int		**arr1;
+	int		**arr2;
+	t_list	*lst;
+
+	printf("\n########## FT_LSTCLEAR ########\n");
+	printf("/!\\ If the test crashes here, it certainly comes from your ft_lstclear. /!\\\n");
+	if (!(arr1 = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr1[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr1[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr2 = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr2[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr2[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(lst = lstnew(arr1)))
+		exit(EXIT_FAILURE);
+	if (!(lst->next = lstnew(arr2)))
+		exit(EXIT_FAILURE);
+	sprintf(buff.txt, "%s: lst set to list of nodes of 2D int arrays, del to appropriate function.\n", __func__);
+	g_del_called = 0;
+	g_free_called = 0;
+	SANDBOX(ft_lstclear(&lst, del););
+	CuAssert(tc, "FT_LSTCLEAR CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
+	g_del_called = 0;
+	g_free_called = 0;
+	ft_lstclear(&lst, del);
+	CuAssert(tc, "ft_lstclear doesn't call enough del", g_del_called == 2);
+	CuAssert(tc, "ft_lstclear doesn't call enough free after del", g_free_called == 8);
+	CuAssert(tc, "ft_lstclear doesn't set lst to NULL pointer.", lst == NULL);
+}
+
+void	test_ft_lstclear_null_lst(CuTest *tc)
+{
+	void	(*ft_lstclear)(t_list**, void(*)(void*)) = get_fun("ft_lstclear");
+
+	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
+	SANDBOX(ft_lstclear(NULL, del););
+	CuAssert(tc, "FT_LSTCLEAR CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
+	g_del_called = 0;
+	g_free_called = 0;
+	ft_lstclear(NULL, del);
+	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_del_called == 0);
+	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_del_called == 0);
+}
+
+void	test_ft_lstclear_null_pointer_lst(CuTest *tc)
+{
+	void	(*ft_lstclear)(t_list**, void(*)(void*)) = get_fun("ft_lstclear");
+	t_list	*lst = NULL;
+
+	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
+	SANDBOX(ft_lstclear(&lst, del););
+	CuAssert(tc, "FT_LSTCLEAR CRASH WITH LST POINTING TO NULL", !WIFSIGNALED(g_exit_code));
+	g_del_called = 0;
+	g_free_called = 0;
+	ft_lstclear(&lst, del);
+	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_del_called == 0);
+	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_del_called == 0);
+}
+
+void	test_ft_lstclear_null_del(CuTest *tc)
+{
+	void	(*ft_lstclear)(t_list**, void(*)(void*)) = get_fun("ft_lstclear");
+	int		**arr1;
+	int		**arr2;
+	t_list	*lst;
+
+	if (!(arr1 = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr1[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr1[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(lst = lstnew(arr1)))
+		exit(EXIT_FAILURE);
+	if (!(arr2 = (int **)malloc(sizeof(int *) * 2)))
+		exit(EXIT_FAILURE);
+	if (!(arr2[0] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(arr2[1] = (int *)malloc(sizeof(int) * 3)))
+		exit(EXIT_FAILURE);
+	if (!(lst = lstnew(arr1)))
+		exit(EXIT_FAILURE);
+	if (!(lst->next = lstnew(arr2)))
+		exit(EXIT_FAILURE);
+	sprintf(buff.txt, "%s: lst set to list of nodes of 2D int arrays, del to NULL.\n", __func__);
+	SANDBOX(ft_lstclear(&lst, NULL););
+	CuAssert(tc, "FT_LSTCLEAR CRASH WITH NULL DEL", !WIFSIGNALED(g_exit_code));
+	g_free_called = 0;
+	ft_lstclear(&lst, NULL);
+	CuAssert(tc, "ft_lstclear calls free when del is NULL (It shouldn't!)", g_free_called == 0);
+	CuAssert(tc, "ft_lstclear sets lst to NULL when del is NULL (it shouldn't!)", lst != NULL);
+	free(arr1[0]);
+	free(arr1[1]);
+	free(arr1);
+	free(arr2[0]);
+	free(arr2[1]);
+	free(arr2);
+	free(lst->next);
+	free(lst);
+}
+
 CuSuite	*ft_lstclear_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstclear_basic);
+	SUITE_ADD_TEST(s, test_ft_lstclear_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstclear_null_pointer_lst);
+	SUITE_ADD_TEST(s, test_ft_lstclear_null_del);
 	return (s);
 }
 
