@@ -688,189 +688,147 @@ fd set to a pipe fd (stdout & stderr closed) and n to zero.
 *Behavior*: converts n to a string and then writes it to fd.
 
 * Bonus part
-** DONE ft_lstnew
-CLOSED: [2023-12-09 Sat 08:00]
+** ft_lstnew
 #+begin_src C
 t_list  *ft_lstnew(void *content);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-12-09 Sat 07:37]
+*** Basic input
 content set to a basic string.
 *Behavior*: A node containing the string as content is allocated.
 *Return value*: The new node.
-*** CODED NULL content
-CLOSED: [2023-12-09 Sat 07:37]
+*** NULL content
 content set to NULL.
 *Behavior*: A node containing NULL as content is allocated.
 *Return value*: The new node.
-*** CODED malloc fail
-CLOSED: [2023-12-09 Sat 07:37]
+*** malloc fail
 Make malloc fail.
 *Behavior*: Tries to allocate memory.
 *Return value*: NULL.
-** DONE ft_lstadd_front
-CLOSED: [2023-12-09 Sat 16:47]
+** ft_lstadd_front
 #+begin_src C
 void    ft_lstadd_front(t_list **lst, t_list *new);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-12-09 Sat 13:53]
+*** Basic input
 Creation of 2 nodes then call of the function.
 *Behavior*: The lst param becomes new, with next set to old lst.
-*** CODED NULL lst
-CLOSED: [2023-12-09 Sat 13:56]
+*** NULL lst
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODED lst containing NULL
-CLOSED: [2023-12-09 Sat 13:59]
+*** lst containing NULL
 lst pointing to a NULL address.
 *Behavior*: pointer of lst set to new.
-*** CODED NULL new
-CLOSED: [2023-12-09 Sat 14:01]
+*** NULL new
 new set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL lst & new
-CLOSED: [2023-12-09 Sat 14:07]
+*** NULL lst & new
 lst & new set to NULL.
 *Behavior*: Nothing.
-** DONE ft_lstsize
-CLOSED: [2023-12-09 Sat 17:08]
+** ft_lstsize
 #+begin_src C
 int ft_lstsize(t_list *lst);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-12-09 Sat 16:59]
+*** Basic input
 lst set to a list of multiple nodes.
 *Return value*: The size of lst.
-*** CODED NULL lst
-CLOSED: [2023-12-09 Sat 16:59]
+*** NULL lst
 lst set to NULL.
 *Return value*: Zero.
-** DONE ft_lstlast
-CLOSED: [2023-12-09 Sat 20:32]
+** ft_lstlast
 #+begin_src C
 t_list  *ft_lstlast(t_list *lst);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-12-09 Sat 20:21]
+*** Basic input
 lst set to a list of multiple nodes.
 *Return value*: The last node of the list.
-*** CODED NULL lst
-CLOSED: [2023-12-09 Sat 20:24]
+*** NULL lst
 lst set to NULL.
 *Return value*: NULL.
-** DONE ft_lastadd_back
-CLOSED: [2023-12-09 Sat 21:28]
+** ft_lastadd_back
 #+begin_src C
 void    ft_lstadd_back(t_list **lst, t_list *new);
 #+end_src
-*** CODED Basic input
-CLOSED: [2023-12-09 Sat 21:06]
+*** Basic input
 Creation of 2 nodes then call of the function.
 *Behavior*: The next element of lst is set to new.
-*** CODED NULL lst
-CLOSED: [2023-12-09 Sat 21:14]
+*** NULL lst
 lst set to NULL.
 *Behavior*: lst set to new.
-*** CODED NULL pointer lst
-CLOSED: [2023-12-09 Sat 21:14]
+*** NULL pointer lst
 lst points to NULL.
 *Behavior*: lst set to new.
-*** CODED NULL new
-CLOSED: [2023-12-09 Sat 21:15]
+*** NULL new
 new set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL lst & new
-CLOSED: [2023-12-09 Sat 21:17]
+*** NULL lst & new
 lst & new set to NULL.
 *Behavior*: Nothing.
-** DONE ft_lstdelone
-CLOSED: [2023-12-10 Sun 20:08]
+** ft_lstdelone
 #+begin_src C
 void    ft_lstdelone(t_list *lst, void (*del)(void *));
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-12-10 Sun 19:59]
+*** Basic inputs
 lst set to a node containing a 2D array of ints, del to appropriate function to free the content.
 *Behavior*: the content is freed using del and then the node is freed.
-*** CODED NULL lst
-CLOSED: [2023-12-10 Sun 20:01]
+*** NULL lst
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL del
-CLOSED: [2023-12-10 Sun 20:02]
+*** NULL del
 del set to NULL.
 *Behavior*: Nothing.
-** DONE ft_lstclear
-CLOSED: [2023-12-10 Sun 21:44]
+** ft_lstclear
 #+begin_src C
 void    ft_lstclear(t_list **lst, void (*del)(void *));
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-12-10 Sun 20:33]
+*** Basic inputs
 lst set to a list of multiple nodes of 2D arrays of int, del to appropriate function to free the content.
 *Behavior*: every node is freed after the content. The lst is then set to NULL.
-*** CODED NULL lst
-CLOSED: [2023-12-10 Sun 20:39]
+*** NULL lst
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL pointer lst
-CLOSED: [2023-12-10 Sun 21:44]
+*** NULL pointer lst
 lst set to pointer to NULL.
 *Behavior*: Nothing.
-*** CODED NULL del
-CLOSED: [2023-12-10 Sun 20:39]
+*** NULL del
 del set to NULL.
 *Behavior*: Nothing.
-** DONE ft_lstiter
-CLOSED: [2023-12-10 Sun 23:29]
+** ft_lstiter
 #+begin_src C
 void    ft_lstiter(t_list *lst, void (*f)(void *));
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-12-10 Sun 23:14]
+*** Basic inputs
 lst set to a list of multiple nodes containing a string, f to a rot47 function.
 *Behavior*: Iterates on lst and applies f on the content of each node.
-*** DONE NULL lst
-CLOSED: [2023-12-10 Sun 23:20]
+*** NULL lst
 lst set to NULL.
 *Behavior*: Nothing.
-*** CODED NULL f
-CLOSED: [2023-12-10 Sun 23:24]
+*** NULL f
 f set to NULL.
 *Behavior*: Nothing.
-** DONE ft_lstmap
-CLOSED: [2023-12-11 Mon 01:16]
+** ft_lstmap
 #+begin_src C
 t_list   *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 #+end_src
-*** CODED Basic inputs
-CLOSED: [2023-12-11 Mon 00:31]
+*** Basic inputs
 lst set to a list of multiple nodes, each containing a string. f a rot47 function. del to the corresponding delete function.
 *Behavior*: Creation of a new list.
 *Return value*: The new list.
-*** CODED malloc fail
-CLOSED: [2023-12-11 Mon 00:36]
+*** malloc fail
 Same parameters but make malloc fail.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED third malloc fail
-CLOSED: [2023-12-11 Mon 00:36]
+*** third malloc fail
 Same parameters but make the third malloc fail.
 *Behavior*: Tries to create the new list but third malloc fails, so the del function is called on each node of the new list & everything is freed (the new list).
 *Return value*: NULL.
-*** CODED NULL lst
-CLOSED: [2023-12-11 Mon 00:37]
+*** NULL lst
 lst set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL f
-CLOSED: [2023-12-11 Mon 00:39]
+*** NULL f
 f set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODED NULL del
-CLOSED: [2023-12-11 Mon 00:40]
+*** NULL del
 del set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
