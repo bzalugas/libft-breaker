@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 21:18:51 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:50:38 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ extern int				g_free_called;
 	leaks_tracer_reset(&g_leaks);				\
 	leaks_tracer_start(&g_leaks);
 # define LEAKS_TRACER_STOP leaks_tracer_stop(&g_leaks);
+# define LEAKS_TRACER_CONTINUE leaks_tracer_start(&g_leaks);
 # define LEAKS_TRACER_RESULT LEAKS_TRACER_STOP;						\
 	g_leaks_text = leaks_tracer_text(&g_leaks);						\
 	leaks_tracer_reset(&g_leaks);

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 23:26:28 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:11:57 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5493,7 +5493,7 @@ CuSuite	*ft_lstadd_back_get_suite()
 /****************************/
 int		g_fct_called;
 
-void	del(void *content)
+void	del_ints(void *content)
 {
 	int	**arr;
 
@@ -5522,11 +5522,11 @@ void	test_ft_lstdelone_basic(CuTest *tc)
 		exit(EXIT_FAILURE);
 	if (!(lst = lstnew(arr)))
 		exit(EXIT_FAILURE);
-	SANDBOX(ft_lstdelone(lst, del););
+	SANDBOX(ft_lstdelone(lst, del_ints););
 	CuAssert(tc, "FT_LSTDELONE CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
 	g_fct_called = 0;
 	g_free_called = 0;
-	ft_lstdelone(lst, del);
+	ft_lstdelone(lst, del_ints);
 	CuAssert(tc, "ft_lstdelone doesn't call the del function", g_fct_called == 1);
 	CuAssert(tc, "ft_lstdelone doesn't call free after calling del", g_free_called == 4);
 }
@@ -5537,7 +5537,7 @@ void	test_ft_lstdelone_null_lst(CuTest *tc)
 	t_list	*lst = NULL;
 
 	sprintf(buff.txt, "%s: lst set to NULL, del to a delete function.\n", __func__);
-	SANDBOX(ft_lstdelone(lst, del););
+	SANDBOX(ft_lstdelone(lst, del_ints););
 	CuAssert(tc, "FT_LSTDELONE CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
 }
 
@@ -5607,11 +5607,11 @@ void	test_ft_lstclear_basic(CuTest *tc)
 	sprintf(buff.txt, "%s: lst set to list of nodes of 2D int arrays, del to appropriate function.\n", __func__);
 	g_fct_called = 0;
 	g_free_called = 0;
-	SANDBOX(ft_lstclear(&lst, del););
+	SANDBOX(ft_lstclear(&lst, del_ints););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH BASIC INPUTS", !WIFSIGNALED(g_exit_code));
 	g_fct_called = 0;
 	g_free_called = 0;
-	ft_lstclear(&lst, del);
+	ft_lstclear(&lst, del_ints);
 	CuAssert(tc, "ft_lstclear doesn't call enough del", g_fct_called == 2);
 	CuAssert(tc, "ft_lstclear doesn't call enough free after del", g_free_called == 8);
 	CuAssert(tc, "ft_lstclear doesn't set lst to NULL pointer.", lst == NULL);
@@ -5622,11 +5622,11 @@ void	test_ft_lstclear_null_lst(CuTest *tc)
 	void	(*ft_lstclear)(t_list**, void(*)(void*)) = get_fun("ft_lstclear");
 
 	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
-	SANDBOX(ft_lstclear(NULL, del););
+	SANDBOX(ft_lstclear(NULL, del_ints););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH NULL LST", !WIFSIGNALED(g_exit_code));
 	g_fct_called = 0;
 	g_free_called = 0;
-	ft_lstclear(NULL, del);
+	ft_lstclear(NULL, del_ints);
 	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_fct_called == 0);
 	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_fct_called == 0);
 }
@@ -5637,11 +5637,11 @@ void	test_ft_lstclear_null_pointer_lst(CuTest *tc)
 	t_list	*lst = NULL;
 
 	sprintf(buff.txt, "%s: lst set to NULL, del to same function as before.\n", __func__);
-	SANDBOX(ft_lstclear(&lst, del););
+	SANDBOX(ft_lstclear(&lst, del_ints););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH LST POINTING TO NULL", !WIFSIGNALED(g_exit_code));
 	g_fct_called = 0;
 	g_free_called = 0;
-	ft_lstclear(&lst, del);
+	ft_lstclear(&lst, del_ints);
 	CuAssert(tc, "ft_lstclear calls del (WHY ?)", g_fct_called == 0);
 	CuAssert(tc, "ft_lstclear calls free (WHY ?)", g_free_called == 0);
 }
@@ -5702,7 +5702,7 @@ CuSuite	*ft_lstclear_get_suite()
 /*         FT_LSTITER       */
 /****************************/
 
-static void	rot47_str(void *s)
+void	rot47_str(void *s)
 {
 	char	*str = (char *)s;
 
@@ -5803,10 +5803,290 @@ CuSuite	*ft_lstiter_get_suite()
 /*         FT_LSTMAP        */
 /****************************/
 
+void	del_str(void *s)
+{
+	free(s);
+}
+
+void	*rot47_str2(void *s)
+{
+	char	*str = strdup((char*)s);
+	char	*tmp;
+
+	if (!str)
+		return (NULL);
+	tmp = str;
+	g_fct_called++;
+	while (tmp && *tmp)
+	{
+		if (*tmp >= 33 && *tmp <= 126)
+			*tmp = (33 + (*tmp + 14) % 94);
+		tmp++;
+	}
+	return (str);
+}
+
+void	one_test_ft_lstmap(CuTest *tc, char *testcase, t_list *lst, void *(*f)(void*), void (*del)(void*), int fail, t_list *ex)
+{
+	t_list	*(*ft_lstmap)(t_list*, void*(*)(void*), void(*)(void*)) = get_fun("ft_lstmap");
+	char	txt[BUFFBSIZE];
+	t_list	*res;
+	t_list	*t1;
+	t_list	*t2;
+	t_list	saves[3];
+
+	if (lst)
+	{
+		saves[0] = *lst;
+		saves[1] = *(lst->next);
+		saves[2] = *(lst->next->next);
+	}
+	SANDBOX(
+		g_malloc_fail = fail;
+		res = ft_lstmap(lst, f, del);
+		END_FAIL;
+		);
+	sprintf(txt, "FT_LSTMAP CRASH WITH %s", testcase);
+	CuAssert(tc, txt, !WIFSIGNALED(g_exit_code));
+	LEAKS_TRACER_START;
+	g_malloc_fail = fail;
+	g_fct_called = 0;
+	res = ft_lstmap(lst, f, del);
+	END_FAIL;
+	LEAKS_TRACER_STOP;
+	if (!fail && lst && f && del)
+	{
+		sprintf(txt, "ft_lstmap doesn't call enough f with %s", testcase);
+		CuAssert(tc, txt, g_fct_called == 3);
+	}
+	sprintf(txt, "ft_lstmap doesn't return the right list with %s", testcase);
+	t1 = ex;
+	t2 = res;
+	for (; t1 && t2; t1 = t1->next, t2 = t2->next)
+		CuAssert(tc, txt, !strcmp(t1->content, t2->content));
+	CuAssert(tc, txt, (!t1 && !t2));
+	if (lst)
+	{
+		sprintf(txt, "ft_lstmap modifies the original lst with %s", testcase);
+		t1 = lst;
+		int i;
+		for (i = 0; lst && i < 3; lst = lst->next, i++)
+			CuAssert(tc, txt, lst->content == saves[i].content);
+		CuAssert(tc, txt, !lst && i == 3);
+	}
+	LEAKS_TRACER_CONTINUE;
+	for (;res;)
+	{
+		del_str(res->content);
+		t1 = res->next;
+		free(res);
+		res = t1;
+	}
+	LEAKS_TRACER_RESULT;
+	CuAssert(tc, g_leaks_text, LEAKS_OK);
+}
+
+void	test_ft_lstmap_basic(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	t_list	*lst;
+	t_list	*ex;
+
+	printf("\n########## FT_LSTMAP ##########\n");
+	sprintf(buff.txt, "%s: lst is 3 nodes list of strings, f a rot47 function, del the delete function.\n", __func__);
+	s1 = strdup("Hello");
+	s2 = strdup(", how are");
+	s3 = strdup(" you?");
+	if (!s1 || !s2 || !s3)
+		exit(EXIT_FAILURE);
+	n1 = lstnew(s1);
+	n2 = lstnew(s2);
+	n3 = lstnew(s3);
+	if (!n1 || !n2 || !n3)
+		exit(EXIT_FAILURE);
+	lst = n1;
+	lst->next = n2;
+	lst->next->next = n3;
+	if (!(ex = lstnew(rot47_str2(lst->content))))
+		exit(EXIT_FAILURE);
+	if (!(ex->next = lstnew(rot47_str2(lst->next->content))))
+		exit(EXIT_FAILURE);
+	if (!(ex->next->next = lstnew(rot47_str2(lst->next->next->content))))
+		exit(EXIT_FAILURE);
+	one_test_ft_lstmap(tc, "basic inputs", lst, rot47_str2, del_str, 0, ex);
+	free(s1);
+	free(s2);
+	free(s3);
+	free(n1);
+	free(n2);
+	free(n3);
+	for (t_list *t = ex; ex;)
+	{
+		t = ex->next;
+		free(ex->content);
+		free(ex);
+		ex = t;
+	}
+}
+
+void	test_ft_lstmap_malloc_fail(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	t_list	*lst;
+	t_list	*ex = NULL;
+
+	sprintf(buff.txt, "%s: lst is 3 nodes list of strings, f a rot47 function, del the delete function.\n", __func__);
+	s1 = strdup("Hello");
+	s2 = strdup(", how are");
+	s3 = strdup(" you?");
+	if (!s1 || !s2 || !s3)
+		exit(EXIT_FAILURE);
+	n1 = lstnew(s1);
+	n2 = lstnew(s2);
+	n3 = lstnew(s3);
+	if (!n1 || !n2 || !n3)
+		exit(EXIT_FAILURE);
+	lst = n1;
+	lst->next = n2;
+	lst->next->next = n3;
+	one_test_ft_lstmap(tc, "first malloc fail", lst, rot47_str2, del_str, 1, ex);
+	free(s1);
+	free(s2);
+	free(s3);
+	free(n1);
+	free(n2);
+	free(n3);
+}
+
+void	test_ft_lstmap_malloc_fail_2(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	t_list	*lst;
+	t_list	*ex = NULL;
+
+	sprintf(buff.txt, "%s: lst is 3 nodes list of strings, f a rot47 function, del the delete function.\n", __func__);
+	s1 = strdup("Hello");
+	s2 = strdup(", how are");
+	s3 = strdup(" you?");
+	if (!s1 || !s2 || !s3)
+		exit(EXIT_FAILURE);
+	n1 = lstnew(s1);
+	n2 = lstnew(s2);
+	n3 = lstnew(s3);
+	if (!n1 || !n2 || !n3)
+		exit(EXIT_FAILURE);
+	lst = n1;
+	lst->next = n2;
+	lst->next->next = n3;
+	one_test_ft_lstmap(tc, "third malloc fail", lst, rot47_str2, del_str, 3, ex);
+	free(s1);
+	free(s2);
+	free(s3);
+	free(n1);
+	free(n2);
+	free(n3);
+}
+
+void	test_ft_lstmap_null_lst(CuTest *tc)
+{
+	t_list	*ex = NULL;
+
+	sprintf(buff.txt, "%s: lst is NULL, f a rot47 function, del the delete function.\n", __func__);
+	one_test_ft_lstmap(tc, "null lst", NULL, rot47_str2, del_str, 0, ex);
+}
+
+void	test_ft_lstmap_null_f(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	t_list	*lst;
+	t_list	*ex = NULL;
+
+	sprintf(buff.txt, "%s: lst is 3 nodes list of strings, f is NULL, del the delete function.\n", __func__);
+	s1 = strdup("Hello");
+	s2 = strdup(", how are");
+	s3 = strdup(" you?");
+	if (!s1 || !s2 || !s3)
+		exit(EXIT_FAILURE);
+	n1 = lstnew(s1);
+	n2 = lstnew(s2);
+	n3 = lstnew(s3);
+	if (!n1 || !n2 || !n3)
+		exit(EXIT_FAILURE);
+	lst = n1;
+	lst->next = n2;
+	lst->next->next = n3;
+	one_test_ft_lstmap(tc, "null f", lst, NULL, del_str, 0, ex);
+	free(s1);
+	free(s2);
+	free(s3);
+	free(n1);
+	free(n2);
+	free(n3);
+}
+
+void	test_ft_lstmap_null_del(CuTest *tc)
+{
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	t_list	*lst;
+	t_list	*ex = NULL;
+
+	sprintf(buff.txt, "%s: lst is 3 nodes list of strings, f a rot47 function, del is NULL.\n", __func__);
+	s1 = strdup("Hello");
+	s2 = strdup(", how are");
+	s3 = strdup(" you?");
+	if (!s1 || !s2 || !s3)
+		exit(EXIT_FAILURE);
+	n1 = lstnew(s1);
+	n2 = lstnew(s2);
+	n3 = lstnew(s3);
+	if (!n1 || !n2 || !n3)
+		exit(EXIT_FAILURE);
+	lst = n1;
+	lst->next = n2;
+	lst->next->next = n3;
+	one_test_ft_lstmap(tc, "null f", lst, rot47_str2, NULL, 0, ex);
+	free(s1);
+	free(s2);
+	free(s3);
+	free(n1);
+	free(n2);
+	free(n3);
+}
+
 CuSuite	*ft_lstmap_get_suite()
 {
 	CuSuite	*s = CuSuiteNew();
-
+	SUITE_ADD_TEST(s, test_ft_lstmap_basic);
+	SUITE_ADD_TEST(s, test_ft_lstmap_malloc_fail);
+	SUITE_ADD_TEST(s, test_ft_lstmap_malloc_fail_2);
+	SUITE_ADD_TEST(s, test_ft_lstmap_null_lst);
+	SUITE_ADD_TEST(s, test_ft_lstmap_null_f);
+	SUITE_ADD_TEST(s, test_ft_lstmap_null_del);
 	return (s);
 }
 

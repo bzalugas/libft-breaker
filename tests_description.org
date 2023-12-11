@@ -839,31 +839,38 @@ lst set to NULL.
 CLOSED: [2023-12-10 Sun 23:24]
 f set to NULL.
 *Behavior*: Nothing.
-** TODO ft_lstmap
+** DONE ft_lstmap
+CLOSED: [2023-12-11 Mon 01:16]
 #+begin_src C
-t_lst   *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list   *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 #+end_src
-*** CODE Basic inputs
-lst set to a list of multiple nodes, each containing array of ints. f a function that multiplies each number by its rank in the array. del to the corresponding delete function.
+*** CODED Basic inputs
+CLOSED: [2023-12-11 Mon 00:31]
+lst set to a list of multiple nodes, each containing a string. f a rot47 function. del to the corresponding delete function.
 *Behavior*: Creation of a new list.
 *Return value*: The new list.
-*** CODE malloc fail
+*** CODED malloc fail
+CLOSED: [2023-12-11 Mon 00:36]
 Same parameters but make malloc fail.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODE third malloc fail
+*** CODED third malloc fail
+CLOSED: [2023-12-11 Mon 00:36]
 Same parameters but make the third malloc fail.
 *Behavior*: Tries to create the new list but third malloc fails, so the del function is called on each node of the new list & everything is freed (the new list).
 *Return value*: NULL.
-*** CODE NULL lst
+*** CODED NULL lst
+CLOSED: [2023-12-11 Mon 00:37]
 lst set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODE NULL f
+*** CODED NULL f
+CLOSED: [2023-12-11 Mon 00:39]
 f set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
-*** CODE NULL del
+*** CODED NULL del
+CLOSED: [2023-12-11 Mon 00:40]
 del set to NULL.
 *Behavior*: Nothing.
 *Return value*: NULL.
