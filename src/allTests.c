@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/11 01:11:57 by bazaluga         ###   ########.fr       */
+/*   Updated: 2023/12/13 12:41:47 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	test_ft_isalpha_basic(CuTest *tc)
 
 CuSuite	*ft_isalpha_get_suite()
 {
-	printf("HERE\n");
 	CuSuite	*suite = CuSuiteNew();
 	SUITE_ADD_TEST(suite, test_ft_isalpha_basic);
 	return (suite);
