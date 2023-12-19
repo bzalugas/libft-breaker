@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/10 21:04:33 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/19 13:52:29 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -19,6 +19,8 @@ LIBFT		=	$(LIBFTDIR)/libft.so
 LIBFTSO		=	obj/libft.so
 
 LIBFTRULE	=	breaker
+
+LIBFTSRCS	=	$(wildcard $(LIBFTDIR)/*.c)
 
 NAME 		=	run-breaker
 
@@ -63,6 +65,9 @@ run:		$(NAME)
 srun:		static
 			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
 
+norm:
+			@echo $(shell bash ./src/check_norm.sh)
+
 $(LMALLOC):	$(MALLOC)
 			mkdir -p obj
 			$(CC) $(LIBFLAGS) -o $@ $<
@@ -97,4 +102,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean force fclean static run srun $(LIBFTSO)
+.PHONY:		all clean force fclean static run srun $(LIBFTSO) norm
