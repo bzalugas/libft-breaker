@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/19 13:52:29 by bazaluga         ###   ########.fr        #
+#    Updated: 2023/12/19 14:33:04 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -60,13 +60,15 @@ static:		$(LMALLOC) $(LIBFTSO) $(SRCS)
 			$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBINCLUDES)
 
 run:		$(NAME)
-			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
+			@./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
+			@echo "\n\n$(shell bash ./src/check_norm.sh)\n\n"
 
 srun:		static
-			./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
+			@./$(NAME) $(filter-out $@, $(MAKECMDGOALS))
+			@echo "\n\n$(shell bash ./src/check_norm.sh)\n\n"
 
 norm:
-			@echo $(shell bash ./src/check_norm.sh)
+			@echo "\n\n$(shell bash ./src/check_norm.sh)\n\n"
 
 $(LMALLOC):	$(MALLOC)
 			mkdir -p obj

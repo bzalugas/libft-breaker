@@ -16,7 +16,7 @@ do
     fi
 done
 if [ $ok -eq 1 ]; then
-    echo -e "${ANSI_COLOR_GREEN}NORM OK${ANSI_COLOR_RESET}"
+    printf "${ANSI_COLOR_GREEN}NORM OK${ANSI_COLOR_RESET}\n"
 else
-    echo -e "$ANSI_COLOR_RED CHECK YOUR NORM $ANSI_COLOR_RESET"
+    printf "${ANSI_COLOR_RED}CHECK YOUR NORM${ANSI_COLOR_RESET}\n"
 fi
