@@ -1,22 +1,19 @@
 #!/usr/bin/env sh
 
-ANSI_COLOR_RED='\033[31m'
-ANSI_COLOR_GREEN='\033[32m'
-ANSI_COLOR_RESET='\033[0m'
+RED='\033[31m'
+GREEN='\033[32m'
+RESET='\033[0m'
 
-files="../libft/*"
-ok=1
+files="../libft/*.c"
+files="${files} ../libft/*.h"
+files="${files} ../libft/Makefile"
+txtok="${GREEN}NORM OK${RESET}\n"
+txtnok="${RED}NORM KO${RESET}\n"
 
 for f in $files
 do
+    name=$(echo $f | rev | cut -d / -f 1 | rev)
     res=$(norminette $f)
-    if [ $? -ne 0 ]; then
-        ok=0
-        echo $res
-    fi
+    txt=$([ $? -eq 0 ] && echo ${txtok} || echo ${txtnok})
+    printf "${name}: ${txt}"
 done
-if [ $ok -eq 1 ]; then
-    printf "${ANSI_COLOR_GREEN}NORM OK${ANSI_COLOR_RESET}\n"
-else
-    printf "${ANSI_COLOR_RED}CHECK YOUR NORM${ANSI_COLOR_RESET}\n"
-fi
