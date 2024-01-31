@@ -63,6 +63,7 @@ void		leaks_tracer_insert_malloc(t_leaks_tracer *lst, t_malloc *new)
 {
 	t_malloc	*tmp;
 
+
 	if (!lst->in_use) return;
 	if (!lst->first_malloc)
 	{
