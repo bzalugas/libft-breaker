@@ -25,7 +25,7 @@ The default structure for the folders is:
 #+begin_example
 .
 |- libft/
-|- tester-libft/
+|- libft-breaker/
 #+end_example
 You can change this by changing the ~$(LIBFTDIR)~ variable in Makefile.
 
@@ -37,4 +37,4 @@ If you want to run "static tests", run ~make srun~.
 If you want to run the tests for a particular function, run ~make run/srun function_name~. (The function_name is the name of your libft's function, for example ~ft_isalpha~).
 
 * Informations
-The tester-libft uses [[https://cutest.sourceforge.net/][CuTest]] for unit testing every function of the libft. It is really simple to use and it takes only 2 files to work. If you want to create your own unit tests or modify mine, you can do so easily.
+The libft-breaker uses [[https://cutest.sourceforge.net/][CuTest]] for unit testing every function of the libft. It is really simple to use and it takes only 2 files to work. If you want to create your own unit tests or modify mine, you can do so easily.
