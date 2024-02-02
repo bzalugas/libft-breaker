@@ -1,7 +1,7 @@
 #+author: bazaluga (bzalugas)
 
 * libft-breaker
-tester-libft is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best thing to do is to use the maximum tests/testers to be sure your libft is perfect.
+libft-breaker is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best thing to do is to use the maximum tests/testers to be sure your libft is perfect.
 
 * IMPORTANT INFORMATION
 ** Running tests on ubuntu
