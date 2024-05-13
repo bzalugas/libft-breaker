@@ -332,10 +332,10 @@ void CuSuiteDetails(CuSuite* testSuite, CuString* details)
 {
 	int i;
 	int failCount = 0;
+	int passCount = testSuite->count - (testSuite->failCount + testSuite->bofCount);
 
 	if (testSuite->failCount == 0 && testSuite->bofCount == 0)
 	{
-		int passCount = testSuite->count - testSuite->failCount;
 		const char* testWord = passCount == 1 ? "test" : "tests";
 		CuStringAppendFormat(details, "OK (%d %s)\n", passCount, testWord);
 	}
@@ -363,7 +363,7 @@ void CuSuiteDetails(CuSuite* testSuite, CuString* details)
 		CuStringAppend(details, "\n!!!FAILURES!!!\n");
 
 		CuStringAppendFormat(details, "Runs: %d ",   testSuite->count);
-		CuStringAppendFormat(details, "%sPasses: %d ", GREEN, testSuite->count - testSuite->failCount);
+		CuStringAppendFormat(details, "%sPasses: %d ", GREEN, passCount);
 		CuStringAppendFormat(details, "%sFails: %d ",  RED, testSuite->failCount);
 		CuStringAppendFormat(details, "%sBofs: %d%s\n",  BOF, testSuite->bofCount, COLOR_RESET);
 	}
