@@ -114,6 +114,7 @@ void CuTestInit(CuTest* t, const char* name, TestFunction function)
 {
 	t->name = CuStrCopy(name);
 	t->failed = 0;
+	t->bof = 0;
 	t->ran = 0;
 	t->message = NULL;
 	t->function = function;
@@ -240,7 +241,8 @@ void CuSuiteInit(CuSuite* testSuite)
 {
 	testSuite->count = 0;
 	testSuite->failCount = 0;
-        memset(testSuite->list, 0, sizeof(testSuite->list));
+	testSuite->bofCount = 0;
+	memset(testSuite->list, 0, sizeof(testSuite->list));
 }
 
 CuSuite* CuSuiteNew(void)
@@ -290,22 +292,38 @@ void CuSuiteRun(CuSuite* testSuite)
 		CuTestRun(testCase);
 		if (testCase->failed)
 		{
-			testSuite->failCount += 1;
-			buff.color = 'r';
+
+			if (!testCase->bof)
+			{
+				testSuite->failCount += 1;
+				buff.color = 'r';
+			}
+			else
+			{
+				buff.color = '!';
+				testSuite->bofCount += 1;
+			}
+
 		}
 		else
 			buff.color = 'g';
 		printbuff();
+		buff.color = '\0';
 	}
 }
 
 void CuSuiteSummary(CuSuite* testSuite, CuString* summary)
 {
+	char	*s;
 	int i;
 	for (i = 0 ; i < testSuite->count ; ++i)
 	{
 		CuTest* testCase = testSuite->list[i];
-		CuStringAppend(summary, testCase->failed ? "F" : ".");
+		if (testCase->bof && testCase->failed)
+			s = "B";
+		else
+			s = testCase->failed ? "F" : ".";
+		CuStringAppend(summary, s);
 	}
 	CuStringAppend(summary, "\n\n");
 }
@@ -315,7 +333,7 @@ void CuSuiteDetails(CuSuite* testSuite, CuString* details)
 	int i;
 	int failCount = 0;
 
-	if (testSuite->failCount == 0)
+	if (testSuite->failCount == 0 && testSuite->bofCount == 0)
 	{
 		int passCount = testSuite->count - testSuite->failCount;
 		const char* testWord = passCount == 1 ? "test" : "tests";
@@ -323,25 +341,30 @@ void CuSuiteDetails(CuSuite* testSuite, CuString* details)
 	}
 	else
 	{
+		CuStringAppend(details, "There were ");
 		if (testSuite->failCount == 1)
-			CuStringAppend(details, "There was 1 failure:\n");
+			CuStringAppendFormat(details, "%s1 failure%s and ", RED, WHITE);
 		else
-			CuStringAppendFormat(details, "There were %d failures:\n", testSuite->failCount);
-
+			CuStringAppendFormat(details, "%s%d failures%s and ", RED, testSuite->failCount, WHITE);
+		if (testSuite->bofCount == 1)
+			CuStringAppendFormat(details, "%s1 bof case%s:\n", BOF, WHITE);
+		else
+			CuStringAppendFormat(details, "%s%d bof cases%s:\n", BOF, testSuite->bofCount, WHITE);
 		for (i = 0 ; i < testSuite->count ; ++i)
 		{
 			CuTest* testCase = testSuite->list[i];
 			if (testCase->failed)
 			{
 				failCount++;
-				CuStringAppendFormat(details, "%d) %s: %s\n",
-					failCount, testCase->name, testCase->message);
+				CuStringAppendFormat(details, "%s%d) %s: %s%s\n",
+					(testCase->bof ? BOF : RED), failCount, testCase->name, testCase->message, WHITE);
 			}
 		}
 		CuStringAppend(details, "\n!!!FAILURES!!!\n");
 
 		CuStringAppendFormat(details, "Runs: %d ",   testSuite->count);
-		CuStringAppendFormat(details, "Passes: %d ", testSuite->count - testSuite->failCount);
-		CuStringAppendFormat(details, "Fails: %d\n",  testSuite->failCount);
+		CuStringAppendFormat(details, "%sPasses: %d ", GREEN, testSuite->count - testSuite->failCount);
+		CuStringAppendFormat(details, "%sFails: %d ",  RED, testSuite->failCount);
+		CuStringAppendFormat(details, "%sBofs: %d%s\n",  BOF, testSuite->bofCount, COLOR_RESET);
 	}
 }

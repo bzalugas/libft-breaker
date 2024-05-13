@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:14:04 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/09 07:01:09 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/13 21:18:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/lftest.h"
@@ -71,8 +71,10 @@ void	printbuff()
 
 	if (buff.txt[0])
 	{
-		color = buff.color == 'r' ? ANSI_COLOR_RED : ANSI_COLOR_GREEN;
-		printf("%s%s%s", color, buff.txt, ANSI_COLOR_RESET);
+		color = buff.color == 'r' ? RED : GREEN;
+		if (buff.color == '!')
+			color = BOF;
+		printf("%s%s%s", color, buff.txt, WHITE);
 		buff.txt[0] = '\0';
 		buff.color = '\0';
 	}

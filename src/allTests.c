@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/13 12:41:47 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/13 21:28:31 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,11 +260,14 @@ void	test_ft_strlen_null(CuTest *tc)
 
 	s = NULL;
 	sprintf(buff.txt, "%s: input <%s>\n", __func__, s);
+	tc->bof = 1;
 	SANDBOX((void)strlen(s););
 	return1 = g_exit_code;
 	SANDBOX(ft_strlen(s););
 	return2 = g_exit_code;
-	CuAssert(tc, "ft_strlen doen't crash when it should.", !(WIFSIGNALED(return1) && WCOREDUMP(return1) &&  !WIFSIGNALED(return2) && !WCOREDUMP(return2)));
+
+	CuAssert(tc, "Bad behavior when NULL", !((WIFSIGNALED(return1) && !WIFSIGNALED(return2)) || (!WIFSIGNALED(return1) && WIFSIGNALED(return2))));
+	/* CuAssert(tc, "ft_strlen doesn't crash when it should.", !(WIFSIGNALED(return1) && WCOREDUMP(return1) &&  !WIFSIGNALED(return2) && !WCOREDUMP(return2))); */
 }
 
 CuSuite	*ft_strlen_get_suite()
@@ -411,6 +414,7 @@ void	test_ft_memset_null(CuTest *tc)
 	char	*b = NULL;
 
 	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b, 'z', size);
+	tc->bof = 1;
 	SANDBOX(memset(b, 'z', size););
 	st1 = g_exit_code;
 	SANDBOX(ft_memset(b, 'z', size););
@@ -497,6 +501,7 @@ void	test_ft_bzero_null(CuTest *tc)
 	int		ret2;
 
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
+	tc->bof = 1;
 	SANDBOX(bzero(s1, n););
 	ret1 = g_exit_code;
 	SANDBOX(ft_bzero(s1, n););
@@ -636,6 +641,7 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 	n = strlen("null dest test");
 	strcpy(src, "null dest test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memcpy(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
@@ -667,6 +673,7 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 	bzero(dst1, BUFFSIZE);
 	bzero(dst2, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memcpy(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
@@ -697,6 +704,7 @@ void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 
 	n = strlen("null dst & src test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memcpy(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
@@ -899,6 +907,7 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 	n = strlen("Testing ft_memmove");
 	strcpy(src, "Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memmove(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
@@ -930,6 +939,7 @@ void	test_ft_memmove_null_src(CuTest *tc)
 	bzero(dst1, BUFFSIZE);
 	bzero(dst2, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memmove(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
@@ -960,6 +970,7 @@ void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 
 	n = strlen("Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(memmove(dst1, src, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
@@ -1110,6 +1121,7 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	src2[BUFFSIZE - 1] = '\0';
 	size = strlen(src1) + 1;
 	sprintf(buff.txt, "%s: src = %s (len = %lu), size = %lu\n", __func__, src1, strlen(src1), size);
+	tc->bof = 1;
 	SANDBOX(strlcpy(dst, src1, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src2, size););
@@ -1140,6 +1152,7 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	bzero(dst2, BUFFSIZE);
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d), size = %lu\n", __func__, src, 0, size);
+	tc->bof = 1;
 	SANDBOX(strlcpy(dst1, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src, size););
@@ -1168,6 +1181,7 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d), size = %lu\n", __func__, src, 0, size);
+	tc->bof = 1;
 	SANDBOX(strlcpy(dst, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
@@ -1345,6 +1359,7 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	size = strlen(src) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(res1 = strlcat(dst, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
@@ -1374,6 +1389,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	size = 0;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(res1 = strlcat(dst, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
@@ -1405,6 +1421,7 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	size = strlen(dst1) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst1, strlen(dst1), size);
+	tc->bof = 1;
 	SANDBOX(res1 = strlcat(dst1, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst1, src, size););
@@ -1433,6 +1450,7 @@ void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 	size = BUFFSIZE;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(res1 = strlcat(dst, src, size););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
@@ -1609,6 +1627,7 @@ void	test_ft_strchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	tc->bof = 1;
 	SANDBOX(res1 = strchr(s, c););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strchr(s, c););
@@ -1723,6 +1742,7 @@ void	test_ft_strrchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	tc->bof = 1;
 	SANDBOX(res1 = strrchr(s, c););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strrchr(s, c););
@@ -1948,6 +1968,7 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	strcpy(s2, "Triple Monstre");
 	n = strlen(s2);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = strncmp(s1, s2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
@@ -1976,6 +1997,7 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	strcpy(s1, "Triple Monstre");
 	n = strlen(s1);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = strncmp(s1, s2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
@@ -2003,6 +2025,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 
 	n = 10;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = strncmp(s1, s2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
@@ -2030,6 +2053,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 
 	n = 0;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = strncmp(s1, s2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
@@ -2196,6 +2220,7 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 	c = '\12';
 	n = 14;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memchr(s, c, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
@@ -2224,6 +2249,7 @@ void	test_ft_memchr_null_s_2(CuTest *tc)
 	c = '\12';
 	n = 0;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memchr(s, c, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
@@ -2410,6 +2436,7 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memcmp(arr1, arr2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
@@ -2437,6 +2464,7 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memcmp(arr1, arr2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
@@ -2464,6 +2492,7 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memcmp(arr1, arr2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
@@ -2491,6 +2520,7 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(res1 = memcmp(arr1, arr2, n););
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
@@ -2693,6 +2723,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -2719,6 +2750,7 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -2745,6 +2777,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -2771,6 +2804,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -2797,6 +2831,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -2823,6 +2858,7 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->bof = 1;
 	SANDBOX(res1 = strnstr(big, little, len););
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
@@ -3053,6 +3089,7 @@ void	test_ft_atoi_null(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: nptr=%s\n", __func__, nptr);
+	tc->bof = 1;
 	SANDBOX(res1 = atoi(nptr););
 	exit1 = g_exit_code;
 	SANDBOX(ft_atoi(nptr););
@@ -3304,6 +3341,7 @@ void	test_ft_strdup_null_s(CuTest *tc)
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s = <%s>\n", __func__, s);
+	tc->bof = 1;
 	SANDBOX(
 		res1 = strdup(s);
 		if (res1)
@@ -6118,18 +6156,20 @@ void	run_all(char *particular_fun, void *fun)
 	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
 	{
 		if (output->buffer[i] == '.')
-			printf("%s%c%s", ANSI_COLOR_GREEN, output->buffer[i], ANSI_COLOR_RESET);
+			printf("%s%c%s", GREEN, output->buffer[i], WHITE);
+		else if (output->buffer[i] == 'B')
+			printf("%s%c%s", BOF, output->buffer[i], WHITE);
 		else
-			printf("%s%c%s", ANSI_COLOR_RED, output->buffer[i], ANSI_COLOR_RESET);
+			printf("%s%c%s", RED, output->buffer[i], WHITE);
 	}
 	if (!strncmp(&output->buffer[i], "\n\nOK", 3))
-		printf("%s%s%s",ANSI_COLOR_GREEN, &output->buffer[i], ANSI_COLOR_RESET);
+		printf("%s%s%s", GREEN, &output->buffer[i], WHITE);
 	else
-		printf("%s%s%s\n",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOR_RESET);
+		printf("%s\n", &output->buffer[i]);
 	if (!particular_fun)
 		for (i = 0; i < N_TESTS_FUN; i++)
 			if (fcts[i].fun_name && !fcts[i].fun)
-				printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOR_RESET);
+				printf("%sMISSING %s.%s\n", RED, fcts[i].fun_name, COLOR_RESET);
 	CuStringDelete(output);
 	CuSuiteDelete(suite);
 }
@@ -6143,14 +6183,14 @@ int	main(int argc, char *argv[])
 	if (argc > 1)
 		fun_name = strdup(argv[1]);
 	lib = init_fcts();
-	printf("\n\n");
+	printf("\n\n%s", WHITE);
 	test_fun = get_test_fun(fun_name);
 	if (fun_name && test_fun && !get_fun(fun_name))
-		printf("%sfunction %s missing.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
+		printf("%sfunction %s missing.\n%s", RED,fun_name, COLOR_RESET);
 	else if (fun_name && test_fun)
 		run_all(fun_name,test_fun);
 	else if (fun_name)
-		printf("%sfunction %s not found.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
+		printf("%sfunction %s not found.\n%s", RED,fun_name, COLOR_RESET);
 	else
 		run_all(NULL, NULL);
 	dlclose(lib);

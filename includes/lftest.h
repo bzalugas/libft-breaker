@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/10 23:50:38 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/13 21:14:17 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@
 # define BUFFSIZE 30
 # define BUFFBSIZE 2048
 # define BUFFBBSIZE 8192
-# define ANSI_COLOR_RED     "\033[31m"
-# define ANSI_COLOR_GREEN   "\033[32m"
-# define ANSI_COLOR_RESET	"\033[0m"
+# define RED     "\033[1;31m"
+# define GREEN   "\033[1;32m"
+# define BOF	 "\033[1;35m"
+# define WHITE	"\033[1;97m"
+# define COLOR_RESET	"\033[0m"
 # define N_TESTS_FUN 43
 
 /********************************** STRUCTS ***********************************/
