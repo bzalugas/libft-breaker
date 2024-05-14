@@ -6,7 +6,7 @@
 #    By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 15:24:21 by bazaluga          #+#    #+#              #
-#    Updated: 2023/12/10 21:04:33 by bazaluga         ###   ########.fr        #
+#    Updated: 2024/05/14 15:17:00 by bazaluga         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,9 +22,9 @@ LIBFTRULE	=	breaker
 
 NAME 		=	run-breaker
 
-SRCN 		=	src/allTests.c src/CuTest.c src/utils.c
+SRCN 		=	src/allTests.c src/run_all.c src/CuTest.c src/utils.c
 
-SRCS 		=	src/staticAllTests.c src/CuTest.c src/utils.c
+SRCS 		=	src/staticAllTests.c src/run_all.c src/CuTest.c src/utils.c
 
 MALLOC		=	src/malloc.c
 

@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 13:25:24 by bazaluga          #+#    #+#             */
-/*   Updated: 2024/05/13 21:14:17 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:11:37 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,10 @@ void	add_color_buff(char c);
 void	printbuff();
 void	manage_outputs(int to_close);
 void	manage_pipes(int get_read, int get_write);
+
+/******************************* MAIN FUNCTIONS *******************************/
+
+void	run_all(char *particular_fun, void *fun);
 
 /****************************** TESTS FUNCTIONS *******************************/
 

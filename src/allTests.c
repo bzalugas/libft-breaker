@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2024/05/13 21:28:31 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:32:44 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ void	test_ft_strlen_null(CuTest *tc)
 	SANDBOX(ft_strlen(s););
 	return2 = g_exit_code;
 
-	CuAssert(tc, "Bad behavior when NULL", !((WIFSIGNALED(return1) && !WIFSIGNALED(return2)) || (!WIFSIGNALED(return1) && WIFSIGNALED(return2))));
+	CuAssert(tc, "Bad behavior when NULL", return1 == return2);
 	/* CuAssert(tc, "ft_strlen doesn't crash when it should.", !(WIFSIGNALED(return1) && WCOREDUMP(return1) &&  !WIFSIGNALED(return2) && !WCOREDUMP(return2))); */
 }
 
@@ -506,8 +506,8 @@ void	test_ft_bzero_null(CuTest *tc)
 	ret1 = g_exit_code;
 	SANDBOX(ft_bzero(s1, n););
 	ret2 = g_exit_code;
-	CuAssert(tc, "ft_bzero crash when it shouldn't", !(!WIFSIGNALED(ret1) && WIFSIGNALED(ret2) && WCOREDUMP(g_exit_code)));
-	CuAssert(tc, "ft_bzero doesn't crash when it should", !(WIFSIGNALED(ret1) && WCOREDUMP(ret1) && !WIFSIGNALED(ret2)));
+	CuAssert(tc, "ft_bzero crash when bzero doesn't", !(!WIFSIGNALED(ret1) && WIFSIGNALED(ret2) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "ft_bzero doesn't crash when bzero does", !(WIFSIGNALED(ret1) && WCOREDUMP(ret1) && !WIFSIGNALED(ret2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", ret1, ret2);
 }
 
@@ -975,7 +975,7 @@ void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
@@ -3720,9 +3720,8 @@ void	test_ft_strjoin_null_s1(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	/* CuAssertIntEquals_Msg(tc, "Bad allocation size.", 12, g_last_malloc_size); */
-	/* CuAssertStrEquals(tc, " everyone !", res); */
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 12, g_last_malloc_size);
+	CuAssertStrEquals(tc, " everyone !", res);
 	if (res)
 		free(res);
 }
@@ -3742,9 +3741,8 @@ void	test_ft_strjoin_null_s2(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	/* CuAssertIntEquals_Msg(tc, "Bad allocation size.", 6, g_last_malloc_size); */
-	/* CuAssertStrEquals(tc, "Hello", res); */
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 6, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello", res);
 	if (res)
 		free(res);
 }
@@ -4023,7 +4021,8 @@ void	test_ft_strtrim_null_set(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strtrim CRASH when set is set to NULL.", !WIFSIGNALED(g_exit_code));
 	res = ft_strtrim(s1, set);
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", strlen(s1) + 1, g_last_malloc_size);
+	CuAssertStrEquals(tc, s1, res);
 	if (res)
 		free(res);
 }
@@ -6130,49 +6129,6 @@ CuSuite	*ft_lstmap_get_suite()
 /****************************/
 /*        RUN TESTS         */
 /****************************/
-
-void	run_all(char *particular_fun, void *fun)
-{
-	CuString	*output = CuStringNew();
-	CuSuite		*suite = CuSuiteNew();
-	int			i;
-
-	if (particular_fun)
-		CuSuiteAddSuite(suite, ((CuSuite *(*)(void))fun)());
-	else
-	{
-		for (i = 0; i < N_TESTS_FUN; i++)
-			if (fcts[i].fun_name && fcts[i].fun)
-				if (fcts[i].test_fun)
-					CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
-	}
-	CuSuiteRun(suite);
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	if (particular_fun)
-		printf("\n\n%s: ", particular_fun);
-	else
-		printf("\n\nlibft: ");
-	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
-	{
-		if (output->buffer[i] == '.')
-			printf("%s%c%s", GREEN, output->buffer[i], WHITE);
-		else if (output->buffer[i] == 'B')
-			printf("%s%c%s", BOF, output->buffer[i], WHITE);
-		else
-			printf("%s%c%s", RED, output->buffer[i], WHITE);
-	}
-	if (!strncmp(&output->buffer[i], "\n\nOK", 3))
-		printf("%s%s%s", GREEN, &output->buffer[i], WHITE);
-	else
-		printf("%s\n", &output->buffer[i]);
-	if (!particular_fun)
-		for (i = 0; i < N_TESTS_FUN; i++)
-			if (fcts[i].fun_name && !fcts[i].fun)
-				printf("%sMISSING %s.%s\n", RED, fcts[i].fun_name, COLOR_RESET);
-	CuStringDelete(output);
-	CuSuiteDelete(suite);
-}
 
 int	main(int argc, char *argv[])
 {

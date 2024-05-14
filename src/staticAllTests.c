@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2023/12/11 01:15:53 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:34:32 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,8 +258,9 @@ void	test_ft_strlen_null(CuTest *tc)
 
 	s = NULL;
 	sprintf(buff.txt, "%s: input <%s>\n", __func__, s);
+	tc->bof = 1;
 	SANDBOX(ft_strlen(s););
-	CuAssert(tc, "ft_strlen doen't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlen crash when strlen doesn't.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strlen_get_suite()
@@ -405,8 +406,9 @@ void	test_ft_memset_null(CuTest *tc)
 	char	*b = NULL;
 
 	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b, 'z', size);
+	tc->bof = 1;
 	SANDBOX(ft_memset(b, 'z', size););
-	CuAssert(tc, "ft_memset doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memset doesn't crash when memset does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -485,8 +487,9 @@ void	test_ft_bzero_null(CuTest *tc)
 	char	*s1 = NULL;
 
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
+	tc->bof = 1;
 	SANDBOX(ft_bzero(s1, n););
-	CuAssert(tc, "ft_bzero doesn't crash when it should", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_bzero doesn't crash when bzero does", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_bzero_get_suite()
@@ -614,8 +617,9 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 	n = strlen("null dest test");
 	strcpy(src, "null dest test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_source(CuTest *tc)
@@ -628,8 +632,9 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 	n = strlen("null src test");
 	bzero(dst, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
@@ -641,8 +646,9 @@ void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 
 	n = strlen("null dst & src test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memcpy_get_suite()
@@ -733,7 +739,7 @@ void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -765,7 +771,7 @@ void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -826,8 +832,9 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 	n = strlen("Testing ft_memmove");
 	strcpy(src, "Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_src(CuTest *tc)
@@ -840,8 +847,9 @@ void	test_ft_memmove_null_src(CuTest *tc)
 	n = strlen("Testing ft_memmove");
 	bzero(dst, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_dest_and_src(CuTest *tc)
@@ -853,8 +861,9 @@ void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 
 	n = strlen("Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
+	tc->bof = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_memmove_get_suite()
@@ -984,8 +993,9 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	src[BUFFSIZE - 1] = '\0';
 	size = strlen(src) + 1;
 	sprintf(buff.txt, "%s: src = %s (len = %lu) size = %lu\n", __func__, src, strlen(src), size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_src(CuTest *tc)
@@ -998,8 +1008,9 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	bzero(dst, BUFFSIZE);
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d) size = %lu\n", __func__, src, 0, size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
@@ -1011,8 +1022,9 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d) size = %lu\n", __func__, src, 0, size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_strlcpy_get_suite()
@@ -1161,8 +1173,9 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	size = strlen(src) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
@@ -1177,6 +1190,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	size = 0;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strlcat(dst, src, size);
@@ -1194,8 +1208,9 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	size = strlen(dst) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst, strlen(dst), size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
@@ -1208,8 +1223,9 @@ void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 	size = BUFFSIZE;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst, (size_t)0, size);
+	tc->bof = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_strlcat_get_suite()
@@ -1370,8 +1386,9 @@ void	test_ft_strchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	tc->bof = 1;
 	SANDBOX(ft_strchr(s, c););
-	CuAssert(tc, "ft_strchr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strchr doesn't crash when strchr does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strchr_get_suite()
@@ -1470,8 +1487,9 @@ void	test_ft_strrchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
+	tc->bof = 1;
 	SANDBOX(ft_strrchr(s, c););
-	CuAssert(tc, "ft_strrchr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strrchr doesn't crash when strrchr does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strrchr_get_suite()
@@ -1681,8 +1699,9 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	strcpy(s2, "Triple Monstre");
 	n = strlen(s2);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s2(CuTest *tc)
@@ -1695,8 +1714,9 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	strcpy(s1, "Triple Monstre");
 	n = strlen(s1);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
@@ -1708,8 +1728,9 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 
 	n = 10;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
@@ -1721,6 +1742,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 
 	n = 0;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
+	tc->bof = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 }
@@ -1873,8 +1895,9 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 	c = '\12';
 	n = 14;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	tc->bof = 1;
 	SANDBOX(ft_memchr(s, c, n););
-	CuAssert(tc, "ft_memchr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memchr doesn't crash when memchr does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memchr_null_s_2(CuTest *tc)
@@ -1887,6 +1910,7 @@ void	test_ft_memchr_null_s_2(CuTest *tc)
 	c = '\12';
 	n = 0;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
+	tc->bof = 1;
 	SANDBOX(ft_memchr(s, c, n););
 	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 }
@@ -2059,8 +2083,9 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s2(CuTest *tc)
@@ -2071,8 +2096,9 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
@@ -2083,8 +2109,9 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
@@ -2096,6 +2123,7 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	int		res;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
+	tc->bof = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_memcmp(arr1, arr2, n);
@@ -2287,7 +2315,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_2(CuTest *tc)
@@ -2315,7 +2343,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_little_2(CuTest *tc)
@@ -2327,7 +2355,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
@@ -2339,7 +2367,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
@@ -2351,7 +2379,7 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strnstr_get_suite()
@@ -2519,7 +2547,7 @@ void	test_ft_atoi_null(CuTest *tc)
 
 	sprintf(buff.txt, "%s: nptr=%s\n", __func__, nptr);
 	SANDBOX(ft_atoi(nptr););
-	CuAssert(tc, "ft_atoi doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_atoi doesn't crash when atoi does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_atoi_get_suite()
@@ -2742,7 +2770,7 @@ void	test_ft_strdup_null_s(CuTest *tc)
 		if (res2)
 			free(res2);
 		);
-	CuAssert(tc, "ft_strdup doesn't crash when it should.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strdup doesn't crash when strdup does.", WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strdup_get_suite()
@@ -3105,7 +3133,8 @@ void	test_ft_strjoin_null_s1(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 12, g_last_malloc_size);
+	CuAssertStrEquals(tc, " everyone !", res);
 	if (res)
 		free(res);
 }
@@ -3125,7 +3154,8 @@ void	test_ft_strjoin_null_s2(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strjoin CRASH when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strjoin(s1, s2);
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", 6, g_last_malloc_size);
+	CuAssertStrEquals(tc, "Hello", res);
 	if (res)
 		free(res);
 }
@@ -3404,7 +3434,8 @@ void	test_ft_strtrim_null_set(CuTest *tc)
 		);
 	CuAssert(tc, "ft_strtrim CRASH when set is set to NULL.", !WIFSIGNALED(g_exit_code));
 	res = ft_strtrim(s1, set);
-	CuAssertStrEquals(tc, NULL, res);
+	CuAssertIntEquals_Msg(tc, "Bad allocation size", strlen(s1) + 1, g_last_malloc_size);
+	CuAssertStrEquals(tc, s1, res);
 	if (res)
 		free(res);
 }
@@ -5509,45 +5540,6 @@ CuSuite	*ft_lstmap_get_suite()
 /*        RUN TESTS         */
 /****************************/
 
-void	run_all(char *particular_fun, void *fun)
-{
-	CuString	*output = CuStringNew();
-	CuSuite		*suite = CuSuiteNew();
-	int			i;
-
-	if (particular_fun)
-		CuSuiteAddSuite(suite, ((CuSuite *(*)(void))fun)());
-	else
-	{
-		for (i = 0; i < N_TESTS_FUN; i++)
-			if (fcts[i].fun_name && fcts[i].fun)
-				if (fcts[i].test_fun)
-					CuSuiteAddSuite(suite, ((CuSuite * (*)(void))fcts[i].test_fun)());
-	}
-	CuSuiteRun(suite);
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	if (particular_fun)
-		printf("\n\n%s: ", particular_fun);
-	else
-		printf("\n\nlibft: ");
-	for (i = 0; output->buffer[i] && output->buffer[i] != '\n'; i++)
-	{
-		if (output->buffer[i] == '.')
-			printf("%s%c%s", ANSI_COLOR_GREEN, output->buffer[i], ANSI_COLOR_RESET);
-		else
-			printf("%s%c%s", ANSI_COLOR_RED, output->buffer[i], ANSI_COLOR_RESET);
-	}
-	if (!strncmp(&output->buffer[i], "\n\nOK", 3))
-		printf("%s%s%s",ANSI_COLOR_GREEN, &output->buffer[i], ANSI_COLOR_RESET);
-	else
-		printf("%s%s%s\n",ANSI_COLOR_RED, &output->buffer[i], ANSI_COLOR_RESET);
-	if (!particular_fun)
-		for (i = 0; i < N_TESTS_FUN; i++)
-			if (fcts[i].fun_name && !fcts[i].fun)
-				printf("%sMISSING %s.%s\n", ANSI_COLOR_RED, fcts[i].fun_name, ANSI_COLOR_RESET);
-}
-
 int	main(int argc, char *argv[])
 {
 	char	*fun_name = NULL;
@@ -5557,23 +5549,16 @@ int	main(int argc, char *argv[])
 	if (argc > 1)
 		fun_name = strdup(argv[1]);
 	lib = init_fcts();
-	printf("\n\n");
+	printf("\n\n%s", WHITE);
 	test_fun = get_test_fun(fun_name);
 	if (fun_name && test_fun && !get_fun(fun_name))
-		printf("%sfunction %s missing.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
+		printf("%sfunction %s missing.\n%s", RED,fun_name, COLOR_RESET);
 	else if (fun_name && test_fun)
 		run_all(fun_name,test_fun);
 	else if (fun_name)
-		printf("%sfunction %s not found.\n%s", ANSI_COLOR_RED,fun_name, ANSI_COLOR_RESET);
+		printf("%sfunction %s not found.\n%s", RED,fun_name, COLOR_RESET);
 	else
 		run_all(NULL, NULL);
 	dlclose(lib);
-	/* run_test_ft_isalpha(); */
-	/* run_test_ft_isdigit(); */
-	/* run_test_ft_isalnum(); */
-	/* run_test_ft_isascii(); */
-	/* run_test_ft_isprint(); */
-	/* run_test_ft_strlen(); */
-	/* run_test_ft_memset(); */
 	return (0);
 }
