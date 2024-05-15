@@ -3,6 +3,12 @@
 * libft-breaker
 libft-breaker is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best thing to do is to use the maximum tests/testers to be sure your libft is perfect.
 
+** Demo when all is OK
+[[./img/breaker-ok.gif]]
+
+** Demo when failures & "bof cases"
+[[./img/breaker-ko.gif]]
+
 * IMPORTANT INFORMATION
 ** Running tests on ubuntu
 If you run the tests on ubuntu machine (with same version as 42), you can use normal tests. These tests compare original libc's function with your function.
