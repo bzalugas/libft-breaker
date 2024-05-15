@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:12:12 by bazaluga          #+#    #+#             */
-/*   Updated: 2024/05/15 12:48:25 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:15:49 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -646,7 +646,7 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
@@ -678,8 +678,8 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy crash when memcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
@@ -709,8 +709,8 @@ void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcpy crash when memcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
@@ -809,7 +809,7 @@ void	test_ft_memmove_overlap_dst_before_src(CuTest *tc)
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -840,8 +840,8 @@ void	test_ft_memmove_overlap_src_before_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
+	CuAssert(tc, "ft_memmove crash when memmove doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(!WIFSIGNALED(exit2) && WIFSIGNALED(exit1)));
 	memmove(dst1, src1, n);
 	res = ft_memmove(dst2, src2, n);
 	CuAssertPtrEquals_Msg(tc, "Bad return", dst2, res);
@@ -912,7 +912,7 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
@@ -944,7 +944,7 @@ void	test_ft_memmove_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	CuAssertIntEquals_Msg(tc, "Bad exit code", exit1, exit2);
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
@@ -1126,8 +1126,8 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src2, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src1, size);
@@ -1157,8 +1157,8 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst1, src, size);
@@ -1186,8 +1186,8 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcpy doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src, size);
@@ -1364,8 +1364,8 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1394,8 +1394,8 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1426,8 +1426,8 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst1, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst1, src, size);
@@ -1455,8 +1455,8 @@ void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1632,8 +1632,8 @@ void	test_ft_strchr_null_s(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strchr(s, c););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strchr doesn't crash when strchr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strchr crash when strchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strchr(s, c);
@@ -1747,8 +1747,8 @@ void	test_ft_strrchr_null_s(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strrchr(s, c););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strrchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strrchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strrchr doesn't crash when strchr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strrchr crash when strchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strrchr(s, c);
@@ -1973,8 +1973,8 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2002,8 +2002,8 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2030,8 +2030,8 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2058,8 +2058,8 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2225,8 +2225,8 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr doesn't crash when memchr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr crash when memchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit1))
 	{
 		res1 = memchr(s, c, n);
@@ -2254,8 +2254,8 @@ void	test_ft_memchr_null_s_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memchr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memchr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr doesn't crash when memchr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memchr crash when memchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit1))
 	{
 		res1 = memchr(s, c, n);
@@ -2441,8 +2441,8 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2469,8 +2469,8 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2497,8 +2497,8 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2525,8 +2525,8 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2728,8 +2728,8 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2755,8 +2755,8 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2782,8 +2782,8 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2809,8 +2809,8 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2836,8 +2836,8 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2863,8 +2863,8 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr doesn't crash when it should.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", !(WIFSIGNALED(exit1) && !WIFSIGNALED(exit2)));
+	CuAssert(tc, "ft_strnstr crash when it strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -3094,9 +3094,9 @@ void	test_ft_atoi_null(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_atoi(nptr););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_atoi doesn't crash when it should.", !(WIFSIGNALED(exit1)
+	CuAssert(tc, "ft_atoi doesn't crash when atoi does.", !(WIFSIGNALED(exit1)
 															&& !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_atoi crash when it shouldn't.", !(!WIFSIGNALED(exit1)
+	CuAssert(tc, "ft_atoi crash when atoi doesn't.", !(!WIFSIGNALED(exit1)
 													   && WIFSIGNALED(exit2)));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
@@ -3354,9 +3354,9 @@ void	test_ft_strdup_null_s(CuTest *tc)
 			free(res2);
 		);
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strdup doesn't crash when it should.", !(WIFSIGNALED(exit1)
+	CuAssert(tc, "ft_strdup doesn't crash when strdup does.", !(WIFSIGNALED(exit1)
 															  && !WIFSIGNALED(exit2)));
-	CuAssert(tc, "ft_strdup crash when it shouldn't.", !(!WIFSIGNALED(exit1)
+	CuAssert(tc, "ft_strdup crash when strdup doesn't.", !(!WIFSIGNALED(exit1)
 														 && WIFSIGNALED(exit2)));
 }
 

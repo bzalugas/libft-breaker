@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:16:18 by bazaluga          #+#    #+#             */
-/*   Updated: 2024/05/15 12:55:28 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:03:34 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ void	run_all(char *particular_fun, void *fun)
 		for (i = 0; i < N_TESTS_FUN; i++)
 			if (fcts[i].fun_name && !fcts[i].fun)
 				printf("%sMISSING %s.%s\n", RED, fcts[i].fun_name, COLOR_RESET);
+	if (suite->bofCount > 0)
+		printf("%sIf you have failures in %s\"bof cases\"%s it means your function doesn't \
+behave exactly the same as the libc's function or as expected but this is an \"Undefined Behavior\" case.%s\n", WHITE, BOF, WHITE, COLOR_RESET);
 	CuStringDelete(output);
 	CuSuiteDelete(suite);
-	printf("%sIf you have failures in %s\"bof cases\"%s it means your function doesn't \
-behave exactly the same as the libc's function or as expected but this is an \"Undefined Behavior\" case.%s\n", WHITE, BOF, WHITE, COLOR_RESET);
 }
