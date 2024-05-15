@@ -6,7 +6,7 @@
 /*   By: bazaluga <bazaluga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:31:06 by bazaluga          #+#    #+#             */
-/*   Updated: 2024/05/14 15:34:32 by bazaluga         ###   ########.fr       */
+/*   Updated: 2024/05/15 12:48:42 by bazaluga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -5004,9 +5004,10 @@ void	test_ft_lstdelone_null_del(CuTest *tc)
 		exit(EXIT_FAILURE);
 	SANDBOX(ft_lstdelone(lst, NULL););
 	CuAssert(tc, "FT_LSTDELONE CRASH WITH NULL DEL", !WIFSIGNALED(g_exit_code));
+	tc->bof = 1;
 	g_free_called = 0;
 	ft_lstdelone(lst, NULL);
-	CuAssert(tc, "ft_lstdelone call free when del is NULL.(It shouldn't!)", g_free_called == 0);
+	CuAssert(tc, "ft_lstdelone doesn't call free when del is NULL.", g_free_called != 0);
 	free(arr[0]);
 	free(arr[1]);
 	free(arr);
