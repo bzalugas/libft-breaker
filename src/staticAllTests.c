@@ -2318,6 +2318,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 	size_t	len = 16;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
@@ -2331,6 +2332,7 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 	char	*res;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strnstr(big, little, len);
@@ -2346,6 +2348,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 	size_t	len = 16;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
@@ -2358,6 +2361,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 	size_t	len = 0;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
@@ -2370,6 +2374,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 	size_t	len = 16;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
@@ -2382,6 +2387,7 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 	size_t	len = 0;
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
+	tc->ub = 1;
 	SANDBOX(ft_strnstr(big, little, len););
 	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }

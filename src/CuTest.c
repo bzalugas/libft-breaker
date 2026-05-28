@@ -342,11 +342,9 @@ void CuSuiteDetails(CuSuite* testSuite, CuString* details)
 	else
 	{
 		CuStringAppend(details, "There were ");
-		if (testSuite->failCount == 0)
-			CuStringAppendFormat(details, "%s", UB);
-		else if (testSuite->failCount == 1)
+		if (testSuite->failCount == 1)
 			CuStringAppendFormat(details, "%s1 failure%s", RED, WHITE);
-		else
+		else if (testSuite->failCount > 1)
 			CuStringAppendFormat(details, "%s%d failures%s", RED, testSuite->failCount, WHITE);
 		if (testSuite->failCount > 0 && testSuite->ubCount > 0)
 			CuStringAppend(details, " and ");

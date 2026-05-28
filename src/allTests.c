@@ -408,17 +408,14 @@ void	test_ft_memset_null(CuTest *tc)
 {
 	void		*(*ft_memset)(void *, int, size_t) = get_fun("ft_memset");
 	size_t	size = 23;
-	int		st1;
 	int		st2;
 	char	*b = NULL;
 
 	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b, 'z', size);
 	tc->ub = 1;
-	SANDBOX(memset(b, 'z', size););
-	st1 = g_exit_code;
 	SANDBOX(ft_memset(b, 'z', size););
 	st2 = g_exit_code;
-	CuAssert(tc, "ft_memset crash when it souldn't.", !(!WIFSIGNALED(st1) && WIFSIGNALED(st2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(st2));
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -495,16 +492,13 @@ void	test_ft_bzero_null(CuTest *tc)
 	void	(*ft_bzero)(void *, size_t) = get_fun("ft_bzero");
 	size_t	n = BUFFSIZE;
 	char	*s1 = NULL;
-	int		ret1;
 	int		ret2;
 
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
 	tc->ub = 1;
-	SANDBOX(bzero(s1, n););
-	ret1 = g_exit_code;
 	SANDBOX(ft_bzero(s1, n););
 	ret2 = g_exit_code;
-	CuAssert(tc, "ft_bzero crash when bzero doesn't", !(!WIFSIGNALED(ret1) && WIFSIGNALED(ret2) && WCOREDUMP(g_exit_code)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(ret2));
 }
 
 CuSuite	*ft_bzero_get_suite()
@@ -642,7 +636,7 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcpy(dst1, src, n);
@@ -672,7 +666,7 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy crash when memcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		memcpy(dst1, src, n);
@@ -701,7 +695,7 @@ void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcpy(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcpy crash when memcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcpy(dst1, src, n);
@@ -902,7 +896,7 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memmove(dst1, src, n);
@@ -932,7 +926,7 @@ void	test_ft_memmove_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		memmove(dst1, src, n);
@@ -961,7 +955,7 @@ void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memmove(dst2, src, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memmove crash when it shouldn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memmove(dst1, src, n);
@@ -1110,7 +1104,7 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src2, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src1, size);
@@ -1140,7 +1134,7 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst2, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst1, src, size);
@@ -1168,7 +1162,7 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcpy(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcpy crash when strlcpy doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcpy(dst, src, size);
@@ -1345,7 +1339,7 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1374,7 +1368,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1403,9 +1397,9 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	tc->ub = 1;
 	SANDBOX(res1 = strlcat(dst1, src, size););
 	exit1 = g_exit_code;
-	SANDBOX(ft_strlcat(dst1, src, size););
+	SANDBOX(res2 = ft_strlcat(dst2, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst1, src, size);
@@ -1433,7 +1427,7 @@ void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strlcat(dst, src, size););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strlcat crash when strlcat doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strlcat(dst, src, size);
@@ -1609,7 +1603,7 @@ void	test_ft_strchr_null_s(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strchr(s, c););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strchr crash when strchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strchr(s, c);
@@ -1723,7 +1717,7 @@ void	test_ft_strrchr_null_s(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strrchr(s, c););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strrchr crash when strchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strrchr(s, c);
@@ -1948,7 +1942,7 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -1976,7 +1970,7 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2003,7 +1997,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2030,7 +2024,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strncmp crash when strncmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strncmp(s1, s2, n);
@@ -2196,7 +2190,7 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memchr crash when memchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memchr(s, c, n);
@@ -2224,7 +2218,7 @@ void	test_ft_memchr_null_s_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memchr(s, c, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memchr crash when memchr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memchr(s, c, n);
@@ -2410,7 +2404,7 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2437,7 +2431,7 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2464,7 +2458,7 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2491,7 +2485,7 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_memcmp crash when memcmp doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = memcmp(arr1, arr2, n);
@@ -2693,7 +2687,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2719,7 +2713,7 @@ void	test_ft_strnstr_null_big_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2745,7 +2739,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2771,7 +2765,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2797,7 +2791,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -2823,7 +2817,7 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_strnstr(big, little, len););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strnstr crash when it strnstr doesn't.", !(!WIFSIGNALED(exit1) && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = strnstr(big, little, len);
@@ -3053,8 +3047,7 @@ void	test_ft_atoi_null(CuTest *tc)
 	exit1 = g_exit_code;
 	SANDBOX(ft_atoi(nptr););
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_atoi crash when atoi doesn't.", !(!WIFSIGNALED(exit1)
-													   && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 	if (!WIFSIGNALED(exit1) && !WIFSIGNALED(exit2))
 	{
 		res1 = atoi(nptr);
@@ -3292,27 +3285,18 @@ void	test_ft_strdup_null_s(CuTest *tc)
 {
 	char	*(*ft_strdup)(const char *) = get_fun("ft_strdup");
 	char	*s = NULL;
-	char	*res1;
 	char	*res2;
-	int		exit1;
 	int		exit2;
 
 	sprintf(buff.txt, "%s: s = <%s>\n", __func__, s);
 	tc->ub = 1;
-	SANDBOX(
-		res1 = strdup(s);
-		if (res1)
-			free(res1);
-		);
-	exit1 = g_exit_code;
 	SANDBOX(
 		res2 = ft_strdup(s);
 		if (res2)
 			free(res2);
 		);
 	exit2 = g_exit_code;
-	CuAssert(tc, "ft_strdup crash when strdup doesn't.", !(!WIFSIGNALED(exit1)
-														 && WIFSIGNALED(exit2)));
+	CuAssert(tc, "crashes on undefined behavior input.", !WIFSIGNALED(exit2));
 }
 
 CuSuite	*ft_strdup_get_suite()
