@@ -45,7 +45,7 @@ struct CuTest
 	char* name;
 	TestFunction function;
 	int failed;
-	int	bof;
+	int	ub;
 	int ran;
 	const char* message;
 	jmp_buf *jumpBuf;
@@ -101,7 +101,7 @@ typedef struct
 	int count;
 	CuTest* list[MAX_TEST_CASES];
 	int failCount;
-	int	bofCount;
+	int	ubCount;
 
 } CuSuite;
 

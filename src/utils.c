@@ -73,7 +73,7 @@ void	printbuff()
 	{
 		color = buff.color == 'r' ? RED : GREEN;
 		if (buff.color == '!')
-			color = BOF;
+			color = UB;
 		printf("%s%s%s", color, buff.txt, WHITE);
 		buff.txt[0] = '\0';
 		buff.color = '\0';
@@ -127,7 +127,7 @@ void	*init_fcts()
 	fcts[32] = (t_ft){"ft_putendl_fd", dlsym(handle, "ft_putendl_fd"), ft_putendl_fd_get_suite};
 	fcts[33] = (t_ft){"ft_putnbr_fd", dlsym(handle, "ft_putnbr_fd"), ft_putnbr_fd_get_suite};
 
-	/* BONUS PART */
+	/* PART 3 */
 	fcts[34] = (t_ft){"ft_lstnew", dlsym(handle, "ft_lstnew"), ft_lstnew_get_suite};
 	fcts[35] = (t_ft){"ft_lstadd_front", dlsym(handle, "ft_lstadd_front"), ft_lstadd_front_get_suite};
 	fcts[36] = (t_ft){"ft_lstsize", dlsym(handle, "ft_lstsize"), ft_lstsize_get_suite};

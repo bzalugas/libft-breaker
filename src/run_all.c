@@ -38,8 +38,8 @@ void	run_all(char *particular_fun, void *fun)
 	{
 		if (output->buffer[i] == '.')
 			printf("%s%c%s", GREEN, output->buffer[i], WHITE);
-		else if (output->buffer[i] == 'B')
-			printf("%s%c%s", BOF, output->buffer[i], WHITE);
+		else if (output->buffer[i] == 'U')
+			printf("%s%c%s", UB, output->buffer[i], WHITE);
 		else
 			printf("%s%c%s", RED, output->buffer[i], WHITE);
 	}
@@ -51,9 +51,11 @@ void	run_all(char *particular_fun, void *fun)
 		for (i = 0; i < N_TESTS_FUN; i++)
 			if (fcts[i].fun_name && !fcts[i].fun)
 				printf("%sMISSING %s.%s\n", RED, fcts[i].fun_name, COLOR_RESET);
-	if (suite->bofCount > 0)
-		printf("%sIf you have %s\"bof cases\"%s it means your function doesn't \
-behave exactly the same as the libc's function or as expected but this is an \"Undefined Behavior\" case.%s\n", WHITE, BOF, WHITE, COLOR_RESET);
+	if (suite->ubCount > 0)
+		printf("%sIf you have %s\"undefined behavior cases\"%s, the input is \
+outside the official contract. Non-crashing behavior is accepted; these entries \
+show cases that still crashed or diverged when both calls returned.%s\n", WHITE,
+			UB, WHITE, COLOR_RESET);
 	CuStringDelete(output);
 	CuSuiteDelete(suite);
 }

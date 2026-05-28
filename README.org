@@ -3,6 +3,8 @@
 * libft-breaker
 libft-breaker is my personal tester for my 42's libft project. This is not the official tests but only the ones I think are important. The best thing to do is to use the maximum tests/testers to be sure your libft is perfect.
 
+*UPDATED FOR NEXT CURSUS, VERSION 1.1*
+
 * IMPORTANT INFORMATION
 ** Running tests on ubuntu
 If you run the tests on ubuntu machine (with same version as 42), you can use normal tests. These tests compare original libc's function with your function.
@@ -14,12 +16,15 @@ I also created a "static" version, that doesn't compare normal libc's function w
 #+begin_src makefile
 ifneq ($(shell uname), Darwin)
 breaker:
-			$(CC) -nostartfiles -shared -fPIC -ldl $(CFLAGS) -o libft.so $(SRC) $(SRCBONUS)
+			$(CC) -nostartfiles -shared -fPIC -ldl $(CFLAGS) -o libft.so $(SRC)
 else
 breaker:
-			$(CC) -dynamiclib $(CFLAGS) -o libft.so $(SRC) $(SRCBONUS) -L../obj -lmalloc
+			$(CC) -dynamiclib $(CFLAGS) -o libft.so $(SRC) -L../obj -lmalloc
 endif
 #+end_src
+
+With the current subject, the linked-list functions are part of the mandatory
+source list, so include them in ~$(SRC)~.
 
 The default structure for the folders is:
 #+begin_example

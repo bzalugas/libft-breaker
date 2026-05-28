@@ -21,17 +21,19 @@
 void	test_ft_isalpha_basic(CuTest *tc)
 {
 	int		(*ft_isalpha)(int) = get_fun("ft_isalpha");
-	char	c;
+	int		c;
 
 	printf("\n########## FT_ISALPHA ##########\n");
 	sprintf(buff.txt, "ft_isalpha: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
-		CuAssertIntEquals(tc, isalpha(c) > 0, ft_isalpha(c) > 0);
+		CuAssertIntEquals(tc, (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'),
+			ft_isalpha(c));
 		c++;
 	}
-	CuAssertIntEquals(tc, isalpha(c) > 0, ft_isalpha(c) > 0);
+	CuAssertIntEquals(tc, (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'),
+		ft_isalpha(c));
 }
 
 CuSuite	*ft_isalpha_get_suite()
@@ -61,17 +63,17 @@ void	run_test_ft_isalpha(void)
 void	test_ft_isdigit_basic(CuTest *tc)
 {
 	int		(*ft_isdigit)(int) = get_fun("ft_isdigit");
-	char	c;
+	int		c;
 
 	printf("\n########## FT_ISDIGIT ##########\n");
 	sprintf(buff.txt, "ft_isdigit: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
-		CuAssertIntEquals(tc, isdigit(c) > 0, ft_isdigit(c) > 0);
+		CuAssertIntEquals(tc, c >= '0' && c <= '9', ft_isdigit(c));
 		c++;
 	}
-	CuAssertIntEquals(tc, isdigit(c) > 0, ft_isdigit(c) > 0);
+	CuAssertIntEquals(tc, c >= '0' && c <= '9', ft_isdigit(c));
 }
 
 CuSuite	*ft_isdigit_get_suite()
@@ -101,17 +103,19 @@ void	run_test_ft_isdigit(void)
 void	test_ft_isalnum_basic(CuTest *tc)
 {
 	int		(*ft_isalnum)(int) = get_fun("ft_isalnum");
-	char	c;
+	int		c;
 
 	printf("\n########## FT_ISALNUM ##########\n");
 	sprintf(buff.txt, "ft_isalnum: Basic inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
-		CuAssertIntEquals(tc, isalnum(c) > 0, ft_isalnum(c) > 0);
+		CuAssertIntEquals(tc, (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+			|| (c >= '0' && c <= '9'), ft_isalnum(c));
 		c++;
 	}
-	CuAssertIntEquals(tc, isalnum(c) > 0, ft_isalnum(c) > 0);
+	CuAssertIntEquals(tc, (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+		|| (c >= '0' && c <= '9'), ft_isalnum(c));
 }
 
 CuSuite	*ft_isalnum_get_suite()
@@ -141,17 +145,17 @@ void	run_test_ft_isalnum(void)
 void	test_ft_isascii_basic(CuTest *tc)
 {
 	int		(*ft_isascii)(int) = get_fun("ft_isascii");
-	char	c;
+	int		c;
 
 	printf("\n########## FT_ISASCII ##########\n");
 	sprintf(buff.txt, "ft_isascii: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
-		CuAssertIntEquals(tc, isascii(c) > 0, ft_isascii(c) > 0);
+		CuAssertIntEquals(tc, c >= 0 && c <= 127, ft_isascii(c));
 		c++;
 	}
-	CuAssertIntEquals(tc, isascii(c) > 0, ft_isascii(c) > 0);
+	CuAssertIntEquals(tc, c >= 0 && c <= 127, ft_isascii(c));
 }
 
 CuSuite	*ft_isascii_get_suite()
@@ -181,17 +185,17 @@ void	run_test_ft_isascii(void)
 void	test_ft_isprint_basic(CuTest *tc)
 {
 	int		(*ft_isprint)(int) = get_fun("ft_isprint");
-	char	c;
+	int		c;
 
 	printf("\n########## FT_ISPRINT ##########\n");
 	sprintf(buff.txt, "ft_isprint: Normal inputs (-128 => 127)\n");
 	c = -128;
 	while (c < 127)
 	{
-		CuAssertIntEquals(tc, isprint(c) > 0, ft_isprint(c) > 0);
+		CuAssertIntEquals(tc, c >= 32 && c <= 126, ft_isprint(c));
 		c++;
 	}
-	CuAssertIntEquals(tc, isprint(c) > 0, ft_isprint(c) > 0);
+	CuAssertIntEquals(tc, c >= 32 && c <= 126, ft_isprint(c));
 }
 
 CuSuite	*ft_isprint_get_suite()
@@ -258,7 +262,7 @@ void	test_ft_strlen_null(CuTest *tc)
 
 	s = NULL;
 	sprintf(buff.txt, "%s: input <%s>\n", __func__, s);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlen(s););
 	CuAssert(tc, "ft_strlen crash when strlen doesn't.", !WIFSIGNALED(g_exit_code));
 }
@@ -406,9 +410,9 @@ void	test_ft_memset_null(CuTest *tc)
 	char	*b = NULL;
 
 	sprintf(buff.txt, "%s: s=<%s>, c=<%d>, n=<%lu>\n", __func__,b, 'z', size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memset(b, 'z', size););
-	CuAssert(tc, "ft_memset doesn't crash when memset does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memset crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memset_get_suite()
@@ -487,9 +491,9 @@ void	test_ft_bzero_null(CuTest *tc)
 	char	*s1 = NULL;
 
 	sprintf(buff.txt, "%s: s = %s, n = %lu\n", __func__,s1, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_bzero(s1, n););
-	CuAssert(tc, "ft_bzero doesn't crash when bzero does", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_bzero crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_bzero_get_suite()
@@ -617,9 +621,9 @@ void	test_ft_memcpy_null_destination(CuTest *tc)
 	n = strlen("null dest test");
 	strcpy(src, "null dest test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_source(CuTest *tc)
@@ -632,9 +636,9 @@ void	test_ft_memcpy_null_source(CuTest *tc)
 	n = strlen("null src test");
 	bzero(dst, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
@@ -646,9 +650,9 @@ void	test_ft_memcpy_null_dest_and_src(CuTest *tc)
 
 	n = strlen("null dst & src test");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcpy(dst, src, n););
-	CuAssert(tc, "ft_memcpy doesn't crash when memcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_memcpy_get_suite()
@@ -832,9 +836,9 @@ void	test_ft_memmove_null_dst(CuTest *tc)
 	n = strlen("Testing ft_memmove");
 	strcpy(src, "Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when memmove does", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_src(CuTest *tc)
@@ -847,9 +851,9 @@ void	test_ft_memmove_null_src(CuTest *tc)
 	n = strlen("Testing ft_memmove");
 	bzero(dst, BUFFSIZE);
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memmove_null_dest_and_src(CuTest *tc)
@@ -861,9 +865,9 @@ void	test_ft_memmove_null_dest_and_src(CuTest *tc)
 
 	n = strlen("Testing ft_memmove");
 	sprintf(buff.txt, "%s: src = %s, n = %lu\n", __func__,src, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memmove(dst, src, n););
-	CuAssert(tc, "ft_memmove doesn't crash when memmove does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memmove crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_memmove_get_suite()
@@ -993,9 +997,9 @@ void	test_ft_strlcpy_null_dst(CuTest *tc)
 	src[BUFFSIZE - 1] = '\0';
 	size = strlen(src) + 1;
 	sprintf(buff.txt, "%s: src = %s (len = %lu) size = %lu\n", __func__, src, strlen(src), size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_src(CuTest *tc)
@@ -1008,9 +1012,9 @@ void	test_ft_strlcpy_null_src(CuTest *tc)
 	bzero(dst, BUFFSIZE);
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d) size = %lu\n", __func__, src, 0, size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
@@ -1022,9 +1026,9 @@ void	test_ft_strlcpy_null_dst_and_src(CuTest *tc)
 
 	size = 10;
 	sprintf(buff.txt, "%s: src = %s (len = %d) size = %lu\n", __func__, src, 0, size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcpy(dst, src, size););
-	CuAssert(tc, "ft_strlcpy doesn't crash when strlcpy does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcpy crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_strlcpy_get_suite()
@@ -1173,9 +1177,9 @@ void	test_ft_strlcat_null_dst(CuTest *tc)
 	size = strlen(src) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
@@ -1190,7 +1194,7 @@ void	test_ft_strlcat_null_dst_and_size_zero(CuTest *tc)
 	size = 0;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, strlen(src),
 		   dst, (size_t)0, size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
 	CuAssert(tc, "ft_strlcat crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_strlcat(dst, src, size);
@@ -1208,9 +1212,9 @@ void	test_ft_strlcat_null_src(CuTest *tc)
 	size = strlen(dst) + 1;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst, strlen(dst), size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
@@ -1223,9 +1227,9 @@ void	test_ft_strlcat_null_dst_and_src(CuTest *tc)
 	size = BUFFSIZE;
 	sprintf(buff.txt, "%s:\tsrc=%s(%lu), dst=%s(%lu), size=%lu\n", __func__, src, (size_t)0,
 		   dst, (size_t)0, size);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strlcat(dst, src, size););
-	CuAssert(tc, "ft_strlcat doesn't crash when strlcat does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strlcat crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite *ft_strlcat_get_suite()
@@ -1386,9 +1390,9 @@ void	test_ft_strchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strchr(s, c););
-	CuAssert(tc, "ft_strchr doesn't crash when strchr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strchr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strchr_get_suite()
@@ -1487,9 +1491,9 @@ void	test_ft_strrchr_null_s(CuTest *tc)
 
 	c = 'o';
 	sprintf(buff.txt, "%s: s = %s, c = %d(%c)\n", __func__, s, c, c);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strrchr(s, c););
-	CuAssert(tc, "ft_strrchr doesn't crash when strrchr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strrchr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strrchr_get_suite()
@@ -1699,9 +1703,9 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	strcpy(s2, "Triple Monstre");
 	n = strlen(s2);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s2(CuTest *tc)
@@ -1714,9 +1718,9 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	strcpy(s1, "Triple Monstre");
 	n = strlen(s1);
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
@@ -1728,9 +1732,9 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 
 	n = 10;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
-	CuAssert(tc, "ft_strncmp doesn't crash when strncmp does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strncmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
@@ -1742,7 +1746,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 
 	n = 0;
 	sprintf(buff.txt, "%s: s1 = %s, s2 = %s, n = %lu\n", __func__, s1, s2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 }
@@ -1895,9 +1899,9 @@ void	test_ft_memchr_null_s_1(CuTest *tc)
 	c = '\12';
 	n = 14;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memchr(s, c, n););
-	CuAssert(tc, "ft_memchr doesn't crash when memchr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memchr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memchr_null_s_2(CuTest *tc)
@@ -1910,7 +1914,7 @@ void	test_ft_memchr_null_s_2(CuTest *tc)
 	c = '\12';
 	n = 0;
 	sprintf(buff.txt, "%s: s=%s, c=%d, n=%lu\n", __func__, s, c, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memchr(s, c, n););
 	CuAssert(tc, "ft_memchr crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 }
@@ -2083,9 +2087,9 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s2(CuTest *tc)
@@ -2096,9 +2100,9 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
@@ -2109,9 +2113,9 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	size_t	n = 5;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
-	CuAssert(tc, "ft_memcmp doesn't crash when memcmp does", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_memcmp crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
@@ -2123,7 +2127,7 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	int		res;
 
 	sprintf(buff.txt, "%s: s1=%s, s2=%s, n=%lu\n", __func__, (char *)arr1, (char *)arr2, n);
-	tc->bof = 1;
+	tc->ub = 1;
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res = ft_memcmp(arr1, arr2, n);
@@ -2315,7 +2319,7 @@ void	test_ft_strnstr_null_big_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_2(CuTest *tc)
@@ -2343,7 +2347,7 @@ void	test_ft_strnstr_null_little_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_little_2(CuTest *tc)
@@ -2355,7 +2359,7 @@ void	test_ft_strnstr_null_little_2(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
@@ -2367,7 +2371,7 @@ void	test_ft_strnstr_null_big_and_little_1(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
@@ -2379,7 +2383,7 @@ void	test_ft_strnstr_null_big_and_little_2(CuTest *tc)
 
 	sprintf(buff.txt, "%s: big=%s, little=%s, len=%lu\n", __func__, big, little, len);
 	SANDBOX(ft_strnstr(big, little, len););
-	CuAssert(tc, "ft_strnstr doesn't crash when strnstr does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strnstr crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strnstr_get_suite()
@@ -2547,7 +2551,7 @@ void	test_ft_atoi_null(CuTest *tc)
 
 	sprintf(buff.txt, "%s: nptr=%s\n", __func__, nptr);
 	SANDBOX(ft_atoi(nptr););
-	CuAssert(tc, "ft_atoi doesn't crash when atoi does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_atoi crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_atoi_get_suite()
@@ -2770,7 +2774,7 @@ void	test_ft_strdup_null_s(CuTest *tc)
 		if (res2)
 			free(res2);
 		);
-	CuAssert(tc, "ft_strdup doesn't crash when strdup does.", WIFSIGNALED(g_exit_code));
+	CuAssert(tc, "ft_strdup crashes on undefined behavior input.", !WIFSIGNALED(g_exit_code));
 }
 
 CuSuite	*ft_strdup_get_suite()
@@ -3487,7 +3491,7 @@ static void	check_split_malloc_sizes(CuTest *tc, char *ex[], char *act[])
 	size_t	ex_size;
 	size_t	act_size;
 	int		i;
-	char	txt[50];
+	char	txt[64];
 
 	for (i = 0; ex[i]; i++) ;
 	ex_size = (i + 1) * sizeof(char *);
@@ -4485,7 +4489,7 @@ CuSuite	*ft_putnbr_fd_get_suite()
 	return (s);
 }
 
-/********************************* BONUS PART *********************************/
+/*********************************** PART 3 ***********************************/
 
 /****************************/
 /*          FT_LSTNEW       */
@@ -4540,7 +4544,7 @@ void	test_ft_lstnew_basic(CuTest *tc)
 	void	*content;
 
 	printf("\n########### FT_LSTNEW #########\n");
-	content = strdup("Hope your bonuses work!");
+	content = strdup("Hope your lists work!");
 	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
 	one_test_ft_lstnew(tc, "Basic input", content, 0);
 	free(content);
@@ -4557,7 +4561,7 @@ void	test_ft_lstnew_malloc_fail(CuTest *tc)
 {
 	void	*content;
 
-	content = strdup("Hope your bonuses work!");
+	content = strdup("Hope your lists work!");
 	sprintf(buff.txt, "%s: content=<%s>\n", __func__, (char*)content);
 	one_test_ft_lstnew(tc, "malloc fail", content, 1);
 	free(content);
@@ -4915,13 +4919,8 @@ void	test_ft_lstadd_back_null_new(CuTest *tc)
 
 void	test_ft_lstadd_back_null_lst_and_new(CuTest *tc)
 {
-	t_list	*lst = NULL;
-	t_list	*new = NULL;
-	t_list	*ex = NULL;
-
-
 	sprintf(buff.txt, "%s: NULL lst & NULL new passed.\n", __func__);
-	one_test_ft_lstadd_back(tc, "NULL new", &lst, new, &ex);
+	one_test_ft_lstadd_back(tc, "NULL lst & NULL new", NULL, NULL, NULL);
 }
 
 CuSuite	*ft_lstadd_back_get_suite()
@@ -4931,6 +4930,7 @@ CuSuite	*ft_lstadd_back_get_suite()
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_lst);
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_pointer_lst);
 	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_new);
+	SUITE_ADD_TEST(s, test_ft_lstadd_back_null_lst_and_new);
 	return (s);
 }
 
@@ -5002,15 +5002,13 @@ void	test_ft_lstdelone_null_del(CuTest *tc)
 		exit(EXIT_FAILURE);
 	if (!(lst = lstnew(arr)))
 		exit(EXIT_FAILURE);
+	tc->ub = 1;
 	SANDBOX(ft_lstdelone(lst, NULL););
 	CuAssert(tc, "FT_LSTDELONE CRASH WITH NULL DEL", !WIFSIGNALED(g_exit_code));
-	tc->bof = 1;
-	g_free_called = 0;
-	ft_lstdelone(lst, NULL);
-	CuAssert(tc, "ft_lstdelone doesn't call free when del is NULL.", g_free_called != 0);
 	free(arr[0]);
 	free(arr[1]);
 	free(arr);
+	free(lst);
 }
 
 CuSuite	*ft_lstdelone_get_suite()
@@ -5119,12 +5117,9 @@ void	test_ft_lstclear_null_del(CuTest *tc)
 	if (!(lst->next = lstnew(arr2)))
 		exit(EXIT_FAILURE);
 	sprintf(buff.txt, "%s: lst set to list of nodes of 2D int arrays, del to NULL.\n", __func__);
+	tc->ub = 1;
 	SANDBOX(ft_lstclear(&lst, NULL););
 	CuAssert(tc, "FT_LSTCLEAR CRASH WITH NULL DEL", !WIFSIGNALED(g_exit_code));
-	g_free_called = 0;
-	ft_lstclear(&lst, NULL);
-	CuAssert(tc, "ft_lstclear calls free when del is NULL (It shouldn't!)", g_free_called == 0);
-	CuAssert(tc, "ft_lstclear sets lst to NULL when del is NULL (it shouldn't!)", lst != NULL);
 	free(arr1[0]);
 	free(arr1[1]);
 	free(arr1);

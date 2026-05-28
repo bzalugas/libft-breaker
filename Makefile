@@ -49,6 +49,17 @@ ANSI_COLOR_RESET	=	"\033[0m"
 
 ##################################### RULES #####################################
 
+help:
+			@echo "Available rules:"
+			@echo "  all      Build $(NAME) with libc comparison tests"
+			@echo "  static   Build $(NAME) with static expected-value tests"
+			@echo "  run      Build and run tests; optional: make run ft_strlen"
+			@echo "  srun     Build static tests and run them; optional: make srun ft_strlen"
+			@echo "  clean    Remove the test executable"
+			@echo "  fclean   Remove generated objects, copied libraries, and executable"
+			@echo "  re       Rebuild from scratch"
+			@echo "  help     Display this help"
+
 all:		$(NAME)
 
 $(NAME):	$(LMALLOC) $(LIBFTSO) $(SRCN)
@@ -97,4 +108,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean force fclean static run srun $(LIBFTSO)
+.PHONY:		all clean force fclean static run srun help $(LIBFTSO)
