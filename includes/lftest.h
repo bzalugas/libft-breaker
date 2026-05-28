@@ -31,7 +31,7 @@
 # define BUFFBBSIZE 8192
 # define RED     "\033[1;31m"
 # define GREEN   "\033[1;32m"
-# define BOF	 "\033[1;35m"
+# define UB	 "\033[1;35m"
 # define WHITE	"\033[1;97m"
 # define COLOR_RESET	"\033[0m"
 # define N_TESTS_FUN 43
@@ -181,7 +181,7 @@ CuSuite	*ft_putstr_fd_get_suite();
 CuSuite	*ft_putendl_fd_get_suite();
 CuSuite	*ft_putnbr_fd_get_suite();
 
-/* BONUS PART */
+/* PART 3 */
 typedef struct s_list
 {
 	void			*content;
