@@ -1759,7 +1759,7 @@ void	test_ft_strncmp_basic_1(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_basic_2_1(CuTest *tc)
@@ -1779,7 +1779,7 @@ void	test_ft_strncmp_basic_2_1(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_basic_2_2(CuTest *tc)
@@ -1799,7 +1799,7 @@ void	test_ft_strncmp_basic_2_2(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_len_s1_lt_len_s2(CuTest *tc)
@@ -1819,7 +1819,7 @@ void	test_ft_strncmp_len_s1_lt_len_s2(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_len_s1_gt_len_s2(CuTest *tc)
@@ -1839,7 +1839,7 @@ void	test_ft_strncmp_len_s1_gt_len_s2(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_smaller_n(CuTest *tc)
@@ -1859,7 +1859,7 @@ void	test_ft_strncmp_smaller_n(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_bigger_n(CuTest *tc)
@@ -1879,7 +1879,7 @@ void	test_ft_strncmp_bigger_n(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_n_zero(CuTest *tc)
@@ -1899,7 +1899,7 @@ void	test_ft_strncmp_n_zero(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_not_u_char(CuTest *tc)
@@ -1920,7 +1920,7 @@ void	test_ft_strncmp_not_u_char(CuTest *tc)
 	SANDBOX(ft_strncmp(s1, s2, n););
 	CuAssert(tc, "ft_strncmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_strncmp(s1, s2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_strncmp_null_s1(CuTest *tc)
@@ -1947,7 +1947,7 @@ void	test_ft_strncmp_null_s1(CuTest *tc)
 	{
 		res1 = strncmp(s1, s2, n);
 		res2 = ft_strncmp(s1, s2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -1975,7 +1975,7 @@ void	test_ft_strncmp_null_s2(CuTest *tc)
 	{
 		res1 = strncmp(s1, s2, n);
 		res2 = ft_strncmp(s1, s2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2002,7 +2002,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_gt_zero(CuTest *tc)
 	{
 		res1 = strncmp(s1, s2, n);
 		res2 = ft_strncmp(s1, s2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2029,7 +2029,7 @@ void	test_ft_strncmp_null_s1_and_s2_n_zero(CuTest *tc)
 	{
 		res1 = strncmp(s1, s2, n);
 		res2 = ft_strncmp(s1, s2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2275,7 +2275,7 @@ void	test_ft_memcmp_basic_1(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_basic_2_1(CuTest *tc)
@@ -2293,7 +2293,7 @@ void	test_ft_memcmp_basic_2_1(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_basic_2_2(CuTest *tc)
@@ -2311,7 +2311,7 @@ void	test_ft_memcmp_basic_2_2(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_byte_zero(CuTest *tc)
@@ -2329,7 +2329,7 @@ void	test_ft_memcmp_byte_zero(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_zero_n(CuTest *tc)
@@ -2347,7 +2347,7 @@ void	test_ft_memcmp_zero_n(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_not_u_char_1(CuTest *tc)
@@ -2365,7 +2365,7 @@ void	test_ft_memcmp_not_u_char_1(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_not_u_char_2(CuTest *tc)
@@ -2383,7 +2383,7 @@ void	test_ft_memcmp_not_u_char_2(CuTest *tc)
 	SANDBOX(ft_memcmp(arr1, arr2, n););
 	CuAssert(tc, "ft_memcmp crash when it shouldn't.", !WIFSIGNALED(g_exit_code));
 	res2 = ft_memcmp(arr1, arr2, n);
-	CuAssertIntEquals(tc, res1, res2);
+	CuAssertCmpSignEquals(tc, res1, res2);
 }
 
 void	test_ft_memcmp_null_s1(CuTest *tc)
@@ -2409,7 +2409,7 @@ void	test_ft_memcmp_null_s1(CuTest *tc)
 	{
 		res1 = memcmp(arr1, arr2, n);
 		res2 = ft_memcmp(arr1, arr2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2436,7 +2436,7 @@ void	test_ft_memcmp_null_s2(CuTest *tc)
 	{
 		res1 = memcmp(arr1, arr2, n);
 		res2 = ft_memcmp(arr1, arr2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2463,7 +2463,7 @@ void	test_ft_memcmp_null_s1_and_s2_1(CuTest *tc)
 	{
 		res1 = memcmp(arr1, arr2, n);
 		res2 = ft_memcmp(arr1, arr2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 
@@ -2490,7 +2490,7 @@ void	test_ft_memcmp_null_s1_and_s2_2(CuTest *tc)
 	{
 		res1 = memcmp(arr1, arr2, n);
 		res2 = ft_memcmp(arr1, arr2, n);
-		CuAssertIntEquals(tc, res1, res2);
+		CuAssertCmpSignEquals(tc, res1, res2);
 	}
 }
 

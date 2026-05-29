@@ -29,6 +29,9 @@
 # define BUFFSIZE 30
 # define BUFFBSIZE 2048
 # define BUFFBBSIZE 8192
+# define CMP_SIGN(x) (((x) > 0) - ((x) < 0))
+# define CuAssertCmpSignEquals(tc, ex, ac) \
+	CuAssertIntEquals_Msg((tc), "Bad comparison sign", CMP_SIGN(ex), CMP_SIGN(ac))
 # define RED     "\033[1;31m"
 # define GREEN   "\033[1;32m"
 # define UB	 "\033[1;35m"
